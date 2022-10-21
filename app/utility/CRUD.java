@@ -6,41 +6,30 @@ import java.sql.*;
 
 public class CRUD {
 
-    public void addUser(User user) throws Exception{
+    public static void main(String[] args) throws Exception {
+        User a = new User("tester", "123");
+        System.out.println(addUser(a));
+    }
+
+    public static Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
+        Integer id = 0;
         String sql = ""+
-                "INSERT INTO user_table" +
+                "INSERT INTO userTable" +
                 "(email,password)"+
                 "values(?,?)";
-        PreparedStatement psmt = conn.prepareStatement(sql);
+        PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         psmt.setString(1, user.getEmail());
         psmt.setString(2, user.getPassword());
-        psmt.execute();
+        psmt.executeUpdate();
+        ResultSet rs = psmt.getGeneratedKeys();
+        if (rs.next()) {
+            id = rs.getInt(1);
+        }
         psmt.close();
         conn.close();
-    }
-
-    public void updatePassword(User user, String password) throws SQLException, ClassNotFoundException {
-        JDBC.getConnection();
-        Connection conn = JDBC.CreateUserTable();
-        String sql = "" +
-                "update userTable set password ='" + password+"'" +" where id=" + user.getId();
-        PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.executeUpdate(sql);
-        psmt.close();
-        conn.close();
-    }
-
-    public void updateVCode(User user, String code) throws SQLException, ClassNotFoundException {
-        JDBC.getConnection();
-        Connection conn = JDBC.CreateUserTable();
-        String sql = "" +
-                "update userTable set v_code ='" + code +"'" +" where id=" + user.getId();
-        PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.executeUpdate(sql);
-        psmt.close();
-        conn.close();
+        return id;
     }
 
     public User getUserByid(int id) throws SQLException, ClassNotFoundException {
@@ -63,43 +52,4 @@ public class CRUD {
         return user;
     }
 
-    public User getUserByEmail(String email) throws SQLException, ClassNotFoundException {
-        User user = new User();
-        JDBC.getConnection();
-        Connection conn = JDBC.CreateUserTable();
-        String sql = "" +
-                "SELECT * FROM userTable WHERE email=?";
-        PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setString(1, email);
-        ResultSet rs = psmt.executeQuery();
-        while(rs.next()){
-            user.setId(rs.getInt("id"));
-            user.setEmail(rs.getString("email"));
-            user.setPassword(rs.getString("password"));
-            user.setV_code(rs.getString("v_code"));
-        }
-        psmt.close();
-        conn.close();
-        return user;
-    }
-
-    public boolean UserEmailExist(String email) throws SQLException, ClassNotFoundException {
-        JDBC.getConnection();
-        Connection conn = JDBC.CreateUserTable();
-        String sql = ""+"SELECT * FROM userTable WHERE email=?";
-        PreparedStatement psmt = conn.prepareStatement(sql);
-        ResultSet rs = null;
-        try{
-            psmt.setString(1, email);
-            rs = psmt.executeQuery();
-            boolean temp = rs.next();
-            psmt.close();
-            rs.close();
-            return temp;
-        }catch(SQLException e){
-            psmt.close();
-            rs.close();
-            return false;
-        }
-    }
 }
