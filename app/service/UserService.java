@@ -1,6 +1,5 @@
 package service;
 
 public interface UserService {
-
-    public Integer addUser();
+     Integer addUser(String email, String password);
 }

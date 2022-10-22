@@ -1,8 +1,14 @@
 package domain;
 
+import play.data.validation.Constraints;
+
+import javax.validation.constraints.Email;
+
 public class User {
     private int id;
+    @Email
     private String email;
+    @Constraints.Required
     private String password;
 
 

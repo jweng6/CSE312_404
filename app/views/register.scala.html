@@ -1,3 +1,5 @@
+@import play.mvc.Http.Request
+@(userForm: Form[domain.User])(implicit request: Request, messages: Messages)
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
@@ -5,6 +7,12 @@
         <title>Title</title>
     </head>
     <body>
-        
-</body>
+
+        @helper.form(action = routes.HomeController.register()) {
+            @helper.CSRF.formField
+            @helper.inputText(userForm("email"))
+            @helper.inputPassword(userForm("password"))
+            <button type="submit">click</button>
+        }
+    </body>
 </html>

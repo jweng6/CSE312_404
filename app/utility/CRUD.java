@@ -45,7 +45,6 @@ public class CRUD {
             user.setId(rs.getInt("id"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
-            user.setV_code(rs.getString("v_code"));
         }
         psmt.close();
         conn.close();
