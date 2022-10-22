@@ -144,7 +144,7 @@ body {
     line-height: 19px;
     /* identical to box height */
 
-
+    white-space:nowrap;
     color: #000000;
 }
 .text-forgot-password2{
@@ -158,7 +158,7 @@ body {
     font-weight: 700;
     font-size: 14px;
     line-height: 16px;
-
+    white-space:nowrap;
     color: #4A4A4A;
 }
 
