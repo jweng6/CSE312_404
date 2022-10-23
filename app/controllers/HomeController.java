@@ -42,9 +42,6 @@ public class HomeController extends Controller {
          * this method will be called when the application receives a
          * <code>GET</code> request with a path of <code>/</code>.
          */
-    public Result index() {
-        return ok(views.html.index.render());
-    }
 
     public Result showRegister(Http.Request request){
         return ok(views.html.register.render(userForm,request,messagesApi.preferred(request)));
@@ -62,7 +59,7 @@ public class HomeController extends Controller {
             System.out.println(data.getPassword());
 //            String email, String firstname, String lastname, String password
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
-            return ok(views.html.index.render());
+            return ok(views.html.success.render());
         }
     }
 
