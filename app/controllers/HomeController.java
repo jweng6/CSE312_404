@@ -60,9 +60,8 @@ public class HomeController extends Controller {
             User data = boundForm.get();
             System.out.println(data.getEmail());
             System.out.println(data.getPassword());
-            user.addUser(data.getEmail(),data.getPassword());
-            User returnUser = new User(data.getEmail());
-            
+//            String email, String firstname, String lastname, String password
+            user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
             return ok(views.html.index.render());
         }
     }

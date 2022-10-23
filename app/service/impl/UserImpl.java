@@ -9,13 +9,16 @@ import utility.Constant;
 public class UserImpl implements UserService {
 
     CRUD crud = new CRUD();
-    public User addUser(String email, String password){
+//    int courseId, String email,String firstname, String lastname, String password
+    public User addUser(String email, String firstname, String lastname, String password){
         try {
             //password编码
             String newPass = DigestUtils.md5Hex(Constant.SALT + password);
-            User user = new User(email, newPass);
+            User user = new User(email, firstname, lastname, newPass);
             Integer id = crud.addUser(user);
-            return new User(id,user.getEmail());
+            User res = crud.getUserByid(id);
+            //int id, int courseId, String email, String firstname, String lastname
+            return new User(id,res.getCourseId(),res.getEmail(),res.getFirstname(),res.getLastname());
         } catch (Exception e) {
             e.printStackTrace();
         }

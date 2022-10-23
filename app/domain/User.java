@@ -17,7 +17,15 @@ public class User {
 
     }
 
-    public User(int id, int courseId, @Email String email, @Required String firstname, String lastname, String password) {
+    public User(int id, int courseId, String email, String firstname, String lastname){
+        this.id = id;
+        this.courseId = courseId;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
+    public User(int id, int courseId, String email, String firstname, String lastname, String password) {
         this.id = id;
         this.courseId = courseId;
         this.email = email;
@@ -26,7 +34,7 @@ public class User {
         this.password = password;
     }
 
-    public User(int courseId, @Email String email, @Required String firstname, String lastname, String password) {
+    public User(String email,String firstname, String lastname, String password) {
         this.courseId = courseId;
         this.email = email;
         this.firstname = firstname;
@@ -34,11 +42,6 @@ public class User {
         this.password = password;
     }
 
-
-    //    public User(@Email String email, @Required String password) {
-//        this.email = email;
-//        this.password = password;
-//    }
 
     public int getCourseId() {
         return courseId;

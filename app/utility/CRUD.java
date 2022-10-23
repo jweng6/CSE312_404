@@ -8,7 +8,7 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         //int courseId, @Email String email, @Required String firstname, String lastname, String password
-        User a = new User(0, "hasa@gmail.com", "asd", "aslkdj", "asldjasldj");
+        User a = new User("hasa@gmail.com", "asd", "aslkdj", "asldjasldj");
         System.out.println(addUser(a));
     }
 
@@ -18,14 +18,14 @@ public class CRUD {
         Integer id = 0;
         String sql = ""+
                 "INSERT INTO userTable" +
-                "(email, firstname, lastname, password, courseId)"+
+                "(email, firstname, lastname, password,courseId)"+
                 "values(?,?,?,?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         psmt.setString(1, user.getEmail());
         psmt.setString(2, user.getFirstname());
         psmt.setString(3, user.getLastname());
         psmt.setString(4, user.getPassword());
-        psmt.setInt(5, user.getCourseId());
+        psmt.setInt(5,0);
         psmt.executeUpdate();
         ResultSet rs = psmt.getGeneratedKeys();
         if (rs.next()) {
