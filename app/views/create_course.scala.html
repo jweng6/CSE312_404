@@ -1,9 +1,11 @@
+@(title: String)
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CSE312</title>
-    <link rel="stylesheet" href="sign_style.css">
+    <title>@title</title>
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/sign_style.css")">
 </head>
 <body>
 
@@ -13,6 +15,7 @@
             <div class="create-course-div">
                 <p class="text-create-course">CREATE COURSE</p>
                 <form >
+                    @helper.CSRF.formField
                     <input class="create-course-input" placeholder="Course Name" type="text" id="course_name" name="course_name"><br><br>
                     <input class="button_sign-up" type="submit" value="SUBMIT">
                 </form>

@@ -1,9 +1,12 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>CSE312</title>
-    <link rel="stylesheet" href="sign_style.css">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/sign_style.css")">
+
 </head>
 <body>
 
@@ -18,9 +21,12 @@
             <div class="div-sign-up">
                 <p class="text-sign-up_word">SIGN-UP</p>
                 <form >
+                    @helper.CSRF.formField
                     <input class="input-sign-up-email" placeholder="Emails" type="text" id="email" name="email"><br>
-                    <input class="input-sign-up-password" placeholder="Password"type="text" id="password" name="password"><br>
-                    <input class="input-sign-up-password2" placeholder="Confirm Password"type="text" id="confirm_password" name="confirm_password"><br><br>
+                    <input class="input-first_name" placeholder="First name" type="text" name="first_name"><br>
+                    <input class="input-last_name" placeholder="Last name" type="text" name="last_name"><br>
+                    <input class="input-sign-up-password" placeholder="Password"type="password" id="password" name="password"><br>
+                    <input class="input-sign-up-password2" placeholder="Confirm Password"type="password" id="confirm_password" name="confirm_password"><br><br>
                     <input class="button_sign-up" type="submit" value="REGISTER">
                 </form>
             </div>

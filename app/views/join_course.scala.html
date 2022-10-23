@@ -1,9 +1,12 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>CSE312</title>
-    <link rel="stylesheet" href="sign_style.css">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/sign_style.css")">
+
 </head>
 <body>
 
@@ -13,9 +16,8 @@
             <div class="join-course-div">
                 <p class="text-join-course">JOIN COURSE</p>
                 <form >
-                    <input class="join-course-input" placeholder="First Name" type="text" id="first_name" name="first_name"><br>
-                    <input class="join-course-input2" placeholder="Last Name" type="text" id="last_name" name="last_name"><br>
-                    <input class="join-course-input3" placeholder="Emails" type="text" id="email" name="email"><br>
+                    @helper.CSRF.formField
+                    <input class="join-course-input3" placeholder="Emails" type="email" id="email" name="email"><br>
                     <input class="join-course-input4" placeholder="Join code" type="text" id="join_code" name="join_code"><br><br>
                     <input class="button_sign-up" type="submit" value="SUBMIT">
                 </form>

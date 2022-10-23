@@ -1,9 +1,14 @@
+
+<!--@(title: String)-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>CSE312</title>
-    <link rel="stylesheet" href="sign_style.css">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/sign_style.css")">
+
+
 </head>
 <body>
 
@@ -18,8 +23,9 @@
             <div class="sig-in-div-input">
                 <p class="text_SIGN-IN">SIGN-IN</p>
                 <form >
-                    <input class="sign-in-input-email" placeholder="Emails" type="text" id="email" name="email"><br>
-                    <input class="sign-in-input-password" placeholder="Password"type="text" id="password" name="password"><br><br>
+                    @helper.CSRF.formField
+                    <input class="sign-in-input-email" placeholder="Emails" type="email" id="email" name="email"><br>
+                    <input class="sign-in-input-password" placeholder="Password"type="password" id="password" name="password"><br><br>
                     <input class="dark-blue-button" type="submit" value="LOGIN">
                 </form>
             </div>
