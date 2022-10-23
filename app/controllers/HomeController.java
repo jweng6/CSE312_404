@@ -36,7 +36,6 @@ public class HomeController extends Controller {
         this.userForm = formFactory.form(User.class);
         this.messagesApi = messagesApi;
     }
-
         /**
          * An action that renders an HTML page with a welcome message.
          * The configuration in the <code>routes</code> file means that
@@ -47,7 +46,7 @@ public class HomeController extends Controller {
         return ok(views.html.index.render());
     }
 
-    public Result registerProcess(Http.Request request){
+    public Result showRegister(Http.Request request){
         return ok(views.html.register.render(userForm,request,messagesApi.preferred(request)));
     }
 
@@ -61,6 +60,9 @@ public class HomeController extends Controller {
             User data = boundForm.get();
             System.out.println(data.getEmail());
             System.out.println(data.getPassword());
+            user.addUser(data.getEmail(),data.getPassword());
+            User returnUser = new User(data.getEmail());
+            
             return ok(views.html.index.render());
         }
     }

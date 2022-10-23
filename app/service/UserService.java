@@ -1,5 +1,7 @@
 package service;
 
+import domain.User;
+
 public interface UserService {
-     Integer addUser(String email, String password);
+     User addUser(String email, String password);
 }

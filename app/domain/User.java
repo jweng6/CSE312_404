@@ -11,8 +11,15 @@ public class User {
     @Constraints.Required
     private String password;
 
-
     public User() {
+    }
+
+    public User(String email){
+        this.email = email;
+    }
+    public User(int id , String email){
+        this.id = id;
+        this.email=email;
     }
 
     public User(int id, String email, String password) {

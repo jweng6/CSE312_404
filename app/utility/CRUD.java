@@ -8,10 +8,9 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         User a = new User("tester", "123");
-        System.out.println(addUser(a));
     }
 
-    public static Integer addUser(User user) throws Exception{
+    public Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         Integer id = 0;

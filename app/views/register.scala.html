@@ -8,11 +8,14 @@
     </head>
     <body>
 
-        @helper.form(action = routes.HomeController.register()) {
+        <form method="POST" action="/register">
             @helper.CSRF.formField
-            @helper.inputText(userForm("email"))
-            @helper.inputPassword(userForm("password"))
-            <button type="submit">click</button>
-        }
+            <label>Email</label>
+            <input type="email" name="email"><br/>
+            <label>Password</label>
+            <input type="password" name="password"><br/>
+            <input type="submit">
+        </form>
+
     </body>
 </html>
