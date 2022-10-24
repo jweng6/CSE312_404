@@ -1,21 +1,24 @@
 package domain;
 
 public class Course {
+    private int id;
     private String courseName;
     private String email;
-    private String code;
+    private Integer code;
 
-    public Course(){
-
+    public Course() {
     }
+
     public Course(String courseName) {
         this.courseName = courseName;
     }
 
-    public Course(String email, String code) {
+    public Course(String email, Integer code) {
         this.email = email;
         this.code = code;
     }
+
+    public void setId(int id) { this.id = id; }
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
@@ -25,7 +28,7 @@ public class Course {
         this.email = email;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
@@ -37,7 +40,8 @@ public class Course {
         return email;
     }
 
-    public String getCode() {
-        return code;
-    }
+    public Integer getCode() { return code; }
+
+    public int getId() { return id; }
+
 }
