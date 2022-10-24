@@ -9,10 +9,10 @@ public class CRUD {
     public static void main(String[] args) throws Exception {
         //int courseId, @Email String email, @Required String firstname, String lastname, String password
         User a = new User("hasa@gmail.com", "asd", "aslkdj", "asldjasldj");
-        System.out.println(addUser(a));
+
     }
 
-    public static Integer addUser(User user) throws Exception{
+    public Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         Integer id = 0;
@@ -49,6 +49,30 @@ public class CRUD {
             user.setId(rs.getInt("id"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
+        }
+        psmt.close();
+        conn.close();
+        return user;
+    }
+
+    public User getUserByEmail(String email) throws SQLException, ClassNotFoundException {
+        User user = new User();
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateUserTable();
+        String sql = "" +
+                "SELECT id,email,firstname,lastname,password FROM userTable WHERE email=?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, email);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()){
+            user.setId(rs.getInt("id"));
+            user.setEmail(rs.getString("email"));
+            user.setFirstname(rs.getString("firstname"));
+            user.setLastname(rs.getString("lastname"));
+            user.setPassword(rs.getString("password"));
+        }
+        if (user.getId() == 0) {
+            return null;
         }
         psmt.close();
         conn.close();

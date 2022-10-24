@@ -7,6 +7,8 @@ import service.UserService;
 import utility.CRUD;
 import utility.Constant;
 
+import java.sql.SQLException;
+
 public class UserImpl implements UserService {
 
     CRUD crud = new CRUD();
@@ -26,5 +28,20 @@ public class UserImpl implements UserService {
         return null;
     }
 
-    
+    public boolean login(String email, String password) throws SQLException, ClassNotFoundException {
+        User user = crud.getUserByEmail(email);
+        if (StringUtils.isAnyBlank(email, password)) {
+            return false;
+        }
+        String user_password = DigestUtils.md5Hex(Constant.SALT + password);
+        try{
+            if (user == null) {
+                return false;
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return user_password.equals(password);
+    }
+
 }

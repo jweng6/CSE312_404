@@ -6,11 +6,11 @@ import play.data.validation.Constraints.*;
 public class User {
     private int id;
     private int courseId;
+    private String firstname;
+    private String lastname;
     @Email
     private String email;
     @Required
-    private String firstname;
-    private String lastname;
     private String password;
 
     public User() {
