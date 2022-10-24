@@ -14,25 +14,27 @@ public class UserImpl implements UserService {
     CRUD crud = new CRUD();
 //    int courseId, String email,String firstname, String lastname, String password
     public User addUser(String email, String firstname, String lastname, String password){
-        try {
-            //password编码
-            String newPass = DigestUtils.md5Hex(Constant.SALT + password);
-            User user = new User(email, firstname, lastname, newPass);
-            Integer id = crud.addUser(user);
-            User res = crud.getUserByid(id);
-            //int id, int courseId, String email, String firstname, String lastname
-            return new User(id,res.getCourseId(),res.getEmail(),res.getFirstname(),res.getLastname());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (StringUtils.isAnyBlank(email,firstname,lastname,password)){
+            try {
+                //password编码
+                String newPass = DigestUtils.md5Hex(Constant.SALT + password);
+                User user = new User(email, firstname, lastname, newPass);
+                Integer id = crud.addUser(user);
+                User res = crud.getUserByid(id);
+                //int id, int courseId, String email, String firstname, String lastname
+                return new User(id,res.getCourseId(),res.getEmail(),res.getFirstname(),res.getLastname());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
     public boolean login(String email, String password) throws SQLException, ClassNotFoundException {
-        User user = crud.getUserByEmail(email);
         if (StringUtils.isAnyBlank(email, password)) {
             return false;
         }
+        User user = crud.getUserByEmail(email);
         String user_password = DigestUtils.md5Hex(Constant.SALT + password);
         try{
             if (user == null) {

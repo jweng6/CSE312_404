@@ -8,7 +8,9 @@ import play.api.i18n.MessagesApi;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
+import service.CourseService;
 import service.UserService;
+import service.impl.CourseImpl;
 import service.impl.UserImpl;
 
 
@@ -24,6 +26,7 @@ import java.sql.SQLException;
 public class HomeController extends Controller {
 
     UserService user = new UserImpl();
+    CourseService course = new CourseImpl();
     Form<User> userForm;
     Form<Course> courseForm;
     MessagesApi messagesApi;
@@ -93,7 +96,7 @@ public class HomeController extends Controller {
         } else {
             Course data = boundForm.get();
             System.out.println(data.getCourseName());
-
+            course.addCourse(data.getCourseName());
             return ok(views.html.mainPage.render());
         }
     }
