@@ -57,6 +57,8 @@ public class HomeController extends Controller {
             User data = boundForm.get();
             System.out.println(data.getEmail());
             System.out.println(data.getPassword());
+            System.out.println(data.getFirstname());
+            System.out.println(data.getLastname());
 //            String email, String firstname, String lastname, String password
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
             return ok(views.html.success.render());
