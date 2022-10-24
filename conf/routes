@@ -3,7 +3,7 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.showLogin(request : Request)
+GET      /                           controllers.HomeController.showLogin(request : Request)
 POST     /login                           controllers.HomeController.login(request : Request)
 
 # Map static resources from the /public folder to the /assets URL path
@@ -11,3 +11,6 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /register                      controllers.HomeController.showRegister(request : Request)
 POST    /register                    controllers.HomeController.register(request: Request)
+
+GET     /create                        controllers.HomeController.showCreate(request : Request)
+POST    /create                         controllers.HomeController.postCreate(request : Request)
