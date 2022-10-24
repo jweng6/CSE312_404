@@ -1,5 +1,6 @@
 package controllers;
 
+import domain.Course;
 import domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,14 @@ public class HomeController extends Controller {
 
     UserService user = new UserImpl();
     Form<User> userForm;
+    Form<Course> courseForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
     @Inject
     public HomeController(FormFactory formFactory, MessagesApi messagesApi) {
         this.userForm = formFactory.form(User.class);
+        this.courseForm = formFactory.form(Course.class);
         this.messagesApi = messagesApi;
     }
         /**
@@ -45,7 +48,6 @@ public class HomeController extends Controller {
 
     public Result register(Http.Request request) {
         final Form<User> boundForm = userForm.bindFromRequest(request);
-
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
             return badRequest(views.html.register.render(boundForm,request, messagesApi.preferred(request)));
@@ -57,7 +59,7 @@ public class HomeController extends Controller {
             System.out.println(data.getLastname());
 //            String email, String firstname, String lastname, String password
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
-            return ok(views.html.register.render(userForm, request, messagesApi.preferred(request)));
+            return ok(views.html.success.render());
         }
     }
 
@@ -75,16 +77,43 @@ public class HomeController extends Controller {
         }
         else {
             user.login(request_email,request_password);
-            return ok(views.html.login.render(userForm, request, messagesApi.preferred(request)));
+            return ok(views.html.success.render());
         }
     }
 
-//    public Result showCreate(Http.Request request){
-//        return ok(views.html.login.render())
-//    }
-//
-//    public Result postCreate(Http.Request request){
-//
-//    }
+    public Result showCreate(Http.Request request){
+        return ok(views.html.Create.render(courseForm,request,messagesApi.preferred(request)));
+    }
+
+    public Result postCreate(Http.Request request){
+        final Form<Course> boundForm = courseForm.bindFromRequest(request);
+        if (boundForm.hasErrors()) {
+            logger.error("errors = {}", boundForm.errors());
+            return badRequest(views.html.Create.render(boundForm,request, messagesApi.preferred(request)));
+        } else {
+            Course data = boundForm.get();
+            System.out.println(data.getCourseName());
+
+            return ok(views.html.mainPage.render());
+        }
+    }
+
+    public Result showJoin(Http.Request request){
+        return ok(views.html.Join.render(courseForm,request,messagesApi.preferred(request)));
+    }
+
+    public Result postJoin(Http.Request request){
+        final Form<Course> boundForm = courseForm.bindFromRequest(request);
+        if (boundForm.hasErrors()) {
+            logger.error("errors = {}", boundForm.errors());
+            return badRequest(views.html.Join.render(boundForm,request, messagesApi.preferred(request)));
+        } else {
+            Course data = boundForm.get();
+            System.out.println(data.getEmail());
+            System.out.println(data.getCode());
+
+            return ok(views.html.mainPage.render());
+        }
+    }
 
 }

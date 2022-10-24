@@ -5,7 +5,9 @@ public class Course {
     private String email;
     private String code;
 
+    public Course(){
 
+    }
     public Course(String courseName) {
         this.courseName = courseName;
     }
