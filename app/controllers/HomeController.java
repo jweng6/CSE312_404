@@ -26,6 +26,7 @@ public class HomeController extends Controller {
     Form<User> userForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
+
     @Inject
     public HomeController(FormFactory formFactory, MessagesApi messagesApi) {
         this.userForm = formFactory.form(User.class);
@@ -52,12 +53,13 @@ public class HomeController extends Controller {
             User data = boundForm.get();
             System.out.println(data.getEmail());
             System.out.println(data.getPassword());
+            System.out.println(data.getFirstname());
+            System.out.println(data.getLastname());
 //            String email, String firstname, String lastname, String password
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
             return ok(views.html.register.render(userForm, request, messagesApi.preferred(request)));
         }
     }
-
 
     public Result showLogin(Http.Request request){
         return ok(views.html.login.render(userForm, request, messagesApi.preferred(request)));
@@ -76,5 +78,13 @@ public class HomeController extends Controller {
             return ok(views.html.login.render(userForm, request, messagesApi.preferred(request)));
         }
     }
+
+//    public Result showCreate(Http.Request request){
+//        return ok(views.html.login.render())
+//    }
+//
+//    public Result postCreate(Http.Request request){
+//
+//    }
 
 }
