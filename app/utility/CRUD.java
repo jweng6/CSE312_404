@@ -1,5 +1,6 @@
 package utility;
 
+import domain.Course;
 import domain.User;
 import java.sql.*;
 
@@ -7,25 +8,26 @@ import java.sql.*;
 public class CRUD {
 
     public static void main(String[] args) throws Exception {
-        //int courseId, @Email String email, @Required String firstname, String lastname, String password
-        User a = new User("hasa@gmail.com", "asd", "aslkdj", "asldjasldj");
-
+        Course a = new Course();
+        a.setCourseName("1233");
+        a.setCode(321);
+        System.out.println(getCourseByCode(321).getId());
     }
 
+    /* --------------------------------------- userTable -------------------------------------------*/
     public Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         Integer id = 0;
         String sql = ""+
                 "INSERT INTO userTable" +
-                "(email, firstname, lastname, password,courseId)"+
-                "values(?,?,?,?,?)";
+                "(email, firstname, lastname, password)"+
+                "values(?,?,?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         psmt.setString(1, user.getEmail());
         psmt.setString(2, user.getFirstname());
         psmt.setString(3, user.getLastname());
         psmt.setString(4, user.getPassword());
-        psmt.setInt(5,0);
         psmt.executeUpdate();
         ResultSet rs = psmt.getGeneratedKeys();
         if (rs.next()) {
@@ -78,5 +80,53 @@ public class CRUD {
         conn.close();
         return user;
     }
+
+
+    /* --------------------------------------- courseTable -------------------------------------------*/
+    public static Integer addCourse(Course course) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateCourseTable();
+        Integer id = 0;
+        String sql = ""+
+                "INSERT INTO courseTable" +
+                "(courseName, courseCode)"+
+                "values(?,?)";
+        PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        psmt.setString(1, course.getCourseName());
+        psmt.setInt(2, course.getCode());
+        psmt.executeUpdate();
+        ResultSet rs = psmt.getGeneratedKeys();
+        if (rs.next()) {
+            id = rs.getInt(1);
+        }
+        psmt.close();
+        conn.close();
+        return id;
+    }
+
+    public static Course getCourseByCode(int courseCode) throws SQLException, ClassNotFoundException {
+        Course course = new Course();
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateCourseTable();
+        String sql = "" +
+                "SELECT id,courseName,courseCode FROM courseTable WHERE courseCode=?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, courseCode);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()){
+            course.setId(rs.getInt("id"));
+            course.setCourseName(rs.getString("courseName"));
+            course.setCode(rs.getInt("courseCode"));
+        }
+        if (course.getId() == 0) {
+            return null;
+        }
+        psmt.close();
+        conn.close();
+        return course;
+    }
+
+    /* --------------------------------------- joinCourse -------------------------------------------*/
+
 
 }

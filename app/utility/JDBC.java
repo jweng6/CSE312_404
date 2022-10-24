@@ -10,8 +10,8 @@ public class JDBC {
 //    static final String Url = "jdbc:mysql://mysql:3306/db";
     static final String Url = "jdbc:mysql://localhost:3306/cse312?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
     static final String User = "root" ;
-    static final String PassWord = "jia893607219";
-//    static final String PassWord = "JayX2029";
+    //static final String PassWord = "jia893607219";
+    static final String PassWord = "JayX2029";
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {;
         Class.forName(JdbcDriver);
@@ -44,8 +44,8 @@ public class JDBC {
         Statement statement = connection.createStatement();
         String sql = "create table if not exists courseTable "+
                 "(id INT AUTO_INCREMENT, " +
-                "couseName VARCHAR(516), " +
-                "courseId INT, "+
+                "courseName VARCHAR(516), " +
+                "courseCode INT, "+
                 "PRIMARY KEY (id));";
         statement.executeUpdate(sql);
         statement.close();
@@ -58,7 +58,7 @@ public class JDBC {
         String sql = "create table if not exists joinCourse "+
                 "(id INT AUTO_INCREMENT, " +
                 "uid INT, " +
-                "courseId INT, "+
+                "courseCode INT, "+
                 "PRIMARY KEY (id)," +
                 "FOREIGN KEY(uid) REFERENCES userTable(id));";
         statement.executeUpdate(sql);
