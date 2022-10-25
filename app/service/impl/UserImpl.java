@@ -14,7 +14,7 @@ public class UserImpl implements UserService {
     CRUD crud = new CRUD();
 //    int courseId, String email,String firstname, String lastname, String password
     public User addUser(String email, String firstname, String lastname, String password){
-        if (StringUtils.isAnyBlank(email,firstname,lastname,password)){
+        if (!StringUtils.isAnyBlank(email,firstname,lastname,password)){
             try {
                 //password编码
                 String newPass = DigestUtils.md5Hex(Constant.SALT + password);
@@ -31,6 +31,7 @@ public class UserImpl implements UserService {
     }
 
     public boolean login(String email, String password) throws SQLException, ClassNotFoundException {
+
         if (StringUtils.isAnyBlank(email, password)) {
             return false;
         }

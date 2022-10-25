@@ -127,6 +127,18 @@ public class CRUD {
     }
 
     /* --------------------------------------- joinCourse -------------------------------------------*/
-
-
+    public void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = ""+
+                "INSERT INTO joinCourse" +
+                "(uid, courseCode)"+
+                "values(?,?)";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, uid);
+        psmt.setInt(2, code);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
 }

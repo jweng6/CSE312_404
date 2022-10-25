@@ -61,6 +61,7 @@ public class HomeController extends Controller {
             System.out.println(data.getFirstname());
             System.out.println(data.getLastname());
 //            String email, String firstname, String lastname, String password
+            //返回的是一个user
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
             return ok(views.html.success.render());
         }
@@ -79,6 +80,7 @@ public class HomeController extends Controller {
             return badRequest(views.html.login.render(loginForm,request, messagesApi.preferred(request)));
         }
         else {
+            //返回的是一个true和false
             user.login(request_email,request_password);
             return ok(views.html.success.render());
         }
@@ -96,6 +98,7 @@ public class HomeController extends Controller {
         } else {
             Course data = boundForm.get();
             System.out.println(data.getCourseName());
+            //返回的是一个course放到session中
             course.addCourse(data.getCourseName());
             return ok(views.html.mainPage.render());
         }
@@ -114,7 +117,8 @@ public class HomeController extends Controller {
             Course data = boundForm.get();
             System.out.println(data.getEmail());
             System.out.println(data.getCode());
-
+            //返回的是一个true或false
+            course.joinCourse(data.getEmail(),data.getCode());
             return ok(views.html.mainPage.render());
         }
     }
