@@ -11,7 +11,7 @@ public class CRUD {
         Course a = new Course();
         a.setCourseName("1233");
         a.setCode(321);
-        System.out.println(getCourseByCode(321).getId());
+//        System.out.println(getCourseByCode(321).getId());
     }
 
     /* --------------------------------------- userTable -------------------------------------------*/
@@ -83,7 +83,7 @@ public class CRUD {
 
 
     /* --------------------------------------- courseTable -------------------------------------------*/
-    public static Integer addCourse(Course course) throws Exception{
+    public  Integer addCourse(Course course) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateCourseTable();
         Integer id = 0;
@@ -104,7 +104,7 @@ public class CRUD {
         return id;
     }
 
-    public static Course getCourseByCode(int courseCode) throws SQLException, ClassNotFoundException {
+    public  Course getCourseByCode(int courseCode) throws SQLException, ClassNotFoundException {
         Course course = new Course();
         JDBC.getConnection();
         Connection conn = JDBC.CreateCourseTable();
@@ -127,6 +127,18 @@ public class CRUD {
     }
 
     /* --------------------------------------- joinCourse -------------------------------------------*/
-
-
+    public void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = ""+
+                "INSERT INTO joinCourse" +
+                "(uid, courseCode)"+
+                "values(?,?)";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, uid);
+        psmt.setInt(2, code);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
 }

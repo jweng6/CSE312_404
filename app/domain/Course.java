@@ -8,11 +8,10 @@ public class Course {
 
     public Course() {
     }
-
-    public Course(String courseName) {
+    public Course(int id, String courseName){
+        this.id = id;
         this.courseName = courseName;
     }
-
     public Course(String email, Integer code) {
         this.email = email;
         this.code = code;

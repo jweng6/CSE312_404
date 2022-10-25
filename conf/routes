@@ -14,3 +14,6 @@ POST    /register                    controllers.HomeController.register(request
 
 GET     /create                        controllers.HomeController.showCreate(request : Request)
 POST    /create                         controllers.HomeController.postCreate(request : Request)
+
+GET     /join                        controllers.HomeController.showJoin(request : Request)
+POST    /join                         controllers.HomeController.postJoin(request : Request)
