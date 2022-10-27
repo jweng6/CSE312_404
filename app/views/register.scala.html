@@ -1,0 +1,25 @@
+@import play.mvc.Http.Request
+@(userForm: Form[domain.User])(implicit request: Request, messages: Messages)
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+
+        <form method="POST" action="/register">
+            @helper.CSRF.formField
+            <label>Email</label>
+            <input type="email" name="email"><br/>
+            <label>FirstName</label>
+            <input type="text" name="firstname"><br/>
+            <label>LastName</label>
+            <input type="text" name="lastname"><br/>
+            <label>Password</label>
+            <input type="password" name="password"><br/>
+            <input type="submit">
+        </form>
+
+    </body>
+</html>
