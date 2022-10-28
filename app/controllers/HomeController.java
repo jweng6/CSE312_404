@@ -127,14 +127,4 @@ public class HomeController extends Controller {
         }
     }
 
-    public WebSocket socket() {
-        return WebSocket.Text.accept(
-                request -> {
-                    Sink<String, ?> in = Sink.foreach(System.out::println);
-                    Source<String, ?> out = Source.single("Hello!").concat(Source.maybe());
-                    return Flow.fromSinkAndSource(in, out);
-                }
-        );
-    }
-
 }
