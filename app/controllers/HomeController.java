@@ -46,14 +46,14 @@ public class HomeController extends Controller {
          */
 
     public Result showRegister(Http.Request request){
-        return ok(views.html.register.render(userForm,request,messagesApi.preferred(request)));
+        return ok(views.html.sign_up.render(userForm,request,messagesApi.preferred(request)));
     }
 
     public Result register(Http.Request request) {
         final Form<User> boundForm = userForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
-            return badRequest(views.html.register.render(boundForm,request, messagesApi.preferred(request)));
+            return badRequest(views.html.sign_up.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             User data = boundForm.get();
             System.out.println(data.getEmail());
@@ -68,7 +68,7 @@ public class HomeController extends Controller {
     }
 
     public Result showLogin(Http.Request request){
-        return ok(views.html.login.render(userForm, request, messagesApi.preferred(request)));
+        return ok(views.html.sign_in.render(userForm, request, messagesApi.preferred(request)));
     }
 
     public Result login(Http.Request request) throws SQLException, ClassNotFoundException {
@@ -77,7 +77,7 @@ public class HomeController extends Controller {
         String request_password = loginForm.get().getPassword();
         if (loginForm.hasErrors()) {
             logger.error("errors = {}", loginForm.errors());
-            return badRequest(views.html.login.render(loginForm,request, messagesApi.preferred(request)));
+            return badRequest(views.html.sign_in.render(loginForm,request, messagesApi.preferred(request)));
         }
         else {
             //返回的是一个true和false
@@ -87,14 +87,14 @@ public class HomeController extends Controller {
     }
 
     public Result showCreate(Http.Request request){
-        return ok(views.html.Create.render(courseForm,request,messagesApi.preferred(request)));
+        return ok(views.html.create_course.render(courseForm,request,messagesApi.preferred(request)));
     }
 
     public Result postCreate(Http.Request request){
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
-            return badRequest(views.html.Create.render(boundForm,request, messagesApi.preferred(request)));
+            return badRequest(views.html.create_course.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
             System.out.println(data.getCourseName());
@@ -105,14 +105,14 @@ public class HomeController extends Controller {
     }
 
     public Result showJoin(Http.Request request){
-        return ok(views.html.Join.render(courseForm,request,messagesApi.preferred(request)));
+        return ok(views.html.join_course.render(courseForm,request,messagesApi.preferred(request)));
     }
 
     public Result postJoin(Http.Request request){
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
-            return badRequest(views.html.Join.render(boundForm,request, messagesApi.preferred(request)));
+            return badRequest(views.html.join_course.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
             System.out.println(data.getEmail());

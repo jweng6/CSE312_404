@@ -1,5 +1,6 @@
+@import play.mvc.Http.Request
+@(createForm: Form[domain.User])(implicit request: Request, messages: Messages)
 
-<!--@(title: String)-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +23,7 @@
         <div class="rectangle-div">
             <div class="sig-in-div-input">
                 <p class="text_SIGN-IN">SIGN-IN</p>
-                <form >
+                <form method="POST" action="/login">
                     @helper.CSRF.formField
                     <input class="sign-in-input-email" placeholder="Emails" type="email" id="email" name="email"><br>
                     <input class="sign-in-input-password" placeholder="Password"type="password" id="password" name="password"><br><br>

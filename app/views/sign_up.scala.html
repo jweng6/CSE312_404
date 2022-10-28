@@ -1,5 +1,6 @@
 
-
+@import play.mvc.Http.Request
+@(userForm: Form[domain.User])(implicit request: Request, messages: Messages)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +21,7 @@
         <div class="rectangle-div">
             <div class="div-sign-up">
                 <p class="text-sign-up_word">SIGN-UP</p>
-                <form >
+                <form method="POST" action="/register" >
                     @helper.CSRF.formField
                     <input class="input-sign-up-email" placeholder="Emails" type="text" id="email" name="email"><br>
                     <input class="input-first_name" placeholder="First name" type="text" name="first_name"><br>

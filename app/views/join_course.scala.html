@@ -1,5 +1,5 @@
-
-
+@import play.mvc.Http.Request
+@(courseForm: Form[domain.Course])(implicit request: Request, messages: Messages)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +15,10 @@
         <div class="middle-rectangle">
             <div class="join-course-div">
                 <p class="text-join-course">JOIN COURSE</p>
-                <form >
+                <form  method="post" action="/join">
                     @helper.CSRF.formField
                     <input class="join-course-input3" placeholder="Emails" type="email" id="email" name="email"><br>
-                    <input class="join-course-input4" placeholder="Join code" type="text" id="join_code" name="join_code"><br><br>
+                    <input class="join-course-input4" placeholder="Join code" type="text" id="join_code" name="code"><br><br>
                     <input class="button_sign-up" type="submit" value="SUBMIT">
                 </form>
             </div>
