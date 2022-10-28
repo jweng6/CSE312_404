@@ -23,11 +23,11 @@
                 <p class="text-sign-up_word">SIGN-UP</p>
                 <form method="POST" action="/register" >
                     @helper.CSRF.formField
-                    <input class="input-sign-up-email" placeholder="Emails" type="text" id="email" name="email"><br>
-                    <input class="input-first_name" placeholder="First name" type="text" name="first_name"><br>
-                    <input class="input-last_name" placeholder="Last name" type="text" name="last_name"><br>
-                    <input class="input-sign-up-password" placeholder="Password"type="password" id="password" name="password"><br>
-                    <input class="input-sign-up-password2" placeholder="Confirm Password"type="password" id="confirm_password" name="confirm_password"><br><br>
+                    <input class="input-sign-up-email" placeholder="Emails" type="text" id="email" name="email" required><br>
+                    <input class="input-first_name" placeholder="First name" type="text" name="firstname" required><br>
+                    <input class="input-last_name" placeholder="Last name" type="text" name="lastname" required><br>
+                    <input class="input-sign-up-password" placeholder="Password"type="password" id="password" name="password" required><br>
+                    <input class="input-sign-up-password2" placeholder="Confirm Password"type="password" id="confirm_password" name="confirm_password" required><br><br>
                     <input class="button_sign-up" type="submit" value="REGISTER">
                 </form>
             </div>

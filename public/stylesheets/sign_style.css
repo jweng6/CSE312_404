@@ -119,6 +119,7 @@ body {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #FFFFFF;
+    cursor:pointer;
 }
 
 
@@ -343,6 +344,7 @@ body {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #FFFFFF;
+    cursor:pointer;
 }
 /*forgot password PAGE CSS-------------------------------*/
 

@@ -18,6 +18,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.SQLException;
 
+import com.typesafe.config.Config;
+import play.mvc.Http.Session;
+import java.util.Optional;
+
+
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
@@ -31,6 +36,7 @@ public class HomeController extends Controller {
     Form<Course> courseForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
+
 
     @Inject
     public HomeController(FormFactory formFactory, MessagesApi messagesApi) {
@@ -63,26 +69,48 @@ public class HomeController extends Controller {
 //            String email, String firstname, String lastname, String password
             //返回的是一个user
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
-            return ok(views.html.success.render());
+            return redirect("/");
         }
     }
 
     public Result showLogin(Http.Request request){
-        return ok(views.html.sign_in.render(userForm, request, messagesApi.preferred(request)));
+        Optional<String> connect_fail = request.session().get("connect_fail");
+        String f = "false";
+        String t = "true";
+
+        //如果登入失败：返回alert,并且清空所有session
+        if (connect_fail.isPresent() == true){
+
+            return ok(views.html.sign_in.render(userForm,t,request, messagesApi.preferred(request))).withNewSession();
+        }
+        else{ //显示登入页面，并且清空所有session
+            return ok(views.html.sign_in.render(userForm,f,request, messagesApi.preferred(request))).withNewSession();
+        }
     }
 
     public Result login(Http.Request request) throws SQLException, ClassNotFoundException {
         final Form<User> loginForm = userForm.bindFromRequest(request);
         String request_email = loginForm.get().getEmail();
         String request_password = loginForm.get().getPassword();
+
         if (loginForm.hasErrors()) {
+            String f = "false";
             logger.error("errors = {}", loginForm.errors());
-            return badRequest(views.html.sign_in.render(loginForm,request, messagesApi.preferred(request)));
+            return badRequest(views.html.sign_in.render(loginForm,f, request, messagesApi.preferred(request)));
         }
         else {
             //返回的是一个true和false
-            user.login(request_email,request_password);
-            return ok(views.html.success.render());
+            boolean check = user.login(request_email,request_password);
+
+            //登入正确：去main page，并且添加connecting的session。
+            if (check ==true) {
+                return redirect("/main").addingToSession(request, "connecting",request_email);
+            }
+
+            //登入失败：返回登入页面，并且添加connect_fail的session。
+            return redirect("/").addingToSession(request, "connect_fail",request_email);
+
+
         }
     }
 
@@ -122,5 +150,9 @@ public class HomeController extends Controller {
             return ok(views.html.main_page.render());
         }
     }
+    public Result showMain(Http.Request request){
+        return ok(views.html.main_page.render());
+    }
+
 
 }

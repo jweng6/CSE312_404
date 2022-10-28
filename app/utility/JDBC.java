@@ -6,16 +6,21 @@ public class JDBC {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         CreateJoinCourse();
     }
+
     static final String JdbcDriver = "com.mysql.cj.jdbc.Driver";
 //    static final String Url = "jdbc:mysql://mysql:3306/db";
-    static final String Url = "jdbc:mysql://localhost:3306/cse312?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
+//    static final String Url = "jdbc:mysql://localhost:3306/cse312?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
+    static final String Url = "jdbc:mysql://localhost:3306/cse312project";
     static final String User = "root" ;
     //static final String PassWord = "jia893607219";
-    static final String PassWord = "JayX2029";
+    static final String PassWord = "0257";
+//    static final String PassWord = "JayX2029";
+
+
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {;
         Class.forName(JdbcDriver);
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true", User, PassWord);
+        Connection connection = DriverManager.getConnection(Url, User, PassWord);
         Statement statement = connection.createStatement();
 //        statement.executeUpdate("create database if not exists db;");
         statement.executeUpdate("create database if not exists cse312;");

@@ -44,7 +44,7 @@ public class UserImpl implements UserService {
         }catch(Exception e) {
             e.printStackTrace();
         }
-        return user_password.equals(password);
+        return user_password.equals(user.getPassword());
     }
 
 }
