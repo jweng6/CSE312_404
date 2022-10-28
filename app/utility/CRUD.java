@@ -83,9 +83,10 @@ public class CRUD {
 
 
     /* --------------------------------------- courseTable -------------------------------------------*/
-    public  Integer addCourse(Course course) throws Exception{
+    public Integer addCourse(Course course) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateCourseTable();
+        System.out.println("course name is " + course.getCourseName());
         Integer id = 0;
         String sql = ""+
                 "INSERT INTO courseTable" +
