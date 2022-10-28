@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>CSE312</title>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/sign_style.css")">
-
+    <script src="@routes.Assets.versioned("javascripts/main.js")"></script>
 </head>
 <body>
 
@@ -26,8 +26,9 @@
                     <input class="input-sign-up-email" placeholder="Emails" type="text" id="email" name="email" required><br>
                     <input class="input-first_name" placeholder="First name" type="text" name="firstname" required><br>
                     <input class="input-last_name" placeholder="Last name" type="text" name="lastname" required><br>
-                    <input class="input-sign-up-password" placeholder="Password"type="password" id="password" name="password" required><br>
-                    <input class="input-sign-up-password2" placeholder="Confirm Password"type="password" id="confirm_password" name="confirm_password" required><br><br>
+                    <input class="input-sign-up-password" placeholder="Password"type="password" id="password" name="password" minlength="6" required><br>
+                    <input class="input-sign-up-password2" placeholder="Confirm Password"type="password" id="confirm_password" name="confirm_password" oninput="check(this)" required><br><br>
+
                     <input class="button_sign-up" type="submit" value="REGISTER">
                 </form>
             </div>

@@ -58,8 +58,7 @@ public class HomeController extends Controller {
     public Result register(Http.Request request) {
         final Form<User> boundForm = userForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
-            logger.error("errors = {}", boundForm.errors());
-            return badRequest(views.html.sign_up.render(boundForm,request, messagesApi.preferred(request)));
+            return redirect("/").withNewSession();
         } else {
             User data = boundForm.get();
             System.out.println(data.getEmail());
@@ -69,7 +68,7 @@ public class HomeController extends Controller {
 //            String email, String firstname, String lastname, String password
             //返回的是一个user
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
-            return redirect("/");
+            return redirect("/").withNewSession();
         }
     }
 
