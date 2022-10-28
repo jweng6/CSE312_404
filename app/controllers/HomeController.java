@@ -1,5 +1,9 @@
 package controllers;
 
+import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Sink;
+import akka.stream.javadsl.Source;
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import domain.Course;
 import domain.User;
 import org.slf4j.Logger;
@@ -56,10 +60,10 @@ public class HomeController extends Controller {
             return badRequest(views.html.register.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             User data = boundForm.get();
-            System.out.println(data.getEmail());
-            System.out.println(data.getPassword());
-            System.out.println(data.getFirstname());
-            System.out.println(data.getLastname());
+//            System.out.println(data.getEmail());
+//            System.out.println(data.getPassword());
+//            System.out.println(data.getFirstname());
+//            System.out.println(data.getLastname());
 //            String email, String firstname, String lastname, String password
             //返回的是一个user
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
@@ -97,7 +101,7 @@ public class HomeController extends Controller {
             return badRequest(views.html.Create.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
-            System.out.println(data.getCourseName());
+//            System.out.println(data.getCourseName());
             //返回的是一个course放到session中
             course.addCourse(data.getCourseName());
             return ok(views.html.mainPage.render());
@@ -115,12 +119,22 @@ public class HomeController extends Controller {
             return badRequest(views.html.Join.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
-            System.out.println(data.getEmail());
-            System.out.println(data.getCode());
+//            System.out.println(data.getEmail());
+//            System.out.println(data.getCode());
             //返回的是一个true或false
             course.joinCourse(data.getEmail(),data.getCode());
             return ok(views.html.mainPage.render());
         }
+    }
+
+    public WebSocket socket() {
+        return WebSocket.Text.accept(
+                request -> {
+                    Sink<String, ?> in = Sink.foreach(System.out::println);
+                    Source<String, ?> out = Source.single("Hello!").concat(Source.maybe());
+                    return Flow.fromSinkAndSource(in, out);
+                }
+        );
     }
 
 }
