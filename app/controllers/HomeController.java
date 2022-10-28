@@ -100,7 +100,7 @@ public class HomeController extends Controller {
             System.out.println(data.getCourseName());
             //返回的是一个course放到session中
             course.addCourse(data.getCourseName());
-            return ok(views.html.mainPage.render());
+            return ok(views.html.main_page.render());
         }
     }
 
@@ -119,7 +119,7 @@ public class HomeController extends Controller {
             System.out.println(data.getCode());
             //返回的是一个true或false
             course.joinCourse(data.getEmail(),data.getCode());
-            return ok(views.html.mainPage.render());
+            return ok(views.html.main_page.render());
         }
     }
 
