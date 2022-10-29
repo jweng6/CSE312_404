@@ -13,7 +13,7 @@ public class CourseImpl implements CourseService {
 
     CRUD crud = new CRUD();
     @Override
-    public Course addCourse(String courseName) {
+    public Course addCourse(String courseName, User inst) {
         if (!StringUtils.isBlank(courseName)){
             //随机生成courseCode
             StringBuilder str = new StringBuilder();
@@ -24,14 +24,15 @@ public class CourseImpl implements CourseService {
             int code = Integer.parseInt(str.toString());
             Course course = new Course(courseName,code);
             try {
-                Integer id = crud.addCourse(course);
-                return new Course(id,courseName);
+                crud.addCourse(course, inst);
+                return new Course(inst.getId(),courseName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     return null;
     }
+
     @Override
     public Boolean joinCourse(String email, int code) {
         if (!StringUtils.isAnyBlank(email,Integer.toString(code))){

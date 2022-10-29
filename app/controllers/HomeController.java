@@ -79,7 +79,6 @@ public class HomeController extends Controller {
 
         //如果登入失败：返回alert,并且清空所有session
         if (connect_fail.isPresent() == true){
-
             return ok(views.html.sign_in.render(userForm,t,request, messagesApi.preferred(request))).withNewSession();
         }
         else{ //显示登入页面，并且清空所有session
@@ -105,7 +104,6 @@ public class HomeController extends Controller {
             if (check ==true) {
                 return redirect("/main").addingToSession(request, "connecting",request_email);
             }
-
             //登入失败：返回登入页面，并且添加connect_fail的session。
             return redirect("/").addingToSession(request, "connect_fail",request_email);
 
@@ -117,7 +115,7 @@ public class HomeController extends Controller {
         return ok(views.html.create_course.render(courseForm,request,messagesApi.preferred(request)));
     }
 
-    public Result postCreate(Http.Request request){
+    public Result postCreate(Http.Request request) throws SQLException, ClassNotFoundException {
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
@@ -126,7 +124,7 @@ public class HomeController extends Controller {
             Course data = boundForm.get();
             System.out.println(data.getCourseName());
             //返回的是一个course放到session中
-            course.addCourse(data.getCourseName());
+            course.addCourse(data.getCourseName(), user.getUserByEmail(request.session().get("connecting").toString()));
             return ok(views.html.main_page.render());
         }
     }

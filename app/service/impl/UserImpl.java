@@ -8,6 +8,7 @@ import utility.CRUD;
 import utility.Constant;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class UserImpl implements UserService {
 
@@ -45,6 +46,18 @@ public class UserImpl implements UserService {
             e.printStackTrace();
         }
         return user_password.equals(user.getPassword());
+    }
+
+    @Override
+    public User getUserByEmail(String email) throws SQLException, ClassNotFoundException {
+        if (!StringUtils.isBlank(email)){
+            try {
+                return crud.getUserByEmail(email);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

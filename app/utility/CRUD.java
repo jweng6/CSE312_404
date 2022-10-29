@@ -3,6 +3,7 @@ package utility;
 import domain.Course;
 import domain.User;
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class CRUD {
@@ -83,25 +84,20 @@ public class CRUD {
 
 
     /* --------------------------------------- courseTable -------------------------------------------*/
-    public  Integer addCourse(Course course) throws Exception{
+    public void addCourse(Course course, User instr) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateCourseTable();
-        Integer id = 0;
         String sql = ""+
                 "INSERT INTO courseTable" +
-                "(courseName, courseCode)"+
-                "values(?,?)";
+                "(instrId, courseName, courseCode)"+
+                "values(?,?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        psmt.setString(1, course.getCourseName());
-        psmt.setInt(2, course.getCode());
+        psmt.setInt(1, instr.getId());
+        psmt.setString(2, course.getCourseName());
+        psmt.setInt(3, course.getCode());
         psmt.executeUpdate();
-        ResultSet rs = psmt.getGeneratedKeys();
-        if (rs.next()) {
-            id = rs.getInt(1);
-        }
         psmt.close();
         conn.close();
-        return id;
     }
 
     public  Course getCourseByCode(int courseCode) throws SQLException, ClassNotFoundException {
@@ -130,9 +126,9 @@ public class CRUD {
     public void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
-        String sql = ""+
+        String sql = "" +
                 "INSERT INTO joinCourse" +
-                "(uid, courseCode)"+
+                "(userid, courseCode)" +
                 "values(?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, uid);
@@ -140,5 +136,22 @@ public class CRUD {
         psmt.executeUpdate();
         psmt.close();
         conn.close();
+    }
+
+    public ArrayList<Integer> getAllCourse(int uid) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        ArrayList<Integer> ret = new ArrayList<>();
+        String sql = "" +
+                "SELECT courseCode FROM joinCourse WHERE userid = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, uid);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()) {
+            ret.add(rs.getInt("courseCode"));
+        }
+        psmt.close();
+        conn.close();
+        return ret;
     }
 }
