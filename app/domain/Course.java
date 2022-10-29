@@ -12,8 +12,8 @@ public class Course {
         this.id = id;
         this.courseName = courseName;
     }
-    public Course(String email, Integer code) {
-        this.email = email;
+    public Course(String courseName, Integer code) {
+        this.courseName = courseName;
         this.code = code;
     }
 

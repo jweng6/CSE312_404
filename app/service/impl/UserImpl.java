@@ -60,4 +60,20 @@ public class UserImpl implements UserService {
         return null;
     }
 
+    //没写完
+    public boolean joinCourse(String email, Integer courseCode) throws SQLException, ClassNotFoundException {
+        User user = crud.getUserByEmail(email);
+        if (StringUtils.isAnyBlank(email, String.valueOf(courseCode))) {
+            return false;
+        }
+        try {
+            if (user == null) {
+                return false;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }

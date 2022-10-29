@@ -17,6 +17,3 @@ POST    /create                         controllers.HomeController.postCreate(re
 
 GET     /join                        controllers.HomeController.showJoin(request : Request)
 POST    /join                         controllers.HomeController.postJoin(request : Request)
-
-GET     /main                        controllers.HomeController.showMain(request : Request)
-
