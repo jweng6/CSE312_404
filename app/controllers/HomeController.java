@@ -82,9 +82,9 @@ public class HomeController extends Controller {
 
             return ok(views.html.sign_in.render(userForm,t,request, messagesApi.preferred(request))).withNewSession();
         }
-        else{ //显示登入页面，并且清空所有session
-            return ok(views.html.sign_in.render(userForm,f,request, messagesApi.preferred(request))).withNewSession();
-        }
+        //显示登入页面，并且清空所有session
+        return ok(views.html.sign_in.render(userForm,f,request, messagesApi.preferred(request))).withNewSession();
+
     }
 
     public Result login(Http.Request request) throws SQLException, ClassNotFoundException {
@@ -97,24 +97,32 @@ public class HomeController extends Controller {
             logger.error("errors = {}", loginForm.errors());
             return badRequest(views.html.sign_in.render(loginForm,f, request, messagesApi.preferred(request)));
         }
-        else {
+
             //返回的是一个true和false
-            boolean check = user.login(request_email,request_password);
+        boolean check = user.login(request_email,request_password);
 
             //登入正确：去main page，并且添加connecting的session。
-            if (check ==true) {
-                return redirect("/main").addingToSession(request, "connecting",request_email);
-            }
+        if (check ==true) {
 
-            //登入失败：返回登入页面，并且添加connect_fail的session。
-            return redirect("/").addingToSession(request, "connect_fail",request_email);
-
-
+            return redirect("/main").addingToSession(request, "connecting",request_email);
         }
+
+        //登入失败：返回登入页面，并且添加connect_fail的session。
+        return redirect("/").addingToSession(request, "connect_fail",request_email);
+
+
     }
 
     public Result showCreate(Http.Request request){
-        return ok(views.html.create_course.render(courseForm,request,messagesApi.preferred(request)));
+
+        //确定用户是在线的
+        Optional<String> connecting = request.session().get("connecting");
+        if (connecting.isPresent() == true){
+            return ok(views.html.create_course.render(courseForm,request,messagesApi.preferred(request)));
+        }
+
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
     }
 
     public Result postCreate(Http.Request request){
@@ -122,7 +130,9 @@ public class HomeController extends Controller {
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
             return badRequest(views.html.create_course.render(boundForm,request, messagesApi.preferred(request)));
-        } else {
+        }
+
+        else {
             Course data = boundForm.get();
             System.out.println(data.getCourseName());
             //返回的是一个course放到session中
@@ -132,7 +142,16 @@ public class HomeController extends Controller {
     }
 
     public Result showJoin(Http.Request request){
-        return ok(views.html.join_course.render(courseForm,request,messagesApi.preferred(request)));
+
+        //确定用户是在线的
+        Optional<String> connecting = request.session().get("connecting");
+        if (connecting.isPresent() == true){
+            return ok(views.html.join_course.render(courseForm,request,messagesApi.preferred(request)));
+        }
+
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+
     }
 
     public Result postJoin(Http.Request request){
@@ -150,7 +169,11 @@ public class HomeController extends Controller {
         }
     }
     public Result showMain(Http.Request request){
-        return ok(views.html.main_page.render());
+        Optional<String> connecting = request.session().get("connecting");
+        if (connecting.isPresent() == true){
+            return ok(views.html.main_page.render());
+        }
+        return unauthorized("Oops, you are not connected");
     }
 
 

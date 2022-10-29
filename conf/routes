@@ -4,6 +4,8 @@
 
 # An example controller showing a sample home page
 GET      /                           controllers.HomeController.showLogin(request : Request)
+
++ nocsrf
 POST     /login                           controllers.HomeController.login(request : Request)
 
 # Map static resources from the /public folder to the /assets URL path
