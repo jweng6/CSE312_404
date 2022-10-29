@@ -1,5 +1,6 @@
 package service.impl;
 
+import domain.Course;
 import domain.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +9,7 @@ import utility.CRUD;
 import utility.Constant;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class UserImpl implements UserService {
@@ -58,6 +60,26 @@ public class UserImpl implements UserService {
             }
         }
         return null;
+    }
+
+    @Override
+    public ArrayList<Course> getAllCourse(String email) {
+        ArrayList<Course> ret = new ArrayList<>();
+        if (!StringUtils.isBlank(email)){
+            try {
+                ArrayList<Integer> allCourse = crud.getAllCourse(crud.getUserByEmail(email).getId());
+                for(Integer course : allCourse) {
+                    Course singleCourse = new Course();
+                    singleCourse.setCourseName(crud.getCourseByCode(course).getCourseName());
+                    singleCourse.setEmail(crud.getCourseByCode(course).getEmail());
+                    singleCourse.setCode(crud.getCourseByCode(course).getCode());
+                    ret.add(singleCourse);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
     }
 
     //没写完

@@ -1,5 +1,10 @@
 package controllers;
 
+import akka.stream.impl.JsonObjectParser;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.Course;
 import domain.User;
 import org.slf4j.Logger;
@@ -7,11 +12,13 @@ import org.slf4j.LoggerFactory;
 import play.api.i18n.MessagesApi;
 import play.data.Form;
 import play.data.FormFactory;
+import play.libs.Json;
 import play.mvc.*;
 import service.CourseService;
 import service.UserService;
 import service.impl.CourseImpl;
 import service.impl.UserImpl;
+import play.api.libs.json.*;
 
 
 import javax.inject.Inject;
@@ -20,6 +27,8 @@ import java.sql.SQLException;
 
 import com.typesafe.config.Config;
 import play.mvc.Http.Session;
+
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -106,8 +115,6 @@ public class HomeController extends Controller {
             }
             //登入失败：返回登入页面，并且添加connect_fail的session。
             return redirect("/").addingToSession(request, "connect_fail",request_email);
-
-
         }
     }
 
@@ -148,8 +155,17 @@ public class HomeController extends Controller {
         }
     }
     public Result showMain(Http.Request request){
+        ObjectNode result = Json.newObject();
+        for(Course c : user.getAllCourse(request.session().get("connecting").toString())) {
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(c.getCourseName());
+            temp.add(c.getEmail());
+            temp.add(c.getCode().toString());
+            result.put("course", String.valueOf(temp));
+        }
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(result);
+        System.out.println(jsonObject);
         return ok(views.html.main_page.render());
     }
-
 
 }
