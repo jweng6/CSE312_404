@@ -10,8 +10,13 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         Course a = new Course();
-        a.setCourseName("1233");
-        a.setCode(321);
+        a.setCourseName("hah");
+        a.setCode(12323);
+        User in = new User();
+        in.setEmail("haha@gmail");
+        CRUD c = new CRUD();
+        c.addCourse(a,in);
+
 //        System.out.println(getCourseByCode(321).getId());
     }
 
@@ -89,10 +94,10 @@ public class CRUD {
         Connection conn = JDBC.CreateCourseTable();
         String sql = ""+
                 "INSERT INTO courseTable" +
-                "(instrId, courseName, courseCode)"+
+                "(instrEmail, courseName, courseCode)"+
                 "values(?,?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        psmt.setInt(1, instr.getId());
+        psmt.setString(1, instr.getEmail());
         psmt.setString(2, course.getCourseName());
         psmt.setInt(3, course.getCode());
         psmt.executeUpdate();

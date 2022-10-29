@@ -99,7 +99,6 @@ public class HomeController extends Controller {
         else {
             //返回的是一个true和false
             boolean check = user.login(request_email,request_password);
-
             //登入正确：去main page，并且添加connecting的session。
             if (check ==true) {
                 return redirect("/main").addingToSession(request, "connecting",request_email);
@@ -148,6 +147,7 @@ public class HomeController extends Controller {
         }
     }
     public Result showMain(Http.Request request){
+
         return ok(views.html.main_page.render());
     }
 

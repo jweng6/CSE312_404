@@ -12,9 +12,9 @@ public class JDBC {
     static final String Url = "jdbc:mysql://localhost:3306/cse312?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
 //    static final String Url = "jdbc:mysql://localhost:3306/cse312project";
     static final String User = "root" ;
-    //static final String PassWord = "jia893607219";
+    static final String PassWord = "jia893607219";
 //    static final String PassWord = "0257";
-    static final String PassWord = "JayX2029";
+//    static final String PassWord = "JayX2029";
 
 
 
@@ -49,11 +49,10 @@ public class JDBC {
         Statement statement = connection.createStatement();
         String sql = "create table if not exists courseTable "+
                 "(id INT AUTO_INCREMENT, " +
-                "instrId INT, " +
+                "instrEmail VARCHAR (2000), " +
                 "courseName VARCHAR(516), " +
                 "courseCode INT, "+
-                "PRIMARY KEY (id)," +
-                "FOREIGN KEY(instrId) REFERENCES userTable(id));";
+                "PRIMARY KEY (id));";
         statement.executeUpdate(sql);
         statement.close();
         return connection;
