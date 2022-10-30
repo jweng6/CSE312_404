@@ -9,14 +9,13 @@ import java.util.ArrayList;
 public class CRUD {
 
     public static void main(String[] args) throws Exception {
-        User a = new User("haifengx@buasdkj", "asldj", "aslkdj", "alsdjasldjasljdl");
-        Course b = new Course("cse312", 123456);
-        User c = new User("haifengx@buffalo.edu","Haifeng","Xiao", "123456");
-        joinCourse(c.getId(),b.getCode());
+        CRUD crud = new CRUD();
+        crud.getAllCourse(1);
+
     }
 
     /* --------------------------------------- userTable -------------------------------------------*/
-    public static Integer addUser(User user) throws Exception{
+    public  Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         Integer id = 0;
@@ -84,7 +83,7 @@ public class CRUD {
 
 
     /* --------------------------------------- courseTable -------------------------------------------*/
-    public static void addCourse(Course course, User instr) throws Exception{
+    public  void addCourse(Course course, User instr) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateCourseTable();
         String sql = ""+
@@ -105,13 +104,14 @@ public class CRUD {
         JDBC.getConnection();
         Connection conn = JDBC.CreateCourseTable();
         String sql = "" +
-                "SELECT inst_email,courseName,courseCode FROM courseTable WHERE courseCode=?";
+                "SELECT id,instr_email,courseName,courseCode FROM courseTable WHERE courseCode=?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseCode);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()){
+            course.setId(rs.getInt("id"));
             course.setCourseName(rs.getString("courseName"));
-            course.setEmail(rs.getString("inst_email"));
+            course.setEmail(rs.getString("instr_email"));
             course.setCode(rs.getInt("courseCode"));
         }
         if (course.getId() == 0) {
@@ -123,7 +123,7 @@ public class CRUD {
     }
 
     /* --------------------------------------- joinCourse -------------------------------------------*/
-    public static void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
+    public  void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
         String sql = "" +
