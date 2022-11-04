@@ -1,0 +1,597 @@
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+
+
+body {
+    margin: 0 ;
+}
+
+.text_SIGN-IN{
+
+    width: 107px;
+    height: 33px;
+    left: 44px;
+    top: 100px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+}
+
+/*登入页面长方形框架*/
+.rectangle-div{
+    position: absolute;
+    width: 409px;
+    height: 500px;
+    top: calc(50% - 500px/2);
+
+
+
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+}
+
+.sig-in-div-input{
+    position: relative;
+    width: 323px;
+    height: 263px;
+    left: 44px;
+    top: 100px;
+}
+
+.sign-in-input-email{
+
+    width: 322px;
+    height: 50px;
+    left: 44px;
+    top: 160px;
+    background: rgba(0, 51, 102, 0.1);
+    border: 1px solid white;
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+}
+
+
+.sign-in-input-password{
+    width: 322px;
+    height: 50px;
+    left: 45px;
+    top: 237px;
+    background: rgba(0, 51, 102, 0.1);
+    border: 1px solid white;
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+}
+
+.dark-blue-button{
+    position: absolute;
+    width: 321px;
+    height: 50px;
+    background: #003366;
+    box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    border: none;
+
+    text-align:center;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    /* identical to box height */
+
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    cursor:pointer;
+}
+
+
+.sign-in-text-div{
+    position: absolute;
+    width: 220px;
+    height: 43px;
+    left: 146px;
+    top: 391px;
+}
+/*I dont have an account? Sign up*/
+.text_sigh-up{
+
+    width: 220px;
+    height: 19px;
+    left: 146px;
+    top: 391px;
+
+    font-family: 'Open Sans',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    /* identical to box height */
+
+    white-space:nowrap;
+    color: #000000;
+}
+.text-forgot-password2{
+    width: 124px;
+    height: 16px;
+    left: 242px;
+    top: 418px;
+
+    font-family: 'Open Sans',sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    white-space:nowrap;
+    color: #4A4A4A;
+}
+
+/*SIGN-UP PAGE CSS-------------------------------*/
+.div-sign-up{
+    position: absolute;
+    width: 324px;
+    height: 429px;
+    left: 43px;
+
+
+}
+.text-sign-up_word{
+
+    width: 114px;
+    height: 33px;
+    left: 44px;
+    top: 36px;
+
+    font-family: 'Open Sans',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+}
+
+.input-sign-up-email{
+
+    width: 322px;
+    height: 50px;
+    left: 43px;
+    top: 85px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+.input-sign-up-password{
+
+    width: 322px;
+    height: 50px;
+    left: 45px;
+    top: 283px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+
+.input-sign-up-password2{
+
+    width: 322px;
+    height: 50px;
+    left: 43px;
+    top: 349px;
+
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+
+
+.input-first_name{
+
+    width: 322px;
+    height: 50px;
+    left: 45px;
+    top: 151px;
+
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+
+.input-last_name{
+
+    width: 322px;
+    height: 50px;
+    left: 45px;
+    top: 217px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+
+.button_sign-up{
+
+    width: 321px;
+    height: 50px;
+    left: 43px;
+    top: 415px;
+
+    background: #003366;
+    box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    border: none;
+
+    text-align:center;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    /* identical to box height */
+
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    cursor:pointer;
+}
+/*forgot password PAGE CSS-------------------------------*/
+
+.forgot-password-div{
+    position: absolute;
+    width: 322px;
+    height: 251px;
+    left: 44px;
+    top: 100px;
+}
+
+.text-forgot-password{
+
+    width: 235px;
+    height: 33px;
+    left: 44px;
+    top: 100px;
+
+    font-family: 'Open Sans',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+    white-space:nowrap;
+
+}
+
+.input-forgot-password-email{
+
+    width: 322px;
+    height: 50px;
+    left: 44px;
+    top: 192px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+
+/*join course PAGE CSS-------------------------------*/
+.middle-rectangle{
+    width: 478px;
+    height: 451px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0px 0px 10px 4px rgba(207, 207, 207, 0.5);
+    border-radius: 20px;
+
+}
+
+.join-course-div{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 321px;
+    height: 285px;
+
+
+}
+.text-join-course{
+
+    width: 132px;
+    height: 33px;
+    left: 596px;
+    top: 263px;
+
+
+    font-family: 'Open Sans',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+    white-space:nowrap
+}
+
+.join-course-input3{
+
+    width: 321px;
+    height: 50px;
+    left: 587px;
+    top: 330px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+.join-course-input4{
+
+    width: 321px;
+    height: 50px;
+    left: 587px;
+    top: 414px;
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
+
+/*create course PAGE CSS-------------------------------*/
+
+.middle-rectangle-create-course{
+
+    width: 497px;
+    height: 302px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0px 0px 10px 4px rgba(207, 207, 207, 0.5);
+    border-radius: 20px;
+
+}
+
+.create-course-div{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 321px;
+    height: 189px;
+
+}
+.text-create-course{
+
+    width: 164px;
+    height: 33px;
+    left: 595px;
+    top: 381px;
+
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+    white-space:nowrap
+}
+.create-course-input{
+
+    width: 321px;
+    height: 50px;
+    left: 595px;
+    top: 442px;
+
+    background: rgba(0, 51, 102, 0.1);
+    border-radius: 10px;
+
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.1em;
+    margin: 8px 0px;
+    color: rgba(74, 74, 74, 0.8);
+    box-sizing: border-box;
+
+    /*字体后移*/
+    padding-left: 20px;
+    border: none;
+}
