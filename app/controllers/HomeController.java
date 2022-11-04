@@ -1,5 +1,10 @@
 package controllers;
 
+import akka.stream.impl.JsonObjectParser;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.Course;
 import domain.User;
 import org.slf4j.Logger;
@@ -7,11 +12,13 @@ import org.slf4j.LoggerFactory;
 import play.api.i18n.MessagesApi;
 import play.data.Form;
 import play.data.FormFactory;
+import play.libs.Json;
 import play.mvc.*;
 import service.CourseService;
 import service.UserService;
 import service.impl.CourseImpl;
 import service.impl.UserImpl;
+import play.api.libs.json.*;
 
 
 import javax.inject.Inject;
@@ -20,6 +27,8 @@ import java.sql.SQLException;
 
 import com.typesafe.config.Config;
 import play.mvc.Http.Session;
+
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -61,10 +70,10 @@ public class HomeController extends Controller {
             return redirect("/").withNewSession();
         } else {
             User data = boundForm.get();
-            System.out.println(data.getEmail());
-            System.out.println(data.getPassword());
-            System.out.println(data.getFirstname());
-            System.out.println(data.getLastname());
+//            System.out.println(data.getEmail());
+//            System.out.println(data.getPassword());
+//            System.out.println(data.getFirstname());
+//            System.out.println(data.getLastname());
 //            String email, String firstname, String lastname, String password
             //返回的是一个user
             user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
@@ -79,12 +88,11 @@ public class HomeController extends Controller {
 
         //如果登入失败：返回alert,并且清空所有session
         if (connect_fail.isPresent() == true){
-
             return ok(views.html.sign_in.render(userForm,t,request, messagesApi.preferred(request))).withNewSession();
         }
-        //显示登入页面，并且清空所有session
-        return ok(views.html.sign_in.render(userForm,f,request, messagesApi.preferred(request))).withNewSession();
-
+        else{ //显示登入页面，并且清空所有session
+            return ok(views.html.sign_in.render(userForm,f,request, messagesApi.preferred(request))).withNewSession();
+        }
     }
 
     public Result login(Http.Request request) throws SQLException, ClassNotFoundException {
@@ -97,61 +105,39 @@ public class HomeController extends Controller {
             logger.error("errors = {}", loginForm.errors());
             return badRequest(views.html.sign_in.render(loginForm,f, request, messagesApi.preferred(request)));
         }
-
+        else {
             //返回的是一个true和false
-        boolean check = user.login(request_email,request_password);
+            boolean check = user.login(request_email,request_password);
 
             //登入正确：去main page，并且添加connecting的session。
-        if (check ==true) {
-
-            return redirect("/main").addingToSession(request, "connecting",request_email);
+            if (check ==true) {
+                return redirect("/main").addingToSession(request, "connecting",request_email);
+            }
+            //登入失败：返回登入页面，并且添加connect_fail的session。
+            return redirect("/").addingToSession(request, "connect_fail",request_email);
         }
-
-        //登入失败：返回登入页面，并且添加connect_fail的session。
-        return redirect("/").addingToSession(request, "connect_fail",request_email);
-
-
     }
 
     public Result showCreate(Http.Request request){
-
-        //确定用户是在线的
-        Optional<String> connecting = request.session().get("connecting");
-        if (connecting.isPresent() == true){
-            return ok(views.html.create_course.render(courseForm,request,messagesApi.preferred(request)));
-        }
-
-        //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
+        return ok(views.html.create_course.render(courseForm,request,messagesApi.preferred(request)));
     }
 
-    public Result postCreate(Http.Request request){
+    public Result postCreate(Http.Request request) throws SQLException, ClassNotFoundException {
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
             return badRequest(views.html.create_course.render(boundForm,request, messagesApi.preferred(request)));
-        }
-
-        else {
+        } else {
             Course data = boundForm.get();
-            System.out.println(data.getCourseName());
+//            System.out.println(data.getCourseName());
             //返回的是一个course放到session中
-            course.addCourse(data.getCourseName());
+            course.addCourse(data.getCourseName(), user.getUserByEmail(request.session().get("connecting").toString()));
             return ok(views.html.main_page.render());
         }
     }
 
     public Result showJoin(Http.Request request){
-
-        //确定用户是在线的
-        Optional<String> connecting = request.session().get("connecting");
-        if (connecting.isPresent() == true){
-            return ok(views.html.join_course.render(courseForm,request,messagesApi.preferred(request)));
-        }
-
-        //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
-
+        return ok(views.html.join_course.render(courseForm,request,messagesApi.preferred(request)));
     }
 
     public Result postJoin(Http.Request request){
@@ -161,20 +147,25 @@ public class HomeController extends Controller {
             return badRequest(views.html.join_course.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
-            System.out.println(data.getEmail());
-            System.out.println(data.getCode());
+//            System.out.println(data.getEmail());
+//            System.out.println(data.getCode());
             //返回的是一个true或false
             course.joinCourse(data.getEmail(),data.getCode());
             return ok(views.html.main_page.render());
         }
     }
     public Result showMain(Http.Request request){
-        Optional<String> connecting = request.session().get("connecting");
-        if (connecting.isPresent() == true){
-            return ok(views.html.main_page.render());
+        ObjectNode result = Json.newObject();
+        for(Course c : user.getAllCourse(request.session().get("connecting").toString())) {
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(c.getCourseName());
+            temp.add(c.getEmail());
+            temp.add(c.getCode().toString());
+            result.put("course", String.valueOf(temp));
         }
-        return unauthorized("Oops, you are not connected");
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(result);
+        System.out.println(jsonObject);
+        return ok(views.html.main_page.render());
     }
-
 
 }

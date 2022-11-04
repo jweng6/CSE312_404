@@ -21,4 +21,3 @@ GET     /join                        controllers.HomeController.showJoin(request
 POST    /join                         controllers.HomeController.postJoin(request : Request)
 
 GET     /main                        controllers.HomeController.showMain(request : Request)
-

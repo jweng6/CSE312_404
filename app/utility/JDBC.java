@@ -4,16 +4,15 @@ import java.sql.*;
 
 public class JDBC {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        CreateJoinCourse();
     }
 
     static final String JdbcDriver = "com.mysql.cj.jdbc.Driver";
 //    static final String Url = "jdbc:mysql://mysql:3306/db";
-//    static final String Url = "jdbc:mysql://localhost:3306/cse312?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
-    static final String Url = "jdbc:mysql://localhost:3306/cse312project";
+    static String Url = "jdbc:mysql://localhost:3306/?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
+//    static final String Url = "jdbc:mysql://localhost:3306/cse312project";
     static final String User = "root" ;
-    //static final String PassWord = "jia893607219";
-    static final String PassWord = "0257";
+    static final String PassWord = "jia893607219";
+//    static final String PassWord = "0257";
 //    static final String PassWord = "JayX2029";
 
 
@@ -24,6 +23,7 @@ public class JDBC {
         Statement statement = connection.createStatement();
 //        statement.executeUpdate("create database if not exists db;");
         statement.executeUpdate("create database if not exists cse312;");
+        Url = "jdbc:mysql://localhost:3306/cse312?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
         statement.close();
         connection.close();
         return DriverManager.getConnection(Url, User, PassWord);
@@ -49,9 +49,10 @@ public class JDBC {
         Statement statement = connection.createStatement();
         String sql = "create table if not exists courseTable "+
                 "(id INT AUTO_INCREMENT, " +
+                "instr_email VARCHAR(516), " +
                 "courseName VARCHAR(516), " +
                 "courseCode INT, "+
-                "PRIMARY KEY (id));";
+                "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
         return connection;
@@ -62,10 +63,9 @@ public class JDBC {
         Statement statement = connection.createStatement();
         String sql = "create table if not exists joinCourse "+
                 "(id INT AUTO_INCREMENT, " +
-                "uid INT, " +
+                "userid INT, " +
                 "courseCode INT, "+
-                "PRIMARY KEY (id)," +
-                "FOREIGN KEY(uid) REFERENCES userTable(id));";
+                "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
         return connection;
