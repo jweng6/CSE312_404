@@ -5,7 +5,14 @@ body{
     background-color: #EEEEEE;
     overflow: hidden;
 }
-  
+
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    padding-top: 2%;
+
+}
 /* Style the links inside the navigation bar */
 .topnav a {
     float: right;
@@ -32,12 +39,14 @@ li{
 }
 /* ---- */
 .buttons{
+
     margin-top: 50px;
     text-align: center;
     margin-right: 20%;
     cursor: pointer;
 }
 .b1{
+
     padding-top: 10px; 
     box-shadow: 5px 10px #e7e7e7;
     display: block;

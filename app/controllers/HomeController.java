@@ -30,7 +30,9 @@ import play.mvc.Http.Session;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
+import domain.Info;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -175,30 +177,29 @@ public class HomeController extends Controller {
             String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
 
             System.out.println(data.getCode());
-            //返回的是一个true或false
-            course.joinCourse(session_email,data.getCode());
+            //加入课程，返回的是一个true(成功)或false(失败)
+            boolean join_course= course.joinCourse(session_email,data.getCode());
+//            "alert","You are already enrolled in this course"
+            if (!join_course ){
+                redirect("/main").addingToSession(request, "connecting",session_email);
+            }
+
             return redirect("/main").addingToSession(request, "connecting",session_email);
         }
     }
     public Result showMain(Http.Request request){
-//        ObjectNode result = Json.newObject();
-//        for(Course c : user.getAllCourse(request.session().get("connecting").toString())) {
-//            ArrayList<String> temp = new ArrayList<>();
-//            temp.add(c.getCourseName());
-//            temp.add(c.getEmail());
-//            temp.add(c.getCode().toString());
-//            result.put("course", String.valueOf(temp));
-//        }
-//        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(result);
-//        System.out.println(jsonObject);
-
-
 
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
+        System.out.println("session connecting:");
+        System.out.println(connecting);
+        System.out.println("\n");
 
+        //获取session里的email，然后转换从optional<String> -> String:
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         if (connecting.isPresent() == true){
-            return ok(views.html.main_page.render());
+            List<Info> allCourse = course.showCourse(session_email);
+            return ok(views.html.main_page.render(allCourse));
         }
 
         //不在线（没登入） 返回401

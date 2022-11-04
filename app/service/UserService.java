@@ -12,5 +12,6 @@ public interface UserService {
      boolean login(String email, String password) throws SQLException, ClassNotFoundException;
      User getUserByEmail(String email) throws SQLException, ClassNotFoundException;
 
+
      ArrayList<Course> getAllCourse(String email);
 }

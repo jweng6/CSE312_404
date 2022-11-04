@@ -124,6 +124,24 @@ public class CRUD {
         return course;
     }
 
+
+    public ArrayList<Integer> getAllCourseCode() throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateCourseTable();
+        ArrayList<Integer> ret = new ArrayList<>();
+        String sql = "" +
+                "SELECT courseCode FROM courseTable";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()) {
+            ret.add(rs.getInt("courseCode"));
+        }
+        psmt.close();
+        conn.close();
+        return ret;
+    }
+
     /* --------------------------------------- joinCourse -------------------------------------------*/
     public  void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
@@ -156,4 +174,34 @@ public class CRUD {
         conn.close();
         return ret;
     }
+
+
+    public ArrayList<Integer> getAllCourseByID(int uid) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateCourseTable();
+        ArrayList<Integer> ret = new ArrayList<>();
+        String sql = "" +
+                " select courseCode from joincourse where userid = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, uid);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()) {
+            ret.add(rs.getInt("courseCode"));
+        }
+        psmt.close();
+        conn.close();
+        return ret;
+    }
+
+
+
+    /* --------------------------------------- Main page -------------------------------------------*/
+
+
+
+
 }
+
+
+
+
