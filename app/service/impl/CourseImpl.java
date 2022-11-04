@@ -14,7 +14,9 @@ public class CourseImpl implements CourseService {
     CRUD crud = new CRUD();
     @Override
     public Course addCourse(String courseName, User inst) {
-        if (!StringUtils.isBlank(courseName)){
+        System.out.println("MYSQL17");
+        System.out.println(courseName);
+        if (courseName!=null){
             //随机生成courseCode
             StringBuilder str = new StringBuilder();
             Random random = new Random();

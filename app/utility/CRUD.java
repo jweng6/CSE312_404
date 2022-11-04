@@ -90,6 +90,8 @@ public class CRUD {
                 "INSERT INTO courseTable" +
                 "(instr_email, courseName, courseCode)"+
                 "values(?,?,?)";
+
+
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         psmt.setString(1, instr.getEmail());
         psmt.setString(2, course.getCourseName());
