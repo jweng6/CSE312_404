@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main_student.css">
-    <title>404</title>
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main_student.css")">
+    <!link rel="stylesheet" href="main_student.css">
+    <title>CSE312</title>
     
 </head>
 <body>
-    <!div class="a"></div>
     <div class="top_bar"></div>
     <div class="logo">LOGO</div>
     <div class="home">HOME</div>
@@ -27,12 +27,16 @@
     <div class="question1">Question Title</div>
     <div class="question2">Question Title2</div>
     <div class="chatroom_text">Chat Room</div>
-    <button class="submit_button"></button>
-    <div class="submit_text">submit</div>
-    <div class="remain_time">Time remaining: 0:59</div>
-    <div class="question_title">Question Title</div>
-    <div class="question_detail">Question details......</div>
-    <input type="text" class="chat_input"></input>
-    <input type="text" class="answer_input"></input>
+    <form method="POST" action="/main_student">
+        @helper.CSRF.formField
+        <div class="submit_text">submit</div>
+        <div class="remain_time">Time remaining: 0:59</div>
+        <div class="question_title">Question Title</div>
+        <div class="question_detail">Question details......</div>
+        <input type="text" class="chat_input"></input>
+        <input type="text" class="answer_input"></input>
+        <input class="submit_button" type="submit" value="Submit" >
+    </form>
+    
 </body>
 </html>
