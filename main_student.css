@@ -202,7 +202,7 @@ width: 91px;
 height: 32px;
 left: 928px;
 top: 879px;
-background: #003366;
+background: #FFFFFF;
 border-radius: 5px;
 }
 .submit_text{
@@ -216,7 +216,7 @@ font-style: normal;
 font-weight: 600;
 font-size: 15px;
 line-height: 20px;
-color: #FFFFFF;
+color: #000000;
 }
 .remain_time{
 position: absolute;
