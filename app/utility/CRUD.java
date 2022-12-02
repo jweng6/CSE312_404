@@ -10,8 +10,6 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-        crud.getAllCourse(1);
-
     }
 
     /* --------------------------------------- userTable -------------------------------------------*/
@@ -178,10 +176,10 @@ public class CRUD {
 
     public ArrayList<Integer> getAllCourseByID(int uid) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
-        Connection conn = JDBC.CreateCourseTable();
+        Connection conn = JDBC.CreateJoinCourse();
         ArrayList<Integer> ret = new ArrayList<>();
         String sql = "" +
-                " select courseCode from joincourse where userid = ?";
+                " select courseCode from joinCourse where userid = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, uid);
         ResultSet rs = psmt.executeQuery();
