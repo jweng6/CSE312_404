@@ -58,11 +58,9 @@ public class CourseImpl implements CourseService {
     public Boolean joinCourse(String email, int code) {
         if (!StringUtils.isAnyBlank(email,Integer.toString(code))){
             try {
-
                 User userByEmail = crud.getUserByEmail(email);
                 Course courseByCode = crud.getCourseByCode(code);
                 ArrayList<Integer> userAllCourse = crud.getAllCourseByID(userByEmail.getId());
-
                 if (userByEmail != null && courseByCode != null && !userAllCourse.contains(code)){
                     crud.joinCourse(userByEmail.getId(),courseByCode.getCode());
                     return true;

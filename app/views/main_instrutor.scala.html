@@ -1,0 +1,54 @@
+@import play.mvc.Http.Request
+@(createForm: Form[domain.User])(implicit request: Request, messages: Messages)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main_instrutor.css")">
+    <!link rel="stylesheet" href="main_instrutor.css">
+    
+    <title>CSE312</title>
+    
+</head>
+<body>
+    <div class="top_bar"></div>
+    <div class="logo">LOGO</div>
+    <div class="home">HOME</div>
+    <div class="gradebook">GRADEBOOK</div>
+    <div class="coursename">COURSE NAME</div>
+    <div class="instrutor_email">instrutor: xxxgmail.com</div>
+    <div class="join_code">join code: 123456</div>
+    <button class="gradebook_button"></button>
+    <div class="gradebook_text">GradeBook</div>
+    <button class="roster_button"></button>
+    <div class="roster_text">Roster</div>
+    <button class="add_question_button"></button>
+    <div class="add_question_text">Add Question</div>
+    <div class="broder1"></div>
+    <div class="broder2"></div>
+    <div class="broder3"></div>
+    <div class="broder4"></div>
+    <div class="broder5"></div>
+    <div class="question1">Question Title</div>
+    <div class="question2">Question Title2</div>
+    <div class="chatroom_text">Chat Room</div>
+    <form method="POST" action="/main_student">
+        @helper.CSRF.formField
+        <!button class="assign_button"></button>
+        <!div class="assign_text">Assign</div>
+        <div class="time_input"></div>
+        <div class="time_input_text">Time(minute)</div>
+        <div class="question_title">Question Title</div>
+        <div class="question_detail">Question details......</div>
+        <input type="text" class="chat_input"></input>
+        <input type="text" class="answer_input"></input>
+        <div class="show_answer">Show Correct Answer</div>
+        <div class="correct_answer">Correct Answer Here After click Show Answer</div>
+        <input class="assign_button" type="submit" value="Assign" >
+    </form>
+    
+</body>
+</html>
