@@ -1,5 +1,10 @@
 package controllers;
 
+import akka.stream.impl.JsonObjectParser;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.Course;
 import domain.User;
 import org.slf4j.Logger;
@@ -7,21 +12,25 @@ import org.slf4j.LoggerFactory;
 import play.api.i18n.MessagesApi;
 import play.data.Form;
 import play.data.FormFactory;
+import play.libs.Json;
 import play.mvc.*;
 import service.CourseService;
 import service.UserService;
 import service.impl.CourseImpl;
 import service.impl.UserImpl;
+import play.api.libs.json.*;
 
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.SQLException;
 
-import java.util.Optional;
-import domain.Info;
-import java.util.List;
+import com.typesafe.config.Config;
+import play.mvc.Http.Session;
 
+import java.util.*;
+
+import domain.Info;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -54,7 +63,6 @@ public class HomeController extends Controller {
     public Result showRegister(Http.Request request){
         return ok(views.html.sign_up.render(userForm,request,messagesApi.preferred(request)));
     }
-
 
     public Result register(Http.Request request) {
         final Form<User> boundForm = userForm.bindFromRequest(request);
@@ -111,6 +119,8 @@ public class HomeController extends Controller {
 
         //登入失败：返回登入页面，并且添加connect_fail的session。
         return redirect("/").addingToSession(request, "connect_fail",request_email);
+
+
     }
 
     public Result showCreate(Http.Request request){
@@ -192,6 +202,34 @@ public class HomeController extends Controller {
 
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
+
+    }
+
+
+    public Result showCourse(String code,Http.Request request){
+        //确定用户是在线的
+        Optional<String> connecting = request.session().get("connecting");
+        System.out.println("session connecting:");
+        System.out.println(connecting);
+        System.out.println("\n");
+
+        //获取session里的email，然后转换从optional<String> -> String:
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+            if (isInstrutor){
+                return ok(views.html.main_instrutor.render());
+            }
+            else {
+                return ok(views.html.main_student.render());
+            }
+
+        }
+
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+
     }
 
 

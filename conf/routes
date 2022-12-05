@@ -22,4 +22,4 @@ POST    /join                         controllers.HomeController.postJoin(reques
 
 GET     /main                        controllers.HomeController.showMain(request : Request)
 
-GET      /ws                                   controllers.WebsocketController.socket
+GET     /course/:code                       controllers.HomeController.showCourse(code,request : Request)
