@@ -1,5 +1,5 @@
 @import play.mvc.Http.Request
-@(createForm: Form[domain.User])(implicit request: Request, messages: Messages)
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +31,7 @@
     <div class="question2">Question Title2</div>
     <div class="chatroom_text">Chat Room</div>
     <form method="POST" action="/main_student">
-        @helper.CSRF.formField
+
         <div class="submit_text">submit</div>
         <div class="remain_time">Time remaining: 0:59</div>
         <div class="question_title">Question Title</div>

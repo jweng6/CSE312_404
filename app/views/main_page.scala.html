@@ -33,9 +33,9 @@
 
         @for( i <- list){
             @if(i.getCheck() == "0"){
-                <li @* onclick="location.href='/student'"  *@>
+                <li onclick="location.href='/course/@i.getCode()'">
                     <div class="courses">
-                        <div class="coursesleft">
+                        <div class="coursesleft" >
                             @i.getCourseName()
                             <div class="instructoremail">
                                 Instructor email: @i.getEmail()
@@ -48,7 +48,7 @@
                 </li>
             }
             @if(i.getCheck() == "1"){
-                <li  @* onclick="location.href='/instructor'" *@>
+                <li onclick="location.href='/course/@i.getCode()'">
                     <div class="mycourses">
                         <div class="mycoursesleft">
                             @i.getCourseName()
