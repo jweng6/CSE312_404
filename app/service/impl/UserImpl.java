@@ -10,6 +10,8 @@ import utility.Constant;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class UserImpl implements UserService {
 
@@ -83,6 +85,10 @@ public class UserImpl implements UserService {
         return ret;
     }
 
+    @Override
+    public List<User> showAllStudent(int courseId) {
+        return null;
+    }
 
 
 }
