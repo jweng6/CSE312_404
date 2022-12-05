@@ -1,0 +1,206 @@
+@import play.mvc.Http.Request
+
+@import domain.Course
+
+
+@(courseInfo:Course,show:String)
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>CSE312</title>
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/course.css")"">
+
+</head>
+<body>
+
+<div class="row" style="min-width: 1000px;min-height: 600px" >
+
+    <div class="header">
+
+        <p style="float: Left;white-space: nowrap;padding-left: 20px;">Logo</p>
+        <p style="float: right;white-space: nowrap;padding-right: 20px;">Home</p>
+        <p style="float: right;white-space: nowrap;padding-right: 20px;">GRADEBOOK</p>
+    </div>
+
+    <div  class="column side" style="width: 15%;float: left;margin-left: 4%;">
+        <div class="course_info">
+
+
+
+            <p class="course_name" id='course_name' style="cursor:pointer;" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"none")' >@courseInfo.getCourseName()</p><br>
+            <p class="course_text">Instructor: @courseInfo.getEmail()</p><br>
+            <p class="course_text">Join Code: @courseInfo.getCode()</p>
+        </div>
+        <div class="left_retangle" >
+
+            <table>
+                <tr>
+                    <td>Question 1</td>
+                </tr>
+                <tr>
+                    <td>Question 2</td>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+
+    <div  class="column middle" style="width: 55%;float: left">
+        <div class="div_middle_button">
+            <button class="gradebook_button" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </svg>
+                GradeBook
+            </button>
+
+            <button class="roster_button" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"roster")' value="Javascript">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                </svg>
+                Roster
+            </button>
+
+            <button class="add_question_button" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"add_question")' value="Javascript">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                Add Question
+            </button>
+        </div >
+
+
+        <div class="middle_retangle">
+            @if(show.equals("none")){ }
+            @if(show.equals("show_question")){
+                <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg> Add question</p>
+                <form style="padding-left: 8%" action="/">
+                    <label class="label_text" for="header">Question Title: </label><br><br>
+                    <input class="input_box" type="text" id="header" name="header" value=""><br><br>
+
+                    <label class="label_text"for="detail">Details:</label><br>
+                    <Textarea rows="10" class="input_box"  id="detail" name="detail" style="height: 150px;" ></Textarea><br><br>
+
+                    <label class="label_text" for="answer">Answer:</label><br>
+                    <Textarea rows="10" class="input_box"  id="answer" name="answer" style="height: 150px;" ></Textarea><br><br>
+
+                    <label class="label_text" for="grade">Grade:</label><br>
+                    <input   class="input_box" type="number" id="grade" name="grade" value=""><br><br>
+                    <input class="submit_button" type="submit" value="Submit">
+                </form>
+            }
+
+            @if(show.equals("add_question")){
+                <div style="width: 100%;height: 97%;position: relative">
+                    <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+                    </svg> Question Title</p>
+                    <div style="padding-left: 8%" >
+                        <label class="label_text" for="Detail2">Details: </label><br><br>
+                        <Textarea rows="10" class="input_box"  id="Detail2" style="height: 150px;" disabled></Textarea><br><br>
+
+                        <a class="label_text" style="color:dodgerblue;cursor: pointer">Show Correct Answer</a><br>
+                        <p class="label_text" id="show_answer" >After Click then show Answer</p>
+                    </div>
+
+                    <div class="middle_blue_end" style="position: absolute;bottom: 0;float: right;">
+                        <form style="padding-right: 5%;margin-top: 10px;" action="/">
+                            <input style="float: right;"class="submit_button" type="submit" value="Assign">
+                            <input style="width: 20%;float: right;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes" type="time" id="time" value="">
+
+                        </form>
+
+                    </div>
+
+                </div>
+            }
+            @if(show.equals("roster")){
+                <table>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
+                    <tr>
+                        <td>Peter</td>
+                        <td>Griffin</td>
+                        <td>123</td>
+                    </tr>
+                    <tr>
+                        <td>Lois</td>
+                        <td>Griffin</td>
+                        <td>123</td>
+                    </tr>
+                    <tr>
+                        <td>Joe</td>
+                        <td>Swanson</td>
+                        <td>123</td>
+                    </tr>
+                    <tr>
+                        <td>Cleveland</td>
+                        <td>Brown</td>
+                        <td>123</td>
+                    </tr>
+                </table>
+            }
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+    <div  class="column right" style="width: 20%;float: left" >
+        <div class="div_middle_button"></div>
+
+        <div class="right_retangle" >
+            <div class="chat_header">Chat Room</div>
+
+            <div class="chat_all_message">
+                <div class="chat_message">
+                    Instructor 10:30
+                    <div class="chat_message_white">
+                        welcome to xxx
+                    </div>
+                </div>
+
+                <div class="chat_message">
+                    Instructor 10:30
+                    <div class="chat_message_white">
+                        hi
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat_input">
+                <input class="chat_input_box" type="text">
+
+                <button class="chat_submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

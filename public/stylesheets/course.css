@@ -1,0 +1,357 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0 ;
+    width: 100%;
+    height: 100%;
+
+}
+
+body p {
+    font-weight: 300; /* You specify the number you see next to the fonts to change from light to bold ie you would put 700 etc. etc. */
+}
+
+
+.header {
+    position: absolute;
+    width: 100%;
+    height: 62px;
+
+    background-color: #f1f1f1;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+    color: #3F3F3F;
+}
+
+/* Style the left column */
+
+.column {
+    float: left;
+    padding: 10px;
+
+
+}
+
+/* Left and right column */
+.column.side {
+    width: 20%;
+}
+
+/* Middle column */
+.column.middle {
+    width: 55%;
+}
+
+.column.right {
+    width: 25%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media  (min-width: 1000px) and (min-height: 700px){
+    .column.side, .column.middle, .column.right {
+        width: 100%;
+    }
+}
+
+.course_info{
+
+    width: 100%;
+    height: 91px;
+    margin-top: 83px;
+
+}
+
+.course_name{
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    color: #000000;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;
+    display:inline;
+    flex-flow: row nowrap;
+}
+.course_name:hover{
+    font-weight: bold;
+    color: #003366;
+}
+.course_text{
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+
+    color: #212121;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;
+    display:inline;
+    flex-flow: row nowrap;
+
+}
+.left_retangle{
+    width: 100%;
+    margin: auto;
+
+    height: 700px;
+    min-height: 700px;
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    overflow: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {background-color: #9f9f9f;}
+
+
+
+.middle_retangle{
+    width: 100%;
+    margin: auto;
+
+    height: 700px;
+    min-height: 700px;
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    overflow: auto;
+}
+.div_middle_button{
+    width: 100%;
+    height: 58px;
+    margin-top: 117px;
+
+}
+.gradebook_button{
+    cursor: pointer;
+    width: 137px;
+    height: 34px;
+    left: 316px;
+    top: 117px;
+
+    background: #003366;
+    border-radius: 5px;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-size: 15px;
+    color: #FFFFFF;
+    border: none;
+}
+
+.roster_button{
+    cursor:pointer;
+    width: 94px;
+    height: 34px;
+    left: 468px;
+    top: 117px;
+
+    background: #003366;
+    border-radius: 5px;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-size: 15px;
+    color: #FFFFFF;
+    border: none;
+
+
+}
+.add_question_button{
+    cursor: pointer;
+    width: 137px;
+    height: 34px;
+    left: 577px;
+    top: 117px;
+
+    background: #003366;
+    border-radius: 5px;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-size: 15px;
+    color: #FFFFFF;
+    border: none;
+}
+.gradebook_button:hover, .add_question_button:hover, .roster_button:hover{
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.middle_blue_end{
+
+    width: 100%;
+    height: 62px;
+    margin-top: 66px;
+
+    background: rgba(0, 51, 102, 0.13);
+    border-radius: 0px 0px 10px 10px;
+}
+.right_retangle{
+    width: 100%;
+    height:  700px;
+    min-height: 700px;
+
+    margin: auto;
+    overflow: auto;
+    background: rgba(237, 237, 237, 0.5);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.chat_header{
+    width: 100%;
+    height: 82px;
+    margin: auto;
+
+    background: rgba(0, 51, 102, 0.13);
+    border-radius: 10px 10px 0px 0px;
+    text-align: center;
+    white-space: nowrap;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 80px;
+    color: #000000;
+}
+
+.chat_all_message{
+    width: 100%;
+    height: 550px;
+    overflow: auto;
+}
+.chat_message{
+    float: left;
+    width: 90%;
+    height: 56px;
+    margin: auto;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    color: #000000;
+    margin-left: 3%;
+    text-align: left;
+    margin-top: 5%;
+}
+.chat_message_white{
+
+    float: left;
+    width: 100%;
+    height: 36px;
+    margin: auto;
+    background: #FFFFFF;
+    border-radius: 5px;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 38px;
+    color: #000000;
+    text-align: left;
+
+    padding-left: 10px;
+
+}
+
+.chat_input{
+    width: 90%;
+    height: 35px;
+    margin-left: 5%;
+}
+
+.chat_input_box{
+    text-align: left;
+    width: 75%;
+    height: 35px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding-left: 10px;
+
+    border: none;
+    box-sizing: border-box;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+}
+.chat_submit{
+    width: 15%;
+    height: 35px;
+    background: #D9D9D9;
+    border-radius: 5px;
+    margin-left: 15px;
+    border: none;
+    color: #414141;
+
+}
+.chat_submit:hover{
+    background-color: #6e6e6e;
+    color: white;
+}
+
+.h2text{
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 10px;
+    vertical-align: middle;
+
+}
+
+.label_text{
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+
+}
+.input_box{
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    padding-left: 10px;
+    width: 90%;
+    height: 39px;
+    margin: auto;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #3F3F3F;
+    border-radius: 10px;
+}
+.submit_button{
+    float: left;
+    width: 104px;
+    height: 34px;
+
+
+    background: #003366;
+    border-radius: 5px;
+    font-family: "Open Sans",sans-serif;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 20px;
+    color: #FFFFFF;
+}

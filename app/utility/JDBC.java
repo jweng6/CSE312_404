@@ -9,6 +9,8 @@ public class JDBC {
     static final String JdbcDriver = "com.mysql.cj.jdbc.Driver";
 //    static final String Url = "jdbc:mysql://mysql:3306/db";
 //    static String Url = "jdbc:mysql://localhost:3306/?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
+
+
     static final String Url = "jdbc:mysql://localhost:3306/cse312";
     static final String User = "root" ;
 //    static final String PassWord = "jia893607219";

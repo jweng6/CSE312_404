@@ -138,4 +138,18 @@ public class CourseImpl implements CourseService {
         return ret;
     }
 
+    @Override
+    public Course course_info(int code){
+
+        try {
+            return crud.getCourseByCode(code);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new Course();
+    }
+
 }
