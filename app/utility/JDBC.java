@@ -73,7 +73,6 @@ public class JDBC {
         return connection;
     }
 
-
     public static Connection CreateQuestionTable() throws SQLException, ClassNotFoundException {
         Connection connection = JDBC.getConnection();
         Statement statement = connection.createStatement();

@@ -1,6 +1,7 @@
 package utility;
 
 import domain.Course;
+import domain.Question;
 import domain.User;
 import java.sql.*;
 import java.util.ArrayList;
@@ -194,7 +195,7 @@ public class CRUD {
 
     /* --------------------------------------- Question Table -------------------------------------------*/
 
-    public static void addQuestion(int CourseId, String header, String detail, String answer, int grade) throws Exception{
+    public static void addQuestion(Question question) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
         String sql = ""+
@@ -202,29 +203,52 @@ public class CRUD {
                 "(CourseId, header, detail, answer, grade)"+
                 "values(?,?,?,?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        psmt.setInt(1, CourseId);
-        psmt.setString(2, header);
-        psmt.setString(3, detail);
-        psmt.setString(4, answer);
-        psmt.setInt(5, grade);
+        psmt.setInt(1, question.getFrom());
+        psmt.setString(2, question.getHeader());
+        psmt.setString(3, question.getDetail());
+        psmt.setString(4, question.getAnswer());
+        psmt.setInt(5, question.getGrade());
         psmt.executeUpdate();
         psmt.close();
         conn.close();
     }
 
-
-
-    public ArrayList<Integer> getAllCourse(int CourseId) throws SQLException, ClassNotFoundException {
+    public ArrayList<Question> getAllQuestionByHeader(Integer courseId) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
-        Connection conn = JDBC.CreateJoinCourse();
-        ArrayList<Integer> ret = new ArrayList<>();
+        Connection conn = JDBC.CreateQuestionTable();
+        ArrayList<Question> ret = new ArrayList<>();
         String sql = "" +
-                "SELECT courseCode FROM joinCourse WHERE userid = ?";
+                "SELECT id,header,detail,answer,grade FROM questionTable WHERE courseId = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setInt(1, uid);
+        psmt.setInt(1, courseId);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
-            ret.add(rs.getInt("courseCode"));
+            Question curr_ques = new Question();
+            curr_ques.setHeader(rs.getString("header"));
+            curr_ques.setDetail(rs.getString("detail"));
+            curr_ques.setAnswer(rs.getString("answer"));
+            curr_ques.setGrade(rs.getInt("grade"));
+            ret.add(curr_ques);
+        }
+        psmt.close();
+        conn.close();
+        return ret;
+    }
+
+    public Question getQuestion(Integer questionId) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateQuestionTable();
+        Question ret = new Question();
+        String sql = "" +
+                "SELECT header,detail,answer,grade FROM questionTable WHERE id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, questionId);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()) {
+            ret.setHeader(rs.getString("header"));
+            ret.setDetail(rs.getString("detail"));
+            ret.setAnswer(rs.getString("answer"));
+            ret.setGrade(rs.getInt("grade"));
         }
         psmt.close();
         conn.close();
