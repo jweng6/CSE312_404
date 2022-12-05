@@ -28,11 +28,9 @@ import java.sql.SQLException;
 import com.typesafe.config.Config;
 import play.mvc.Http.Session;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
+
 import domain.Info;
-import java.util.List;
-import java.util.Arrays;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -206,5 +204,30 @@ public class HomeController extends Controller {
         return unauthorized("Oops, you are not connected");
 
     }
+
+
+
+    public Result showCourse(String id,String type,Http.Request request){
+        //确定用户是在线的
+        Optional<String> connecting = request.session().get("connecting");
+        System.out.println("session connecting:");
+        System.out.println(connecting);
+        System.out.println("\n");
+
+        //获取session里的email，然后转换从optional<String> -> String:
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+            if (Objects.equals(type, "student")){
+                return ok(views.html.main_page.render(allCourse));
+            }
+
+        }
+
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+
+    }
+
+
 
 }
