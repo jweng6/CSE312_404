@@ -118,5 +118,24 @@ public class CourseImpl implements CourseService {
         return null;
     }
 
+    @Override
+    public Boolean isInstrutor(int code,String email){
+        boolean ret = false;
+
+        try {
+
+            Course course = crud.getCourseByCode(code);
+            if (course.getEmail().equals(email)){
+                ret = true;
+            }
+            return ret;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
 
 }

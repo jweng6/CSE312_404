@@ -206,8 +206,7 @@ public class HomeController extends Controller {
     }
 
 
-
-    public Result showCourse(String id,String type,Http.Request request){
+    public Result showCourse(String code,Http.Request request){
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
         System.out.println("session connecting:");
@@ -217,8 +216,13 @@ public class HomeController extends Controller {
         //获取session里的email，然后转换从optional<String> -> String:
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         if (connecting.isPresent() == true){
-            if (Objects.equals(type, "student")){
-                return ok(views.html.main_page.render(allCourse));
+
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+            if (isInstrutor){
+                return ok(views.html.main_instrutor.render());
+            }
+            else {
+                return ok(views.html.main_student.render());
             }
 
         }
