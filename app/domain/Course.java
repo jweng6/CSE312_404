@@ -1,5 +1,4 @@
 package domain;
-import play.data.validation.Constraints.*;
 
 public class Course {
     private int id;
