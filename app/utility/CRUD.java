@@ -8,12 +8,8 @@ import java.util.ArrayList;
 
 public class CRUD {
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        joinCourse(1, 1235);
-    }
-
     /* --------------------------------------- userTable -------------------------------------------*/
-    public Integer addUser(User user) throws Exception{
+    public static Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         Integer id = 0;
@@ -141,7 +137,7 @@ public class CRUD {
     }
 
     /* --------------------------------------- joinCourse -------------------------------------------*/
-    public static void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
+    public void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
         String sql = "" +
@@ -154,23 +150,6 @@ public class CRUD {
         psmt.executeUpdate();
         psmt.close();
         conn.close();
-    }
-
-    public ArrayList<Integer> getAllCourse(int uid) throws SQLException, ClassNotFoundException {
-        JDBC.getConnection();
-        Connection conn = JDBC.CreateJoinCourse();
-        ArrayList<Integer> ret = new ArrayList<>();
-        String sql = "" +
-                "SELECT courseCode FROM joinCourse WHERE userid = ?";
-        PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setInt(1, uid);
-        ResultSet rs = psmt.executeQuery();
-        while(rs.next()) {
-            ret.add(rs.getInt("courseCode"));
-        }
-        psmt.close();
-        conn.close();
-        return ret;
     }
 
     public ArrayList<Integer> getAllCourseByID(int uid) throws SQLException, ClassNotFoundException {
@@ -190,11 +169,29 @@ public class CRUD {
         return ret;
     }
 
+    public ArrayList<User> getAllUserByCourse(Integer courseId) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        ArrayList<User> ret = new ArrayList<>();
+        String sql = "" +
+                "select userid from joinCourse where courseCode = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, courseId);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()) {
+            User curren_user = getUserByid(rs.getInt("userid"));
+            ret.add(curren_user);
+        }
+        psmt.close();
+        conn.close();
+        return ret;
+    }
+
 
 
     /* --------------------------------------- Question Table -------------------------------------------*/
 
-    public static void addQuestion(Question question) throws Exception{
+    public void addQuestion(Question question) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
         String sql = ""+
@@ -223,6 +220,7 @@ public class CRUD {
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
             Question curr_ques = new Question();
+            curr_ques.setId(rs.getInt("id"));
             curr_ques.setHeader(rs.getString("header"));
             curr_ques.setDetail(rs.getString("detail"));
             curr_ques.setAnswer(rs.getString("answer"));

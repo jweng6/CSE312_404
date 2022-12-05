@@ -70,7 +70,7 @@ public class UserImpl implements UserService {
         ArrayList<Course> ret = new ArrayList<>();
         if (!StringUtils.isBlank(email)){
             try {
-                ArrayList<Integer> allCourse = crud.getAllCourse(crud.getUserByEmail(email).getId());
+                ArrayList<Integer> allCourse = crud.getAllCourseByID(crud.getUserByEmail(email).getId());
                 for(Integer course : allCourse) {
                     Course singleCourse = new Course();
                     singleCourse.setCourseName(crud.getCourseByCode(course).getCourseName());
