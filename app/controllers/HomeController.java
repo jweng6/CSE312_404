@@ -1,6 +1,7 @@
 package controllers;
 
 import domain.Course;
+import domain.Question;
 import domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,15 +10,14 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
 import service.CourseService;
+import service.QuestionService;
 import service.UserService;
 import service.impl.CourseImpl;
+import service.impl.QuestionImpl;
 import service.impl.UserImpl;
-
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.SQLException;
-
 import java.util.Optional;
 import domain.Info;
 import java.util.List;
@@ -32,8 +32,10 @@ public class HomeController extends Controller {
 
     UserService user = new UserImpl();
     CourseService course = new CourseImpl();
+    QuestionService question = new QuestionImpl();
     Form<User> userForm;
     Form<Course> courseForm;
+    Form<Question> questionForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
@@ -114,7 +116,6 @@ public class HomeController extends Controller {
 
 
     }
-
     public Result showCreate(Http.Request request){
 
         //确定用户是在线的
@@ -126,7 +127,6 @@ public class HomeController extends Controller {
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
-
     public Result postCreate(Http.Request request) throws SQLException, ClassNotFoundException {
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
@@ -134,7 +134,6 @@ public class HomeController extends Controller {
             return badRequest(views.html.create_course.render(boundForm,request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
-
             //获取session里的email，然后转换从optional<String> -> String:
             String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
             //返回的是一个course放到session中
@@ -142,7 +141,6 @@ public class HomeController extends Controller {
             return redirect("/main").addingToSession(request, "connecting",session_email);
         }
     }
-
     public Result showJoin(Http.Request request){
 
         //确定用户是在线的
@@ -194,7 +192,6 @@ public class HomeController extends Controller {
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
-
     public Result showCourse(String code,Http.Request request){
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
@@ -220,6 +217,27 @@ public class HomeController extends Controller {
         return unauthorized("Oops, you are not connected");
 
     }
+
+    public Result addQuestion(Http.Request request){
+//        String header, String detail, String answer, int from, int grade
+        Form<Question> addForm = questionForm.bindFromRequest(request);
+
+        if (addForm.hasErrors()) {
+            logger.error("errors = {}", addForm.errors());
+            return badRequest(views.html.main_instrutor_add_question.render(addForm, request, messagesApi.preferred(request)));
+        }else {
+            String sessionEmail = request.session().get("connecting").map(Object::toString).orElse(null);
+            String requestHeader = addForm.get().getHeader();
+            String requestDetail = addForm.get().getDetail();
+            String requestAnswer = addForm.get().getAnswer();
+            int requestFrom = addForm.get().getFrom();
+            int requestGrade = addForm.get().getGrade();
+            question.addQuestion(requestHeader,requestDetail,requestAnswer,requestFrom,requestGrade);
+            return redirect("/main").addingToSession(request, "connecting", sessionEmail);
+        }
+    }
+
+
 
 
 
