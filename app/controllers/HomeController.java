@@ -1,10 +1,5 @@
 package controllers;
 
-import akka.stream.impl.JsonObjectParser;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.Course;
 import domain.User;
 import org.slf4j.Logger;
@@ -12,27 +7,21 @@ import org.slf4j.LoggerFactory;
 import play.api.i18n.MessagesApi;
 import play.data.Form;
 import play.data.FormFactory;
-import play.libs.Json;
 import play.mvc.*;
 import service.CourseService;
 import service.UserService;
 import service.impl.CourseImpl;
 import service.impl.UserImpl;
-import play.api.libs.json.*;
 
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.SQLException;
 
-import com.typesafe.config.Config;
-import play.mvc.Http.Session;
-
-import java.util.ArrayList;
 import java.util.Optional;
 import domain.Info;
 import java.util.List;
-import java.util.Arrays;
+
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -65,6 +54,7 @@ public class HomeController extends Controller {
     public Result showRegister(Http.Request request){
         return ok(views.html.sign_up.render(userForm,request,messagesApi.preferred(request)));
     }
+
 
     public Result register(Http.Request request) {
         final Form<User> boundForm = userForm.bindFromRequest(request);
@@ -204,7 +194,8 @@ public class HomeController extends Controller {
 
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
-
     }
+
+
 
 }
