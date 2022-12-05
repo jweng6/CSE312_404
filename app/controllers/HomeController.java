@@ -121,8 +121,6 @@ public class HomeController extends Controller {
 
         //登入失败：返回登入页面，并且添加connect_fail的session。
         return redirect("/").addingToSession(request, "connect_fail",request_email);
-
-
     }
 
     public Result showCreate(Http.Request request){
@@ -204,7 +202,6 @@ public class HomeController extends Controller {
 
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
-
     }
 
 }

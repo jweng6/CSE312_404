@@ -10,7 +10,6 @@ import utility.Constant;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class UserImpl implements UserService {
 

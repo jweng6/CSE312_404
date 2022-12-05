@@ -5,7 +5,6 @@ import domain.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public interface UserService {
      User addUser(String email, String firstname, String lastname, String password);
