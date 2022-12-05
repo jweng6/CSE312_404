@@ -173,7 +173,6 @@ public class CRUD {
         return ret;
     }
 
-
     public ArrayList<Integer> getAllCourseByID(int uid) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();

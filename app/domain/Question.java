@@ -1,19 +1,19 @@
 package domain;
 
-
 public class Question {
     private String header;
     private String detail;
     private String answer;
     private int from;
+    private int id;
     private int grade;
     public Question() {
 
     }
 
-    public Question(Integer from, String title, String detail, String answer, Integer grade){
+    public Question(int from, String header, String detail, String answer, int grade){
         this.from = from;
-        this.header = title;
+        this.header = header;
         this.detail = detail;
         this.answer = answer;
         this.grade = grade;
@@ -57,5 +57,13 @@ public class Question {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

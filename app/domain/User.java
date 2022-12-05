@@ -11,6 +11,7 @@ public class User {
     private String email;
     @Required
     private String password;
+    private int user_grade;
 
     public User() {
 
@@ -87,5 +88,13 @@ public class User {
     }
     public void setCourseId(int courseId) {
         this.courseId = courseId;
+    }
+
+    public int getUser_grade() {
+        return user_grade;
+    }
+
+    public void setUser_grade(int user_grade) {
+        this.user_grade = user_grade;
     }
 }
