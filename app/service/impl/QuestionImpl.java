@@ -6,6 +6,7 @@ import org.checkerframework.checker.units.qual.C;
 import service.QuestionService;
 import utility.CRUD;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class QuestionImpl implements QuestionService {
@@ -14,20 +15,36 @@ public class QuestionImpl implements QuestionService {
     @Override
     public void addQuestion(String header, String detail, String answer, int from, int grade) {
         if(!StringUtils.isAnyBlank(header,detail,answer)){
-            Question question = new Question(from,header,detail,answer,grade);
-            //crud.addQuestion(question);
+            try {
+                Question question = new Question(from,header,detail,answer,grade);
+                crud.addQuestion(question);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public List<Question> showAllQuestion(int courseId) {
-        //crud.showAllQuestion(courseId);
+        try {
+           return crud.getAllQuestionByHeader(courseId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public Question getQuestion(int question_id) {
-        //crud.getQuestion(question_id);
+        try {
+            return crud.getQuestion(question_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

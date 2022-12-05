@@ -217,28 +217,23 @@ public class HomeController extends Controller {
         return unauthorized("Oops, you are not connected");
 
     }
-
-    public Result addQuestion(Http.Request request){
-//        String header, String detail, String answer, int from, int grade
-        Form<Question> addForm = questionForm.bindFromRequest(request);
-
-        if (addForm.hasErrors()) {
-            logger.error("errors = {}", addForm.errors());
-            return badRequest(views.html.main_instrutor_add_question.render(addForm, request, messagesApi.preferred(request)));
-        }else {
-            String sessionEmail = request.session().get("connecting").map(Object::toString).orElse(null);
-            String requestHeader = addForm.get().getHeader();
-            String requestDetail = addForm.get().getDetail();
-            String requestAnswer = addForm.get().getAnswer();
-            int requestFrom = addForm.get().getFrom();
-            int requestGrade = addForm.get().getGrade();
-            question.addQuestion(requestHeader,requestDetail,requestAnswer,requestFrom,requestGrade);
-            return redirect("/main").addingToSession(request, "connecting", sessionEmail);
-        }
-    }
-
-
-
+//    public Result addQuestion(Http.Request request){
+////        String header, String detail, String answer, int from, int grade
+//        Form<Question> addForm = questionForm.bindFromRequest(request);
+//        if (addForm.hasErrors()) {
+//            logger.error("errors = {}", addForm.errors());
+//            return badRequest(views.html.main_instrutor_add_question.render(addForm, request, messagesApi.preferred(request)));
+//        }else {
+//            String sessionEmail = request.session().get("connecting").map(Object::toString).orElse(null);
+//            String requestHeader = addForm.get().getHeader();
+//            String requestDetail = addForm.get().getDetail();
+//            String requestAnswer = addForm.get().getAnswer();
+//            int requestFrom = addForm.get().getFrom();
+//            int requestGrade = addForm.get().getGrade();
+//            question.addQuestion(requestHeader,requestDetail,requestAnswer,requestFrom,requestGrade);
+//            return redirect("/main").addingToSession(request, "connecting", sessionEmail);
+//        }
+//    }
 
 
 
