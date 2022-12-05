@@ -27,6 +27,7 @@ public class QuestionImpl implements QuestionService {
 
     @Override
     public Question getQuestion(int question_id) {
+        //crud.getQuestion(question_id);
         return null;
     }
 }

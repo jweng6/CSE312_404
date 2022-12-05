@@ -155,7 +155,6 @@ public class HomeController extends Controller {
         return unauthorized("Oops, you are not connected");
 
     }
-
     public Result postJoin(Http.Request request){
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
@@ -195,6 +194,7 @@ public class HomeController extends Controller {
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
+
 
 
 
