@@ -12,7 +12,6 @@ function select(id,code){
     location.href = '/course/'+code +'/question/'+id
 }
 
-
 // Establish a WebSocket connection with the server
 const socket = new WebSocket('ws://' + window.location.host + '/ws');
 

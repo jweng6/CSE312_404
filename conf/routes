@@ -27,3 +27,5 @@ GET     /course/:code/:status                   controllers.HomeController.showC
 POST    /course/:code/:status                   controllers.HomeController.post_course_with_status(code,status,request : Request)
 
 GET     /course/:code/question/:questionId                   controllers.HomeController.show_question(code,questionId,request : Request)
+
+GET      /ws                                   controllers.WebsocketController.socket
