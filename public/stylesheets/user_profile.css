@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+body{
+    width:100%
+}
+.topnav {
+    background-color: #EEEEEE;
+    overflow: hidden;
+}
+
+.topnav a {
+    float: right;
+    color: #003366;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 17px;
+}
+  
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+  
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #003366;
+    color: white;
+}
+li{
+    list-style-type: none;
+}
+
+.middle-rectangle-profile{
+
+    width: 450px;
+    height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0px 0px 10px 4px rgba(207, 207, 207, 0.5);
+    border-radius: 20px;
+
+}
+
+.p-div{
+    position: absolute;
+    top: 30%;
+    left: 55%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 321px;
+    height: 189px;
+
+}
+.text-profile{
+    width: 164px;
+    height: 20px;
+    left: 595px;
+    top: 281px;
+
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+    white-space:nowrap
+}
+
+.text-username{
+    width: 164px;
+    height: 20px;
+    left: 595px;
+    top: 281px;
+
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+    white-space:nowrap
+}
+
+.text-email{
+    width: 164px;
+    height: 20px;
+    left: 595px;
+    top: 281px;
+
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+    white-space:nowrap
+}
+
+.text-description{
+    width: 164px;
+    height: 20px;
+    left: 595px;
+    top: 281px;
+
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 33px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #003366;
+
+    white-space:nowrap
+}
+
+
+.middle-rectangle-des{
+
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    top: 72%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    
+    background: rgba(0, 51, 102, 0.1);
+    
+    border-radius: 20px;
+
+}
