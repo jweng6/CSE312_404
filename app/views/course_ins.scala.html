@@ -101,7 +101,7 @@
             }
 
             @if(show.equals("add_question")){
-                <div style="width: 100%;height: 97%;position: relative">
+                <div style="width: 100%;height: 97% ;min-height: 63vh">
                     <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
                         <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
                     </svg> Question Title</p>
@@ -113,16 +113,20 @@
                         <p class="label_text" id="show_answer" >After Click then show Answer</p>
                     </div>
 
-                    <div class="middle_blue_end" style="position: absolute;bottom: 0;float: right;">
-                        <form style="padding-right: 5%;margin-top: 10px;" action="/">
-                            <input style="float: right;"class="submit_button" type="submit" value="Assign">
-                            <input style="width: 20%;float: right;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes" type="time" id="time" value="">
 
-                        </form>
 
                     </div>
 
-                </div>
+                    <div style="position:relative;width: 100%; height: 100%">
+
+                        <div class="middle_blue_end" style="float: right;">
+                            <form style="padding-right: 5%;margin-top: 10px;" action="/">
+                                <input style="float: right;"class="submit_button" type="submit" value="Assign">
+                                <input style="width: 20%;float: right;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes" type="time" id="time" value="">
+
+                            </form>
+                        </div>
+                    </div>
             }
             @if(show.equals("roster")){
                 <table>
@@ -166,9 +170,7 @@
 
 
     <div  class="column right" style="width: 20%;float: left" >
-        <div class="div_middle_button"></div>
-
-        <div class="right_retangle" >
+        <div class="right_retangle" style="width: 100%;margin-top: 175px" >
             <div class="chat_header">Chat Room</div>
 
             <div class="chat_all_message">
