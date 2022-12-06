@@ -18,7 +18,6 @@ public class CRUD {
         System.out.println(crud.getQuestion(7).getDetail());
         System.out.println(crud.getQuestion(7).getHeader());
 
-
     }
     /* --------------------------------------- userTable -------------------------------------------*/
     public Integer addUser(User user) throws Exception{
