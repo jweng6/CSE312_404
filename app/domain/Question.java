@@ -8,11 +8,12 @@ public class Question {
     private int from;
     private int id;
     private int grade;
+    private int totalGrade;
     private String answerA;
     private String answerB;
     private String answerC;
     private String answerD;
-//    private int expires;
+    private String expires;
 //    private String dueDay;
 
     public Question() {
@@ -108,6 +109,21 @@ public class Question {
         this.answerD = answerD;
     }
 
+    public int getTotalGrade() {
+        return totalGrade;
+    }
+
+    public void setTotalGrade(int totalGrade) {
+        this.totalGrade = totalGrade;
+    }
+
+    public String getExpires() {
+        return expires;
+    }
+
+    public void setExpires(String expires) {
+        this.expires = expires;
+    }
 
 
 //    public int getExpires() {
