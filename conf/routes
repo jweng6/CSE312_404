@@ -29,3 +29,9 @@ POST    /course/:code/:status                   controllers.HomeController.post_
 GET     /course/:code/question/:questionId                   controllers.HomeController.show_question(code,questionId,request : Request)
 
 GET      /ws                                   controllers.WebsocketController.socket
+
+GET     /gradebook                  controllers.HomeController.showGradebook(request : Request)
+
+GET     /instructorgradebook        controllers.HomeController.showinstructorgradebook(request : Request)
+
+GET     /studentgradebook           controllers.HomeController.showstudentgradebook(request : Request)
