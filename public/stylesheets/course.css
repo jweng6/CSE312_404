@@ -104,7 +104,7 @@ body p {
     width: 100%;
     margin: auto;
 
-    height: Calc(100%- 200px);
+    height: 65vh;
     min-height: 65vh;
     background: rgba(255, 255, 255, 0.07);
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
@@ -131,7 +131,7 @@ tr:hover {background-color: #9f9f9f;}
     width: 100%;
     margin: auto;
 
-    height: Calc(100%- 200px);
+    height: 65vh;
     min-height: 65vh;
     background: rgba(255, 255, 255, 0.07);
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
@@ -207,7 +207,7 @@ tr:hover {background-color: #9f9f9f;}
 }
 .right_retangle{
     width: 100%;
-    height: Calc(100%- 200px);
+    height: 65vh;
     min-height: 65vh;
 
     margin: auto;
