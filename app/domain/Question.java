@@ -1,5 +1,6 @@
 package domain;
 
+
 public class Question {
     private String header;
     private String detail;
@@ -7,6 +8,9 @@ public class Question {
     private int from;
     private int id;
     private int grade;
+//    private int expires;
+//    private String dueDay;
+
     public Question() {
 
     }
@@ -47,15 +51,15 @@ public class Question {
         return from;
     }
 
-    public void setFrom(Integer from) {
-        this.from = from;
-    }
-
     public int getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setFrom(int from) {
+        this.from = from;
+    }
+
+    public void setGrade(int grade) {
         this.grade = grade;
     }
 
@@ -66,4 +70,22 @@ public class Question {
     public void setId(int id) {
         this.id = id;
     }
+
+//    public int getExpires() {
+//        return expires;
+//    }
+//
+//    public void setExpires(int expires) {
+//        this.expires = expires;
+//    }
+
+//    public String getDueDay() {
+//        return dueDay;
+//    }
+//
+//    public void setDueDay(String dueDay) {
+//        this.dueDay = dueDay;
+//    }
+
+
 }

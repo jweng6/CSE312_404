@@ -1,5 +1,6 @@
 package service;
 
+import domain.Answer;
 import domain.Question;
 
 
@@ -14,5 +15,6 @@ public interface QuestionService {
 
     Question getQuestion(int question_id);
 
+    Answer answerQuestion(int question_id, String email, String answer);
 
 }
