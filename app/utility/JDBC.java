@@ -88,6 +88,7 @@ public class JDBC {
                 "choiceC TEXT, " +
                 "choiceD TEXT, " +
                 "grade INT, " +
+                "expires TEXT DEFAULT NULL," +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
