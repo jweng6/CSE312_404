@@ -101,8 +101,8 @@
                     C: <input class="input_box" type="text" id="answerC" name="answerC" value=""><br>
                     D: <input class="input_box" type="text" id="answerD" name="answerD" value=""><br><br>
 
-                    <label class="label_text" for="correct_answer">Correct Answer: (Please Enter A,B,C,or D Only)</label><br>
-                    <input class="input_box" type="text" id="correct_answer" name="correct_answer"  pattern="[A-Da-d]{1}" value="" required><br><br>
+                    <label class="label_text" for="answer">Correct Answer: (Please Enter A,B,C,or D Only)</label><br>
+                    <input class="input_box" type="text" id="answer" name="answer"  pattern="[A-Da-d]{1}" value="" required><br><br>
 
                     <label class="label_text" for="grade">Grade:</label><br>
                     <input   class="input_box" type="number" id="grade" name="grade" value="" required><br><br>
@@ -111,37 +111,52 @@
             }
 
             @if(show.equals("show_question")){
-                <div style="width: 100%;height: Calc(97%- 62px) ;min-height: 65vh;position: relative;overflow: auto">
-                    <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
-                        <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
-                    </svg> Question Title</p>
+                @for(i <- listq){
+                    <div style="width: 100%;height: Calc(97%- 62px) ;min-height: 65vh;position: relative;overflow: auto">
+                        <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
+                            <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+                        </svg> @i.getHeader()</p>
 
 
-                    <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
-                        <label class="label_text" for="Detail2">Details: </label><br><br>
-                        <Textarea rows="10" class="input_box"  id="Detail2" style="height: 150px;" disabled></Textarea><br><br>
+                        <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
+                            <label class="label_text" for="Detail2">Question Details: </label><br><br>
+                            <Textarea rows="10" class="input_box"  id="Detail2" style="height: 150px;" disabled>
+                                @i.getDetail()
+                            </Textarea><br><br>
 
-                        <a class="label_text" style="color:dodgerblue;cursor: pointer">Show Correct Answer</a><br>
-                        <p  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text" id="show_answer" >After Click then show Answer
-                            After Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click th
-                            After Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click then show AnswerAfter Click th
+                            <Textarea rows="10" class="input_box"  id="DetailAns" style="height: 150px;" disabled>
+                                A: @i.getAnswerA() <br>
+                                B: @i.getAnswerB() <br>
+                                C: @i.getAnswerC() <br>
+                                D: @i.getAnswerD() <br>
+                            </Textarea><br><br>
 
+                            <a class="label_text" style="color:dodgerblue;cursor: pointer">Show Correct Answer</a><br>
+                            <p  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text" id="show_answer" >
+                                @if(i.getAnswer().toUpperCase().equal("A")){
+                                    @i.getAnswerA()
+                                }
+                                @if(i.getAnswer().toUpperCase().equal("B")){
+                                    @i.getAnswerB()
+                                }
+                                @if(i.getAnswer().toUpperCase().equal("C")){
+                                    @i.getAnswerC()
+                                }
+                                @if(i.getAnswer().toUpperCase().equal("D")){
+                                    @i.getAnswerD()
+                                }
+                            </p>
+                        </div>
 
-                            en show Answer
-                        </p>
+                        <div class="middle_blue_end" style="float: right;">
+                            <form style="padding-right: 5%;margin-top: 10px;" action="/">
+                                <input style="float: right;"class="submit_button" type="submit" value="Assign">
+                                <input style="width: 20%;float: right;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes" type="time" id="time" value="">
+
+                            </form>
+                        </div>
                     </div>
-
-                    <div class="middle_blue_end" style="float: right;">
-                        <form style="padding-right: 5%;margin-top: 10px;" action="/">
-                            <input style="float: right;"class="submit_button" type="submit" value="Assign">
-                            <input style="width: 20%;float: right;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes" type="time" id="time" value="">
-
-                        </form>
-                    </div>
-
-
-                    </div>
-
+                }
 
             }
             @if(show.equals("roster")){

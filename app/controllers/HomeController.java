@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.SQLException;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import domain.Info;
 import utility.CRUD;
@@ -285,6 +286,13 @@ public class HomeController extends Controller {
                     String request_details = addQuestionForm.get().getDetail();
                     String request_answer = addQuestionForm.get().getAnswer();
                     Integer request_grade = addQuestionForm.get().getGrade();
+
+                    String request_A = addQuestionForm.get().getAnswerA();
+                    String request_B = addQuestionForm.get().getAnswerB();
+                    String request_C = addQuestionForm.get().getAnswerC();
+                    String request_D = addQuestionForm.get().getAnswerD();
+
+                    String request_answerA = addQuestionForm.get().getHeader();
                     question.addQuestion(request_header,request_details,request_answer,request_from,request_grade );
                     return redirect("/course/"+code).addingToSession(request, "connecting",session_email);
                 }
@@ -307,8 +315,12 @@ public class HomeController extends Controller {
             if (isInstrutor){
                 Course courseInfo = course.course_info(Integer.parseInt(code));
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
-                return ok(views.html.course_ins.render(courseInfo,listq,status,questionFrom,request, messagesApi.preferred(request)));
+
+                Question curr_ques = question.getQuestion(Integer.parseInt(code));
+                ArrayList<Question> curr_ques_q = new ArrayList<>();
+                curr_ques_q.add(curr_ques);
+
+                return ok(views.html.course_ins.render(courseInfo,curr_ques_q,"show_question",questionFrom,request, messagesApi.preferred(request)));
             }
             else {
                 Course courseInfo = course.course_info(Integer.parseInt(code));

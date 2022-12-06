@@ -25,6 +25,7 @@ public class Question {
         this.detail = detail;
         this.answer = answer;
         this.grade = grade;
+
     }
 
     public String getHeader() {
