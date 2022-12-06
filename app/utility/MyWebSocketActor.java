@@ -26,16 +26,23 @@ public class MyWebSocketActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
-                    String email = Json.stringify(message.findPath("email"));
-                    User user = userService.nowChat(email.replace("\"",""));
-                    String comment = Json.stringify(message.findPath("comment"));
-                    String fullName = user.getFirstname() + " " + user.getLastname();
-                    LocalDateTime dateTime = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    comment = comment.replace("\"","");
-                    String test = "{\"user\":\""+fullName+"\"" + "," +
-                            "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
-                    out.tell(Json.parse(test), self());
+                    String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
+                    if ("chat".equals(messageType)){
+                        String email = Json.stringify(message.findPath("email"));
+                        User user = userService.nowChat(email.replace("\"",""));
+                        String comment = Json.stringify(message.findPath("comment"));
+                        String fullName = user.getFirstname() + " " + user.getLastname();
+                        LocalDateTime dateTime = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        comment = comment.replace("\"","");
+                        String test = "{\"user\":\""+fullName+"\"" + "," +
+                                "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
+                        out.tell(Json.parse(test), self());
+                    }else if ("assign".equals(messageType)){
+                        System.out.println("hahahah");
+                        out.tell(message,self());
+                    }
+
                 })
                 .build();
     }
