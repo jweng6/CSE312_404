@@ -5,24 +5,14 @@ import domain.Question;
 import domain.User;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-        Question q = new Question();
-        q.setFrom(1234);
-        q.setHeader("54321test");
-        q.setDetail("54321this is a test");
-        q.setAnswer("54321A");
-        q.setAnswerA("54321a");
-        q.setAnswerB("54321b");
-        q.setAnswerC("54321c");
-        q.setAnswerD("54321d");
-        q.setGrade(10);
-        q.setExpires("541asd");
-        crud.addQuestion(q);
     }
     /* --------------------------------------- userTable -------------------------------------------*/
     public Integer addUser(User user) throws Exception{
@@ -250,6 +240,36 @@ public class CRUD {
         return ret;
     }
 
+    public void updateAnswer(int userid, String answer) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = "" +
+                "update joinCourse set answer = ? where userid = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, answer);
+        psmt.setInt(2, userid);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
+    public Map<Integer, String> getAnswerByCourse(Integer courseId) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        Map<Integer, String> ret = new HashMap<>();
+        String sql = "" +
+                "select userid,answer from joinCourse where courseCode = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, courseId);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()) {
+            ret.put(rs.getInt("userid"), rs.getString("answer"));
+        }
+        psmt.close();
+        conn.close();
+        return ret;
+    }
+
 
     /* --------------------------------------- Question Table -------------------------------------------*/
     public void addQuestion(Question question) throws Exception{
@@ -292,7 +312,7 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         ArrayList<Question> ret = new ArrayList<>();
         String sql = "" +
-                "SELECT id,header,detail,answer,grade FROM questionTable WHERE courseId = ? AND expires != NULL";
+                "SELECT id,header,detail,answer,grade,expires FROM questionTable WHERE courseId = ? AND expires is not null";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
         ResultSet rs = psmt.executeQuery();
@@ -352,8 +372,16 @@ public class CRUD {
         return total;
     }
 
-    public void updateExpire(int questionId, String expire) {
-
+    public void updateExpire(int questionId, String expire) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateQuestionTable();
+        String sql = "update questionTable set expires = ? where id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, expire);
+        psmt.setInt(2, questionId);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
     }
 
 

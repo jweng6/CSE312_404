@@ -68,6 +68,7 @@ public class JDBC {
                 "userid INT, " +
                 "courseCode INT, "+
                 "grade INT DEFAULT 0, " +
+                "answer TEXT, " +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
