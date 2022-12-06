@@ -6,10 +6,34 @@ import domain.User;
 import java.sql.*;
 import java.util.ArrayList;
 
+
 public class CRUD {
 
+    public static void main(String[] args) {
+        CRUD crud = new CRUD();
+//        CourseId, header, detail, answer, grade
+        User user = new User("chuan@123","chuan","last","123");
+        Question question = new Question(1,"hah","nihao","budui",20);
+        try {
+            String d = "An essay is, generally, a piece of writing that gives the author's own argument, but the definition is vague, overlapping with those of a letter, a paper, an article, a pamphlet, and a short story. Essays have been sub-classified as formal and informal: formal essays are characterized by \"serious purpose, dignity, logical organization, length,\" whereas the informal essay is characterized by \"the personal element (self-revelation, individual tastes and experiences, confidential manner), humor, graceful style, rambling structure, unconventionality or novelty of theme,\" etc";
+            crud.updateDescription(1,d);
+//            crud.addUser(user);
+//            psmt.setString(1, user.getEmail());
+//            psmt.setString(2, user.getFirstname());
+//            psmt.setString(3, user.getLastname());
+//            psmt.setString(4, user.getPassword());
+
+//            crud.getAllUserByCourse(1);
+//            crud.addQuestion(question);
+//            crud.joinCourse(8,14552);
+//            crud.updateGrade(1,30);
+//            System.out.println(crud.returnGrade(8));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /* --------------------------------------- userTable -------------------------------------------*/
-    public static Integer addUser(User user) throws Exception{
+    public Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         Integer id = 0;
@@ -44,11 +68,27 @@ public class CRUD {
         while(rs.next()){
             user.setId(rs.getInt("id"));
             user.setEmail(rs.getString("email"));
+            user.setFirstname(rs.getString("firstname"));
+            user.setLastname(rs.getString("lastname"));
             user.setPassword(rs.getString("password"));
+            user.setDescription(rs.getString("description"));
         }
         psmt.close();
         conn.close();
         return user;
+    }
+
+    public void updateDescription(int id, String description) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateUserTable();
+        String sql = "" +
+                "update userTable set description = ? where id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, description);
+        psmt.setInt(2, id);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
     }
 
     public User getUserByEmail(String email) throws SQLException, ClassNotFoundException {
@@ -66,6 +106,7 @@ public class CRUD {
             user.setFirstname(rs.getString("firstname"));
             user.setLastname(rs.getString("lastname"));
             user.setPassword(rs.getString("password"));
+            user.setDescription(rs.getString("description"));
         }
         if (user.getId() == 0) {
             return null;
@@ -84,7 +125,6 @@ public class CRUD {
                 "INSERT INTO courseTable" +
                 "(instr_email, courseName, courseCode)"+
                 "values(?,?,?)";
-
 
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         psmt.setString(1, instr.getEmail());
@@ -187,10 +227,40 @@ public class CRUD {
         return ret;
     }
 
+    public void updateGrade(int userid, int grade) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = "" +
+                "update joinCourse set grade = ? where userid = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,grade);
+        psmt.setInt(2,userid);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
+    public int returnGrade(int userid) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = "" +
+                "select grade from joinCourse where userid = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,userid);
+        ResultSet rs = psmt.executeQuery();
+        int ret = 0;
+        while (rs.next()){
+            ret = rs.getInt("grade");
+        }
+        rs.close();
+        psmt.close();
+        conn.close();
+        return ret;
+
+    }
 
 
     /* --------------------------------------- Question Table -------------------------------------------*/
-
     public void addQuestion(Question question) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
@@ -209,6 +279,19 @@ public class CRUD {
         conn.close();
     }
 
+//    public void setTimer(int question_id, long expires) throws Exception{
+//        JDBC.getConnection();
+//        Connection conn = JDBC.CreateQuestionTable();
+//        String sql = ""+
+//                "UPDATE questionTable SET expires = ? where id = ?";
+//        PreparedStatement psmt = conn.prepareStatement(sql);
+//        psmt.setLong(1,expires);
+//        psmt.setInt(2,question_id);
+//        psmt.executeUpdate();
+//        psmt.close();
+//        conn.close();
+//    }
+
     public ArrayList<Question> getAllQuestionByHeader(Integer courseId) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
@@ -225,6 +308,7 @@ public class CRUD {
             curr_ques.setDetail(rs.getString("detail"));
             curr_ques.setAnswer(rs.getString("answer"));
             curr_ques.setGrade(rs.getInt("grade"));
+//            curr_ques.setExpires(rs.getInt());
             ret.add(curr_ques);
         }
         psmt.close();
@@ -250,6 +334,23 @@ public class CRUD {
         psmt.close();
         conn.close();
         return ret;
+    }
+
+    public int getAllQuestionGradeByCourse(int courseId) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateQuestionTable();
+        String sql = "select grade from questionTable where courseId = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,courseId);
+        ResultSet rs = psmt.executeQuery();
+        int total = 0;
+        while (rs.next()){
+            total += rs.getInt("grade");
+        }
+        rs.close();
+        psmt.close();
+        conn.close();
+        return total;
     }
 
 

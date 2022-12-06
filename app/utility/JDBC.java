@@ -12,9 +12,9 @@ public class JDBC {
 //    static String Url = "jdbc:mysql://localhost:3306/?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
     static final String Url = "jdbc:mysql://localhost:3306/cse312";
     static final String User = "root" ;
-    //static final String PassWord = "jia893607219";
+    static final String PassWord = "jia893607219";
 //    static final String PassWord = "0257";
-    static final String PassWord = "JayX2029";
+//    static final String PassWord = "JayX2029";
 
 
 
@@ -39,6 +39,7 @@ public class JDBC {
                     "firstname VARCHAR(516)," +
                     "lastname VARCHAR(516)," +
                     "password VARCHAR(516), "+
+                    "description TEXT, " +
                     "PRIMARY KEY (id));";
         statement.executeUpdate(sql);
         statement.close();
@@ -82,7 +83,7 @@ public class JDBC {
                 "header TEXT, "+
                 "detail TEXT, " +
                 "answer TEXT, "+
-                "grade INT," +
+                "grade INT, " +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();

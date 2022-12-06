@@ -11,7 +11,8 @@ public class User {
     private String email;
     @Required
     private String password;
-    private int user_grade;
+
+    private String description;
 
     public User() {
 
@@ -90,11 +91,14 @@ public class User {
         this.courseId = courseId;
     }
 
-    public int getUser_grade() {
-        return user_grade;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUser_grade(int user_grade) {
-        this.user_grade = user_grade;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+
+
 }

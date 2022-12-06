@@ -1,8 +1,9 @@
 package service.impl;
 
+import domain.Answer;
 import domain.Question;
+import domain.User;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.units.qual.C;
 import service.QuestionService;
 import utility.CRUD;
 
@@ -47,4 +48,44 @@ public class QuestionImpl implements QuestionService {
         }
         return null;
     }
+
+    @Override
+    public Answer answerQuestion(int question_id, String email, String answer) {
+        Answer ret = new Answer();
+        try {
+            Question question = crud.getQuestion(question_id);
+            User user = crud.getUserByEmail(email);
+            ret.setQuestion_id(question_id);
+            ret.setStudent_email(email);
+            int current = crud.returnGrade(user.getId());
+            if (answer.equals(question.getAnswer())){
+                int nowGrade = current + question.getGrade();
+                crud.updateGrade(user.getId(),nowGrade);
+                ret.setCheck(true);
+                ret.setReturn_grade(nowGrade);
+            }else {
+                ret.setCheck(false);
+                ret.setReturn_grade(current);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public static void main(String[] args) {
+        QuestionImpl q = new QuestionImpl();
+        Answer answer = q.answerQuestion(1, "chuanlon@buffalo.edu", "budui");
+        System.out.println(answer.getReturn_grade());
+    }
+//    @Override
+//    public void setTimer(int question_id, int min) {
+//        LocalDateTime localDateTime = LocalDateTime.now();
+//        LocalDateTime now = localDateTime.plusMinutes(min);
+//        try {
+//            crud.setTimer(question_id,now.toEpochSecond(zoneOffset));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

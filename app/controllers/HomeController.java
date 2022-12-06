@@ -192,31 +192,29 @@ public class HomeController extends Controller {
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
-    public Result showCourse(String code,Http.Request request){
-        //确定用户是在线的
-        Optional<String> connecting = request.session().get("connecting");
-        System.out.println("session connecting:");
-        System.out.println(connecting);
-        System.out.println("\n");
-
-        //获取session里的email，然后转换从optional<String> -> String:
-        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-        if (connecting.isPresent() == true){
-
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
-            if (isInstrutor){
-                return ok(views.html.main_instrutor.render());
-            }
-            else {
-                return ok(views.html.main_student.render());
-            }
-
-        }
-
-        //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
-
-    }
+//    public Result showCourse(String code,Http.Request request){
+//        //确定用户是在线的
+//        Optional<String> connecting = request.session().get("connecting");
+//        System.out.println("session connecting:");
+//        System.out.println(connecting);
+//        System.out.println("\n");
+//        //获取session里的email，然后转换从optional<String> -> String:
+//        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+//        if (connecting.isPresent() == true){
+//
+//            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+//            if (isInstrutor){
+//                return ok(views.html.main_instrutor.render());
+//            }
+//            else {
+//                return ok(views.html.main_student.render());
+//            }
+//        }
+//
+//        //不在线（没登入） 返回401
+//        return unauthorized("Oops, you are not connected");
+//
+//    }
 //    public Result addQuestion(Http.Request request){
 ////        String header, String detail, String answer, int from, int grade
 //        Form<Question> addForm = questionForm.bindFromRequest(request);
