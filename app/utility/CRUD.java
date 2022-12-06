@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class CRUD {
 
     /* --------------------------------------- userTable -------------------------------------------*/
-    public static Integer addUser(User user) throws Exception{
+    public Integer addUser(User user) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         Integer id = 0;
@@ -77,7 +77,7 @@ public class CRUD {
 
 
     /* --------------------------------------- courseTable -------------------------------------------*/
-    public  void addCourse(Course course, User instr) throws Exception{
+    public void addCourse(Course course, User instr) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateCourseTable();
         String sql = ""+
