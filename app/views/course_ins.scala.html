@@ -42,7 +42,7 @@
             <table>
                 @for( i <- listq){
                     <tr>
-                        <td id="question_@i.getId()" onclick="">@i.getHeader()</td>
+                        <td id="question_@i.getId()" onclick="select(@i.getId().toString(),@courseInfo.getCode().toString())">@i.getHeader()</td>
                     </tr>
                 }
             </table>
@@ -90,16 +90,22 @@
                     @helper.CSRF.formField
                     <input type="number"  name="from" value="@courseInfo.getCode()" hidden>
                     <label class="label_text" for="header">Question Title: </label><br><br>
-                    <input class="input_box" type="text" id="header" name="header" value=""><br><br>
+                    <input class="input_box" type="text" id="header" name="header" value="" required><br><br>
 
                     <label class="label_text"for="detail">Details:</label><br>
-                    <Textarea rows="10" class="input_box"  id="detail" name="detail" style="height: 150px;" ></Textarea><br><br>
+                    <Textarea rows="10" class="input_box"  id="detail" name="detail" style="height: 150px;" required></Textarea><br><br>
 
-                    <label class="label_text" for="answer">Answer:</label><br>
-                    <Textarea rows="10" class="input_box"  id="answer" name="answer" style="height: 150px;" ></Textarea><br><br>
+                    <label class="label_text" for="answerA">Answer:</label><br>
+                    A: <input class="input_box" type="text" id="answerA" name="answerA" value=""><br>
+                    B: <input class="input_box" type="text" id="answerB" name="answerB" value=""><br>
+                    C: <input class="input_box" type="text" id="answerC" name="answerC" value=""><br>
+                    D: <input class="input_box" type="text" id="answerD" name="answerD" value=""><br><br>
+
+                    <label class="label_text" for="correct_answer">Correct Answer: (Please Enter A,B,C,or D Only)</label><br>
+                    <input class="input_box" type="text" id="correct_answer" name="correct_answer"  pattern="[A-Da-d]{1}" value="" required><br><br>
 
                     <label class="label_text" for="grade">Grade:</label><br>
-                    <input   class="input_box" type="number" id="grade" name="grade" value=""><br><br>
+                    <input   class="input_box" type="number" id="grade" name="grade" value="" required><br><br>
                     <input class="submit_button" type="submit" value="Submit">
                 </form>
             }
@@ -167,13 +173,6 @@
                     </tr>
                 </table>
             }
-
-
-
-
-
-
-
 
         </div>
     </div>

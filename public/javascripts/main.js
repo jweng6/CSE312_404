@@ -7,8 +7,9 @@ function check(input) {
     }
 }
 
-function select(id){
+function select(id,code){
     document.getElementById("current_select_question_id").value = id
+    location.href = '/course/'+code +'/question/'+id
 }
 
 

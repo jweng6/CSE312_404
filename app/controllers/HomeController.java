@@ -218,7 +218,7 @@ public class HomeController extends Controller {
             if (isInstrutor){
                 Course courseInfo = course.course_info(Integer.parseInt(code));
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-//              这里面是：main_instrutor.render(courseInfo,show))
+//              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request)))
 //                    show：0 = 不显示东西 ; 1 = 选择问题后，准备输入时间，然后发布 ; 2 = add question ; 3 = roster
 
                 String s = "none";
@@ -250,7 +250,7 @@ public class HomeController extends Controller {
             if (isInstrutor){
                 Course courseInfo = course.course_info(Integer.parseInt(code));
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-//              这里面是：main_instrutor.render(courseInfo,show))
+//              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request)))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
                 List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
                 return ok(views.html.course_ins.render(courseInfo,listq,status,questionFrom,request, messagesApi.preferred(request)));
@@ -274,13 +274,12 @@ public class HomeController extends Controller {
             if (isInstrutor){
                 Course courseInfo = course.course_info(Integer.parseInt(code));
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-//              这里面是：main_instrutor.render(courseInfo,show))
+//              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request)))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
                 List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
 
                 if (status.equals("add_question")){
                     final Form<Question> addQuestionForm = questionFrom.bindFromRequest(request);
-
                     String request_header = addQuestionForm.get().getHeader();
                     Integer request_from = addQuestionForm.get().getFrom();
                     String request_details = addQuestionForm.get().getDetail();
@@ -289,6 +288,27 @@ public class HomeController extends Controller {
                     question.addQuestion(request_header,request_details,request_answer,request_from,request_grade );
                     return redirect("/course/"+code).addingToSession(request, "connecting",session_email);
                 }
+            }
+            else {
+                Course courseInfo = course.course_info(Integer.parseInt(code));
+                return ok(views.html.main_student.render(courseInfo,0));
+            }
+        }
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+    }
+
+
+    public Result show_question(String code,String questionId){
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+            if (isInstrutor){
+                Course courseInfo = course.course_info(Integer.parseInt(code));
+                courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
+                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
+                return ok(views.html.course_ins.render(courseInfo,listq,status,questionFrom,request, messagesApi.preferred(request)));
             }
             else {
                 Course courseInfo = course.course_info(Integer.parseInt(code));
