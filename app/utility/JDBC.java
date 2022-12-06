@@ -4,6 +4,7 @@ import java.sql.*;
 
 public class JDBC {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        CreateQuestionTable();
     }
 
     static final String JdbcDriver = "com.mysql.cj.jdbc.Driver";
@@ -13,9 +14,9 @@ public class JDBC {
 
     static final String Url = "jdbc:mysql://localhost:3306/cse312";
     static final String User = "root" ;
-//    static final String PassWord = "jia893607219";
-    static final String PassWord = "0257";
-//    static final String PassWord = "JayX2029";
+    //static final String PassWord = "jia893607219";
+//    static final String PassWord = "0257";
+    static final String PassWord = "JayX2029";
 
 
 
@@ -67,6 +68,23 @@ public class JDBC {
                 "(id INT AUTO_INCREMENT, " +
                 "userid INT, " +
                 "courseCode INT, "+
+                "grade INT DEFAULT 0, " +
+                "PRIMARY KEY (id))";
+        statement.executeUpdate(sql);
+        statement.close();
+        return connection;
+    }
+
+    public static Connection CreateQuestionTable() throws SQLException, ClassNotFoundException {
+        Connection connection = JDBC.getConnection();
+        Statement statement = connection.createStatement();
+        String sql = "create table if not exists questionTable "+
+                "(id INT AUTO_INCREMENT, " +
+                "courseId INT, " +
+                "header TEXT, "+
+                "detail TEXT, " +
+                "answer TEXT, "+
+                "grade INT," +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
