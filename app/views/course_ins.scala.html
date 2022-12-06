@@ -3,7 +3,7 @@
 @import domain.Course
 @import domain.Question
 
-@(courseInfo:Course,listq: List[Question],show:String)(questionForm: Form[domain.Question])(implicit request: Request, messages: Messages)
+@(courseInfo:Course,listq: List[Question],show:String,currq:Question)(questionForm: Form[domain.Question])(implicit request: Request, messages: Messages)
 
 
 <!DOCTYPE html>
@@ -111,52 +111,52 @@
             }
 
             @if(show.equals("show_question")){
-                @for(i <- listq){
-                    <div style="width: 100%;height: Calc(97%- 62px) ;min-height: 65vh;position: relative;overflow: auto">
-                        <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
-                            <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
-                        </svg> @i.getHeader()</p>
+
+                <div style="width: 100%;height: Calc(97%- 62px) ;min-height: 65vh;position: relative;overflow: auto">
+                    <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+                    </svg> @currq.getHeader()</p>
 
 
-                        <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
-                            <label class="label_text" for="Detail2">Question Details: </label><br><br>
-                            <Textarea rows="10" class="input_box"  id="Detail2" style="height: 150px;" disabled>
-                                @i.getDetail()
-                            </Textarea><br><br>
+                    <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
+                        <label class="label_text" for="Detail2">Question Details: </label><br><br>
+                        <Textarea rows="10" class="input_box"  id="Detail2" style="height: 150px;" disabled>
+                                    @currq.getDetail()
+                                </Textarea><br><br>
 
-                            <Textarea rows="10" class="input_box"  id="DetailAns" style="height: 150px;" disabled>
-                                A: @i.getAnswerA() <br>
-                                B: @i.getAnswerB() <br>
-                                C: @i.getAnswerC() <br>
-                                D: @i.getAnswerD() <br>
-                            </Textarea><br><br>
+                        <Textarea rows="10" class="input_box"  id="DetailAns" style="height: 150px;" disabled>
+                                    A: @currq.getAnswerA() <br>
+                                    B: @currq.getAnswerB() <br>
+                                    C: @currq.getAnswerC() <br>
+                                    D: @currq.getAnswerD() <br>
+                                </Textarea><br><br>
 
-                            <a class="label_text" style="color:dodgerblue;cursor: pointer">Show Correct Answer</a><br>
-                            <p  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text" id="show_answer" >
-                                @if(i.getAnswer().toUpperCase().equal("A")){
-                                    @i.getAnswerA()
-                                }
-                                @if(i.getAnswer().toUpperCase().equal("B")){
-                                    @i.getAnswerB()
-                                }
-                                @if(i.getAnswer().toUpperCase().equal("C")){
-                                    @i.getAnswerC()
-                                }
-                                @if(i.getAnswer().toUpperCase().equal("D")){
-                                    @i.getAnswerD()
-                                }
-                            </p>
-                        </div>
-
-                        <div class="middle_blue_end" style="float: right;">
-                            <form style="padding-right: 5%;margin-top: 10px;" action="/">
-                                <input style="float: right;"class="submit_button" type="submit" value="Assign">
-                                <input style="width: 20%;float: right;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes" type="time" id="time" value="">
-
-                            </form>
-                        </div>
+                        <a class="label_text" style="color:dodgerblue;cursor: pointer">Show Correct Answer</a><br>
+                        <p  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text" id="show_answer" >
+                            @if(currq.getAnswer().toUpperCase().equals("A")){
+                            @currq.getAnswerA()
+                            }
+                            @if(currq.getAnswer().toUpperCase().equals("B")){
+                            @currq.getAnswerB()
+                            }
+                            @if(currq.getAnswer().toUpperCase().equals("C")){
+                            @currq.getAnswerC()
+                            }
+                            @if(currq.getAnswer().toUpperCase().equals("D")){
+                            @currq.getAnswerD()
+                            }
+                        </p>
                     </div>
-                }
+
+                    <div class="middle_blue_end" style="float: right;">
+                        <form style="padding-right: 5%;margin-top: 10px;" action="/">
+                            <input style="float: right;"class="submit_button" type="submit" value="Assign">
+                            <input style="width: 20%;float: right;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes" type="time" id="time" value="">
+
+                        </form>
+                    </div>
+                </div>
+
 
             }
             @if(show.equals("roster")){
