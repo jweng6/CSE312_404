@@ -1,0 +1,71 @@
+@import play.mvc.Http.Request
+@import domain.Info
+@(list: List[Info])
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main_page.css")">
+    <title>CSE312 Main</title>
+</head>
+<body style="width:100%;height: 100%">
+
+    <div style="height: 25%">
+        <div class="topnav" >
+            <a class="active">Gradebook</a>
+            <a>Home</a>
+            <a onclick="location.href='/profile'">profile</a>
+        </div>
+        <div class="buttons">
+
+            <div class="b1" onclick="location.href='/create'">
+                Create Course
+            </div>
+            <div class="b1" onclick="location.href='/join'">
+                Join Course
+            </div>
+        </div>
+    </div>
+
+    <ul style="height: 70%">
+
+        @for( i <- list){
+            @if(i.getCheck() == "0"){
+                <li onclick="location.href='/course/@i.getCode()'">
+                    <div class="courses">
+                        <div class="coursesleft" >
+                            @i.getCourseName()
+                            <div class="instructoremail">
+                                Instructor email: @i.getEmail()
+                                <div class="code">
+                                    Join code:  @i.getCode()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+            @if(i.getCheck() == "1"){
+                <li onclick="location.href='/course/@i.getCode()'">
+                    <div class="mycourses">
+                        <div class="mycoursesleft">
+                            @i.getCourseName()
+                            <div class="myinstructoremail">
+                                Instructor email: @i.getEmail()
+                                <div class="mycode">
+                                    Join code:  @i.getCode()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+
+    </ul>
+    
+</body>
+</html>

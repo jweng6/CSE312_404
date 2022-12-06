@@ -1,0 +1,98 @@
+@import play.mvc.Http.Request
+
+@import domain.Course
+@(courseInfo:Course)(show:Int)
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main_instrutor.css")">
+    <!link rel="stylesheet" href="main_instrutor.css">
+    
+    <title>CSE312</title>
+    
+</head>
+<body>
+    <div class="top_bar"></div>
+    <div class="logo">LOGO</div>
+    <div class="home">HOME</div>
+    <div class="gradebook">GRADEBOOK</div>
+    <div class="coursename">@courseInfo.getCourseName()</div>
+    <div class="instrutor_email">Instructor: @courseInfo.getEmail()</div>
+    <div class="join_code">Join code: @courseInfo.getCode()</div>
+    <button class="gradebook_button"></button>
+    <div class="gradebook_text">GradeBook</div>
+    <button class="roster_button"></button>
+    <div class="roster_text">Roster</div>
+
+    <button class="add_question_button" onclick="location.href='controllers.HomeController.showAddQuestion(code,request : Request)'" ></button>
+
+    <div class="add_question_text">Add Question</div>
+    <div class="broder1"></div>
+    <div class="broder2"></div>
+    <div class="broder3"></div>
+    <div class="broder4"></div>
+    <div class="broder5"></div>
+    <div class="question1">Question Title</div>
+    <div class="question2">Question Title2</div>
+    <div class="chatroom_text">Chat Room</div>
+
+
+    @if(show == 0){}
+    @if(show == 1){
+        <form method="POST" action="/main_student">
+
+            <!button class="assign_button"></button>
+            <!div class="assign_text">Assign</div>
+            <div class="time_input"></div>
+            <div class="time_input_text">Time(minute)</div>
+            <div class="question_title">Question Title</div>
+            <div class="question_detail">Question details......</div>
+            <input type="text" class="chat_input"></input>
+            <input type="text" class="answer_input"></input>
+            <div class="show_answer">Show Correct Answer</div>
+            <div class="correct_answer">Correct Answer Here After click Show Answer</div>
+            <input class="assign_button" type="submit" value="Assign" >
+        </form>
+    }
+    @if(show == 2){
+        <form method="POST" action="/add_question">
+
+            <!button class="submit_button"></button>
+            <!div class="submit_text">submit</div>
+            <div class="add_question_title_text">Add Question</div>
+            <div class="add_question_title">Question Title:</div>
+            <input type="text" class="chat_input"></input>
+            <input type="text" class="question_title_input" placeholder="title"></input>
+            <div class="question_detail_text">Question Details:</div>
+            <input><textarea type="text" class="question_detail_input" placeholder="detail"></textarea></input>
+            <div class="answer_text">Answer:</div>
+            <input><textarea type="text" class="answer_input" placeholder="answer"></textarea></input>
+            <div class="grade_text">Grade:</div>
+            <input type="text" class="grade_input" placeholder="grade"></input>
+            <input class="submit_button" type="submit" value="Submit" >
+        </form>
+    }
+
+    @if(show == 3){
+        <div class="roster_title">Roster</div>
+        <div class="first_name_broder"></div>
+        <div class="last_name_broder"></div>
+        <div class="email_broder"></div>
+        <div class="first_name">First Name</div>
+        <div class="last_name">Last Name</div>
+        <div class="email">Email</div>
+
+    }
+
+
+
+
+    
+</body>
+</html>
