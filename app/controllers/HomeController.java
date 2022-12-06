@@ -1,6 +1,7 @@
 package controllers;
 
 import domain.Course;
+import domain.Question;
 import domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +10,10 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
 import service.CourseService;
+import service.QuestionService;
 import service.UserService;
 import service.impl.CourseImpl;
+import service.impl.QuestionImpl;
 import service.impl.UserImpl;
 
 
@@ -34,7 +37,9 @@ public class HomeController extends Controller {
 
     UserService user = new UserImpl();
     CourseService course = new CourseImpl();
+    QuestionService question = new QuestionImpl();
     Form<User> userForm;
+    Form<Question> questionFrom;
     Form<Course> courseForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
@@ -44,6 +49,7 @@ public class HomeController extends Controller {
     public HomeController(FormFactory formFactory, MessagesApi messagesApi) {
         this.userForm = formFactory.form(User.class);
         this.courseForm = formFactory.form(Course.class);
+        this.questionFrom = formFactory.form(Question.class);
         this.messagesApi = messagesApi;
     }
         /**
@@ -216,7 +222,8 @@ public class HomeController extends Controller {
 //                    show：0 = 不显示东西 ; 1 = 选择问题后，准备输入时间，然后发布 ; 2 = add question ; 3 = roster
 
                 String s = "none";
-                return ok(views.html.course_ins.render(courseInfo,s));
+                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
+                return ok(views.html.course_ins.render(courseInfo,listq,s,questionFrom,request, messagesApi.preferred(request)));
             }
             else {
                 Integer n = 0;
@@ -245,11 +252,43 @@ public class HomeController extends Controller {
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
 //              这里面是：main_instrutor.render(courseInfo,show))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
+                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
+                return ok(views.html.course_ins.render(courseInfo,listq,status,questionFrom,request, messagesApi.preferred(request)));
+            }
+            else {
+                Course courseInfo = course.course_info(Integer.parseInt(code));
+                return ok(views.html.main_student.render(courseInfo,0));
+            }
+        }
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+    }
 
-                System.out.println(status);
-                return ok(views.html.course_ins.render(courseInfo,status));
 
+    public Result post_course_with_status(String code,String status,Http.Request request) throws SQLException, ClassNotFoundException {
+        //确定用户是在线的
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent()){
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+            if (isInstrutor){
+                Course courseInfo = course.course_info(Integer.parseInt(code));
+                courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
+//              这里面是：main_instrutor.render(courseInfo,show))
+//                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
+                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
 
+                if (status.equals("add_question")){
+                    final Form<Question> addQuestionForm = questionFrom.bindFromRequest(request);
+
+                    String request_header = addQuestionForm.get().getHeader();
+                    Integer request_from = addQuestionForm.get().getFrom();
+                    String request_details = addQuestionForm.get().getDetail();
+                    String request_answer = addQuestionForm.get().getAnswer();
+                    Integer request_grade = addQuestionForm.get().getGrade();
+                    question.addQuestion(request_header,request_details,request_answer,request_from,request_grade );
+                    return redirect("/course/"+code).addingToSession(request, "connecting",session_email);
+                }
             }
             else {
                 Course courseInfo = course.course_info(Integer.parseInt(code));

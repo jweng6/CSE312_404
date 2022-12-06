@@ -1,17 +1,18 @@
 @import play.mvc.Http.Request
 
 @import domain.Course
+@import domain.Question
 
-
-@(courseInfo:Course,show:String)
+@(courseInfo:Course,listq: List[Question],show:String)(questionForm: Form[domain.Question])(implicit request: Request, messages: Messages)
 
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>CSE312</title>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/course.css")"">
+    <script  type="text/javascript" src="@routes.Assets.versioned("javascripts/main.js")""> </script>
 
 </head>
 <body>
@@ -20,7 +21,7 @@
 
     <div class="header">
 
-        <p onclick=href='@routes.HomeController.showMain()' class="direct" style="float: Left;white-space: nowrap;padding-left: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
+        <p onclick=location.href='/main' class="direct" style="float: Left;white-space: nowrap;padding-left: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
         </svg></p>
 
@@ -36,16 +37,16 @@
             <p class="course_text">Join Code: @courseInfo.getCode()</p>
         </div>
         <div class="left_retangle" >
+            <p id="current_select_question_id" hidden></p>
 
             <table>
-                <tr>
-                    <td>Question 1</td>
-                </tr>
-                <tr>
-                    <td>Question 2</td>
-                </tr>
-
+                @for( i <- listq){
+                    <tr>
+                        <td id="question_@i.getId()" onclick="">@i.getHeader()</td>
+                    </tr>
+                }
             </table>
+
 
         </div>
     </div>
@@ -85,7 +86,9 @@
                     <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg> Add question</p>
-                <form style="padding-left: 8%; overflow: auto" action="/" >
+                <form style="padding-left: 8%; overflow: auto" method="POST" action=@routes.HomeController.post_course_with_status(courseInfo.getCode().toString(),"add_question")>
+                    @helper.CSRF.formField
+                    <input type="number"  name="from" value="@courseInfo.getCode()" hidden>
                     <label class="label_text" for="header">Question Title: </label><br><br>
                     <input class="input_box" type="text" id="header" name="header" value=""><br><br>
 

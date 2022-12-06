@@ -126,6 +126,8 @@ th, td {
     padding: 15px;
     text-align: center;
     border-bottom: 1px solid #ddd;
+    background: none;
+
 }
 
 tr:hover {background-color: #9f9f9f;}
