@@ -39,10 +39,14 @@ public class MyWebSocketActor extends AbstractActor {
                                 "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
                         out.tell(Json.parse(test), self());
                     }else if ("assign".equals(messageType)){
+                        //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
                         System.out.println("hahahah");
                         out.tell(message,self());
+                    }else if("answer".equals(messageType)){
+                        //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment }));
+                    }else if ("status".equals(messageType)){
+                        //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
                     }
-
                 })
                 .build();
     }
