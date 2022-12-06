@@ -98,8 +98,18 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public Boolean updateDescription(String email) {
-        return null;
+    public void updateDescription(String email, String description) {
+        try {
+            User user = crud.getUserByEmail(email);
+            crud.updateDescription(user.getId(),description);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        UserImpl u = new UserImpl();
+        u.updateDescription("chuan@123", "nima");
     }
 
 

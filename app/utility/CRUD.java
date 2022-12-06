@@ -94,7 +94,7 @@ public class CRUD {
         JDBC.getConnection();
         Connection conn = JDBC.CreateUserTable();
         String sql = "" +
-                "SELECT id,email,firstname,lastname,password FROM userTable WHERE email=?";
+                "SELECT id,email,firstname,lastname,password,description FROM userTable WHERE email=?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setString(1, email);
         ResultSet rs = psmt.executeQuery();

@@ -14,10 +14,15 @@ public class QuestionImpl implements QuestionService {
     CRUD crud = new CRUD();
 
     @Override
-    public void addQuestion(String header, String detail, String answer, int from, int grade) {
+    public void addQuestion(String header, String detail, String answer, int from, int grade,
+                            String answerA, String answerB, String answerC, String answerD) {
         if(!StringUtils.isAnyBlank(header,detail,answer)){
             try {
                 Question question = new Question(from,header,detail,answer,grade);
+                question.setAnswerA(answerA);
+                question.setAnswerB(answerB);
+                question.setAnswerC(answerC);
+                question.setAnswerD(answerD);
                 crud.addQuestion(question);
             } catch (Exception e) {
                 e.printStackTrace();
