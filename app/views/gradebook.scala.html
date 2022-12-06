@@ -1,6 +1,5 @@
-@import play.mvc.Http.Request
-@(createForm: Form[domain.User])(implicit request: Request, messages: Messages)
 
+@import play.mvc.Http.Request
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +11,8 @@
 <body>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/gradebook.css")">
     <div class="topnav">
-        <a class="active">Gradebook</a>
-        <a href="#news">Home</a>
+        <a class="active" onclick="location.href='/gradebook'">GradeBook</a>
+        <a onclick="location.href='/main'">Home</a>
     </div>
     <div>
         <li>
@@ -26,7 +25,7 @@
                 </div>
                 <div class="coursesright">
                     <p>100/100</p>
-                    <div class="view">
+                    <div class="view" onclick="location.href='/studentgradebook'">
                         <p>View All Work</p>
                     </div>
                 </div>
@@ -42,8 +41,8 @@
                 </div>
                 <div class="mycoursesright">
                         <p>Manage</p>
-                    <div class="myview">
-                        <p>View All Work</p>
+                    <div class="myview" onclick="location.href='/instructorgradebook'">
+                        <p >View All Work</p>
                     </div>
                 </div>
             </div>
