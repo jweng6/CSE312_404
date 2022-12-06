@@ -9,26 +9,16 @@ import java.util.ArrayList;
 
 public class CRUD {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-//        CourseId, header, detail, answer, grade
-        User user = new User("chuan@123","chuan","last","123");
-        Question question = new Question(1,"hah","nihao","budui",20);
-        try {
-//            crud.addUser(user);
-//            psmt.setString(1, user.getEmail());
-//            psmt.setString(2, user.getFirstname());
-//            psmt.setString(3, user.getLastname());
-//            psmt.setString(4, user.getPassword());
+        System.out.println(crud.getQuestion(7).getAnswerA());
+        System.out.println(crud.getQuestion(7).getAnswerB());
+        System.out.println(crud.getQuestion(7).getAnswerC());
+        System.out.println(crud.getQuestion(7).getAnswerD());
+        System.out.println(crud.getQuestion(7).getDetail());
+        System.out.println(crud.getQuestion(7).getHeader());
 
-//            crud.getAllUserByCourse(1);
-//            crud.addQuestion(question);
-//            crud.joinCourse(8,14552);
-//            crud.updateGrade(1,30);
-//            System.out.println(crud.returnGrade(8));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
     /* --------------------------------------- userTable -------------------------------------------*/
     public Integer addUser(User user) throws Exception{
@@ -264,14 +254,18 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         String sql = ""+
                 "INSERT INTO questionTable" +
-                "(CourseId, header, detail, answer, grade)"+
-                "values(?,?,?,?,?)";
+                "(CourseId, header, detail, answer, choiceA, choiceB, choiceC, choiceD, grade)"+
+                "values(?,?,?,?,?,?,?,?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         psmt.setInt(1, question.getFrom());
         psmt.setString(2, question.getHeader());
         psmt.setString(3, question.getDetail());
         psmt.setString(4, question.getAnswer());
-        psmt.setInt(5, question.getGrade());
+        psmt.setString(5, question.getAnswerA());
+        psmt.setString(6, question.getAnswerB());
+        psmt.setString(7, question.getAnswerC());
+        psmt.setString(8, question.getAnswerD());
+        psmt.setInt(9, question.getGrade());
         psmt.executeUpdate();
         psmt.close();
         conn.close();
@@ -319,7 +313,7 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         Question ret = new Question();
         String sql = "" +
-                "SELECT header,detail,answer,grade FROM questionTable WHERE id = ?";
+                "SELECT header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, questionId);
         ResultSet rs = psmt.executeQuery();
@@ -327,6 +321,10 @@ public class CRUD {
             ret.setHeader(rs.getString("header"));
             ret.setDetail(rs.getString("detail"));
             ret.setAnswer(rs.getString("answer"));
+            ret.setAnswerA(rs.getString("choiceA"));
+            ret.setAnswerB(rs.getString("choiceB"));
+            ret.setAnswerC(rs.getString("choiceC"));
+            ret.setAnswerD(rs.getString("choiceD"));
             ret.setGrade(rs.getInt("grade"));
         }
         psmt.close();
