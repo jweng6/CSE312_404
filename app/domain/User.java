@@ -87,6 +87,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
