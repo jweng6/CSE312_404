@@ -11,9 +11,9 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-        System.out.println(crud.getQuestion(7).getAnswerA());
-        System.out.println(crud.getQuestion(7).getAnswerB());
-        System.out.println(crud.getQuestion(7).getAnswerC());
+        System.out.println(crud.getQuestion(1).getAnswerA());
+        System.out.println(crud.getQuestion(1).getAnswerB());
+        System.out.println(crud.getQuestion(1).getAnswerC());
         System.out.println(crud.getQuestion(7).getAnswerD());
         System.out.println(crud.getQuestion(7).getDetail());
         System.out.println(crud.getQuestion(7).getHeader());
