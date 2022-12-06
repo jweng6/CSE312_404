@@ -12,7 +12,10 @@ public class Question {
     private String answerB;
     private String answerC;
     private String answerD;
-//    private int expires;
+
+
+
+    private String expires;
 //    private String dueDay;
 
     public Question() {
@@ -108,23 +111,13 @@ public class Question {
         this.answerD = answerD;
     }
 
+    public String getExpires() {
+        return expires;
+    }
 
-
-//    public int getExpires() {
-//        return expires;
-//    }
-//
-//    public void setExpires(int expires) {
-//        this.expires = expires;
-//    }
-
-//    public String getDueDay() {
-//        return dueDay;
-//    }
-//
-//    public void setDueDay(String dueDay) {
-//        this.dueDay = dueDay;
-//    }
+    public void setExpires(String expires) {
+        this.expires = expires;
+    }
 
 
 }
