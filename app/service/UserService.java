@@ -14,4 +14,5 @@ public interface UserService {
      User getUserByEmail(String email) throws SQLException, ClassNotFoundException;
      ArrayList<Course> getAllCourse(String email);
      List<User> showAllStudent(int courseId);
+     Boolean updateDescription(String email);
 }

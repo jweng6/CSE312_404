@@ -97,5 +97,10 @@ public class UserImpl implements UserService {
         return null;
     }
 
+    @Override
+    public Boolean updateDescription(String email) {
+        return null;
+    }
+
 
 }
