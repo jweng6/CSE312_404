@@ -31,7 +31,8 @@ function sendMessage() {
     chatBox.value = "";
     chatBox.focus();
     if (comment !== "") {
-        socket.send(JSON.stringify({'messageType': 'chatMessage', 'comment': comment}));
+        socket.send(JSON.stringify({'email': 'chuanlon@buffalo.edu', 'comment': comment}));
+        // socket.send(comment)
     }
 }
 
