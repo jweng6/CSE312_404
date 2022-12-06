@@ -96,10 +96,10 @@
                     <Textarea rows="10" class="input_box"  id="detail" name="detail" style="height: 150px;" required></Textarea><br><br>
 
                     <label class="label_text" for="answerA">Answer:</label><br>
-                    A: <input class="input_box" type="text" id="answerA" name="answerA" value=""><br>
-                    B: <input class="input_box" type="text" id="answerB" name="answerB" value=""><br>
-                    C: <input class="input_box" type="text" id="answerC" name="answerC" value=""><br>
-                    D: <input class="input_box" type="text" id="answerD" name="answerD" value=""><br><br>
+                    A: <input class="input_box" type="text" id="answerA" name="answerA" value=""><br><br>
+                    B: <input class="input_box" type="text" id="answerB" name="answerB" value=""><br><br>
+                    C: <input class="input_box" type="text" id="answerC" name="answerC" value=""><br><br>
+                    D: <input class="input_box" type="text" id="answerD" name="answerD" value=""><br><br><br>
 
                     <label class="label_text" for="answer">Correct Answer: (Please Enter A,B,C,or D Only)</label><br>
                     <input class="input_box" type="text" id="answer" name="answer"  pattern="[A-Da-d]{1}" value="" required><br><br>
@@ -120,32 +120,33 @@
 
                     <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
                         <label class="label_text" for="Detail2">Question Details: </label><br><br>
-                        <Textarea rows="10" class="input_box"  id="Detail2" style="height: 150px;" disabled>
-                                    @currq.getDetail()
-                                </Textarea><br><br>
+                        <input class="input_box"  style="border-color: #6e6e6e" id="Detail2" value="@currq.getDetail()" disabled>
 
-                        <Textarea rows="10" class="input_box"  id="DetailAns" style="height: 150px;" disabled>
-                                    A: @currq.getAnswerA() <br>
-                                    B: @currq.getAnswerB() <br>
-                                    C: @currq.getAnswerC() <br>
-                                    D: @currq.getAnswerD() <br>
-                                </Textarea><br><br>
+                        </Textarea><br><br>
+                        <p><strong>A:</strong> @currq.getAnswerA()</p>
+                        <p><strong>B: </strong>@currq.getAnswerB()</p>
+                        <p><strong>C: </strong>@currq.getAnswerC()</p>
+                        <p><strong>D: </strong>@currq.getAnswerD()</p>
 
-                        <a class="label_text" style="color:dodgerblue;cursor: pointer">Show Correct Answer</a><br>
-                        <p  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text" id="show_answer" >
-                            @if(currq.getAnswer().toUpperCase().equals("A")){
-                            @currq.getAnswerA()
-                            }
-                            @if(currq.getAnswer().toUpperCase().equals("B")){
-                            @currq.getAnswerB()
-                            }
-                            @if(currq.getAnswer().toUpperCase().equals("C")){
-                            @currq.getAnswerC()
-                            }
-                            @if(currq.getAnswer().toUpperCase().equals("D")){
-                            @currq.getAnswerD()
-                            }
-                        </p>
+                        <a class="label_text" style="color:dodgerblue;cursor: pointer">Correct Answer:
+
+                            <p  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text" id="show_answer" >
+                                @if(currq.getAnswer().toUpperCase().equals("A")){
+                                    A: @currq.getAnswerA()
+                                }
+                                @if(currq.getAnswer().toUpperCase().equals("B")){
+                                    B: @currq.getAnswerB()
+                                }
+                                @if(currq.getAnswer().toUpperCase().equals("C")){
+                                    C: @currq.getAnswerC()
+                                }
+                                @if(currq.getAnswer().toUpperCase().equals("D")){
+                                    D: @currq.getAnswerD()
+                                }
+                            </p>
+
+                        </a><br>
+
                     </div>
 
                     <div class="middle_blue_end" style="float: right;">
