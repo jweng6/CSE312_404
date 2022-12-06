@@ -343,6 +343,20 @@ public class HomeController extends Controller {
         }
         return unauthorized("Oops, you are not connected");
     }
+    public Result showinstructorgradebook(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        if (connecting.isPresent() == true){
+            return ok(views.html.instructorgradebook.render());
+        }
+        return unauthorized("Oops, you are not connected");
+    }
+    public Result showstudentgradebook(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        if (connecting.isPresent() == true){
+            return ok(views.html.studentgradebook.render());
+        }
+        return unauthorized("Oops, you are not connected");
+    }
 
 
 
