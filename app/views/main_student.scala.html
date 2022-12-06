@@ -1,5 +1,7 @@
 @import play.mvc.Http.Request
 
+@import domain.Course
+@(courseInfo: Course)(show: Int)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +19,9 @@
     <div class="logo">LOGO</div>
     <div class="home">HOME</div>
     <div class="gradebook">GRADEBOOK</div>
-    <div class="coursename">COURSE NAME</div>
-    <div class="instrutor_email">instrutor: xxxgmail.com</div>
-    <div class="join_code">join code: 123456</div>
+    <div class="coursename">@courseInfo.getCourseName()</div>
+    <div class="instrutor_email">Instructor: @courseInfo.getEmail()</div>
+    <div class="join_code">Join code: @courseInfo.getCode()</div>
     <button class="gradebook_button"></button>
     <div class="gradebook_text">GradeBook</div>
     <div class="broder1"></div>

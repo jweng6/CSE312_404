@@ -7,6 +7,11 @@ function check(input) {
     }
 }
 
+function select(id,code){
+    document.getElementById("current_select_question_id").value = id
+    location.href = '/course/'+code +'/question/'+id
+}
+
 // Establish a WebSocket connection with the server
 const socket = new WebSocket('ws://' + window.location.host + '/ws');
 
@@ -26,7 +31,8 @@ function sendMessage() {
     chatBox.value = "";
     chatBox.focus();
     if (comment !== "") {
-        socket.send(JSON.stringify({'messageType': 'chatMessage', 'comment': comment}));
+        socket.send(JSON.stringify({'messageType':'assign','email': 'chuanlon@buffalo.edu', 'comment': comment}));
+        // socket.send(comment)
     }
 }
 

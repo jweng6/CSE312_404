@@ -9,4 +9,5 @@ public interface CourseService {
     Boolean joinCourse(String email, int code);
     List<Info> showCourse(String email);
     Boolean isInstrutor(int code,String email);
+    Course course_info(int code);
 }

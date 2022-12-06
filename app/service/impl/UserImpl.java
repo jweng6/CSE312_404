@@ -9,7 +9,12 @@ import utility.CRUD;
 import utility.Constant;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,8 +103,28 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public Boolean updateDescription(String email) {
+    public void updateDescription(String email, String description) {
+        try {
+            User user = crud.getUserByEmail(email);
+            crud.updateDescription(user.getId(),description);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public User nowChat(String userEmail){
+        try {
+            return crud.getUserByEmail(userEmail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
+    }
+
+    public static void main(String[] args) {
+        UserImpl u = new UserImpl();
+//        System.out.println(u.nowChat("chuanlon@buffalo.edu").getLastname());
+
     }
 
 

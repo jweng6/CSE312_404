@@ -8,13 +8,13 @@ public class JDBC {
     }
 
     static final String JdbcDriver = "com.mysql.cj.jdbc.Driver";
-//    static final String Url = "jdbc:mysql://mysql:3306/db";
+    //    static final String Url = "jdbc:mysql://mysql:3306/db";
 //    static String Url = "jdbc:mysql://localhost:3306/?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
     static final String Url = "jdbc:mysql://localhost:3306/cse312";
     static final String User = "root" ;
-//    static final String PassWord = "jia893607219";
+        static final String PassWord = "jia893607219";
 //    static final String PassWord = "0257";
-    static final String PassWord = "JayX2029";
+//    static final String PassWord = "JayX2029";
 
 
 
@@ -34,13 +34,13 @@ public class JDBC {
         Connection connection = JDBC.getConnection();
         Statement statement = connection.createStatement();
         String sql = "create table if not exists userTable "+
-                    "(id INT AUTO_INCREMENT, " +
-                    "email VARCHAR(516), " +
-                    "firstname VARCHAR(516)," +
-                    "lastname VARCHAR(516)," +
-                    "password VARCHAR(516), "+
-                    "description TEXT, " +
-                    "PRIMARY KEY (id));";
+                "(id INT AUTO_INCREMENT, " +
+                "email VARCHAR(516), " +
+                "firstname VARCHAR(516)," +
+                "lastname VARCHAR(516)," +
+                "password VARCHAR(516), "+
+                "description TEXT, " +
+                "PRIMARY KEY (id));";
         statement.executeUpdate(sql);
         statement.close();
         return connection;
