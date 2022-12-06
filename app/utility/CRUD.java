@@ -11,13 +11,18 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-        System.out.println(crud.getQuestion(1).getAnswerA());
-        System.out.println(crud.getQuestion(1).getAnswerB());
-        System.out.println(crud.getQuestion(1).getAnswerC());
-        System.out.println(crud.getQuestion(7).getAnswerD());
-        System.out.println(crud.getQuestion(7).getDetail());
-        System.out.println(crud.getQuestion(7).getHeader());
-
+        Question q = new Question();
+        q.setFrom(1234);
+        q.setHeader("54321test");
+        q.setDetail("54321this is a test");
+        q.setAnswer("54321A");
+        q.setAnswerA("54321a");
+        q.setAnswerB("54321b");
+        q.setAnswerC("54321c");
+        q.setAnswerD("54321d");
+        q.setGrade(10);
+        q.setExpires("541asd");
+        crud.addQuestion(q);
     }
     /* --------------------------------------- userTable -------------------------------------------*/
     public Integer addUser(User user) throws Exception{
@@ -287,7 +292,7 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         ArrayList<Question> ret = new ArrayList<>();
         String sql = "" +
-                "SELECT id,header,detail,answer,grade FROM questionTable WHERE courseId = ?";
+                "SELECT id,header,detail,answer,grade FROM questionTable WHERE courseId = ? AND expires != NULL";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
         ResultSet rs = psmt.executeQuery();
@@ -298,7 +303,7 @@ public class CRUD {
             curr_ques.setDetail(rs.getString("detail"));
             curr_ques.setAnswer(rs.getString("answer"));
             curr_ques.setGrade(rs.getInt("grade"));
-//            curr_ques.setExpires(rs.getInt());
+            curr_ques.setExpires(rs.getString("expires"));
             ret.add(curr_ques);
         }
         psmt.close();
@@ -345,6 +350,10 @@ public class CRUD {
         psmt.close();
         conn.close();
         return total;
+    }
+
+    public void updateExpire(int questionId, String expire) {
+
     }
 
 
