@@ -8,6 +8,10 @@ public class Question {
     private int from;
     private int id;
     private int grade;
+    private String answerA;
+    private String answerB;
+    private String answerC;
+    private String answerD;
 //    private int expires;
 //    private String dueDay;
 
@@ -70,6 +74,40 @@ public class Question {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getAnswerA() {
+        return answerA;
+    }
+
+    public void setAnswerA(String answerA) {
+        this.answerA = answerA;
+    }
+
+    public String getAnswerB() {
+        return answerB;
+    }
+
+    public void setAnswerB(String answerB) {
+        this.answerB = answerB;
+    }
+
+    public String getAnswerC() {
+        return answerC;
+    }
+
+    public void setAnswerC(String answerC) {
+        this.answerC = answerC;
+    }
+
+    public String getAnswerD() {
+        return answerD;
+    }
+
+    public void setAnswerD(String answerD) {
+        this.answerD = answerD;
+    }
+
+
 
 //    public int getExpires() {
 //        return expires;
