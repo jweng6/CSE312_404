@@ -35,7 +35,7 @@ public class MyWebSocketActor extends AbstractActor {
                         LocalDateTime dateTime = LocalDateTime.now();
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         comment = comment.replace("\"","");
-                        String test = "{\"user\":\""+fullName+"\"" + "," +
+                        String test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
                                 "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
                         out.tell(Json.parse(test), self());
                     }else if ("assign".equals(messageType)){
