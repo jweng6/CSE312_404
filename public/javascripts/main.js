@@ -24,9 +24,12 @@ document.addEventListener("keypress", function (event) {
     }
 });
 
+
+
 // Read the comment the user is sending to chat and send it to the server over the WebSocket as a JSON string
 function sendMessage(email) {
-    const chatBox = document.getElementById("email");
+    console.log(email);
+    const chatBox = document.getElementById("chat-comment");
     const comment = chatBox.value;
     chatBox.value = "";
     chatBox.focus();
@@ -38,8 +41,9 @@ function sendMessage(email) {
     }
 }
 
-function sendLive(socket) {
-    socket.send(JSON.stringify({'messageType':'live'}));
+function sendStatus(socket,status) {
+    const id = document.getElementById("current_select_question_id").value;
+    socket.send(JSON.stringify({'messageType':"status", "live" : status, "question": id}));
 }
 
 function sendAssign(id){
@@ -49,8 +53,8 @@ function sendAssign(id){
 
 // Renders a new chat message to the page
 function addMessage(chatMessage) {
-    let chat = document.getElementById('chat');
-    chat.innerHTML += "<b>" + chatMessage['username'] + "</b>: " + chatMessage["comment"] + "<br/>";
+    let chat = document.getElementById('chat_all_message');
+    chat.innerHTML += '<div className="chat_message">' + '<p><b>'+ chatMessage["user"] +'</b>' +' '+ chatMessage["current"].slice(10, -3) + '</p>'+ '<div className="chat_message_white">' + '<p>' + chatMessage["comment"] + '</p> </div> </div>'
 }
 
 
@@ -59,6 +63,7 @@ function addMessage(chatMessage) {
 socket.onmessage = function (ws_message) {
     const message = JSON.parse(ws_message.data);
     const messageType = message.messageType
+    console.log(message)
 
     switch (messageType) {
         case 'chatMessage':
