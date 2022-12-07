@@ -30,7 +30,7 @@ public class MyWebSocketActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
-                    Constant.list.add(self());
+                    Constant.list.add(this.out);
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
                     LocalDateTime dateTime = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -43,7 +43,7 @@ public class MyWebSocketActor extends AbstractActor {
                         String test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
                                 "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
                         for (int i = 0; i<Constant.list.size();i++){
-                            out.tell(Json.parse(test), Constant.list.get(i));
+                            Constant.list.get(i).tell(Json.parse(test), self());
                         }
                     }else if ("assign".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
