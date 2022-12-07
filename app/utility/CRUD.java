@@ -7,6 +7,9 @@ import domain.User;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -345,10 +348,14 @@ public class CRUD {
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
         ArrayList<Question> ret = new ArrayList<>();
+        LocalDateTime dateTime = LocalDateTime.now();
+        ZoneOffset zoneOffset = OffsetDateTime.now().getOffset();
+        long nowTime = dateTime.toEpochSecond(zoneOffset);
         String sql = "" +
-                "SELECT id,header,detail,answer,grade,expires FROM questionTable WHERE courseId = ? AND expires != 0";
+                "SELECT id,header,detail,answer,grade,expires FROM questionTable WHERE courseId = ? AND expires < ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
+        psmt.setLong(2,nowTime);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
             Question curr_ques = new Question();

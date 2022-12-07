@@ -8,6 +8,7 @@ public class socketActor {
     private String code;
     private List<ActorRef> actorList;
 
+    public socketActor(){}
     public socketActor(String code, List<ActorRef> actorList) {
         this.code = code;
         this.actorList = actorList;

@@ -1,8 +1,8 @@
 package utility;
 import akka.actor.*;
 import com.fasterxml.jackson.databind.JsonNode;
-import domain.Question;
 import domain.User;
+import domain.socketActor;
 import play.libs.Json;
 import service.QuestionService;
 import service.UserService;
@@ -22,20 +22,31 @@ public class MyWebSocketActor extends AbstractActor {
         return Props.create(MyWebSocketActor.class, out);
     }
     private final ActorRef out;
+    private String code ;
+    private List<ActorRef> clients;
     private UserService userService = new UserImpl();
     private QuestionService qService = new QuestionImpl();
     public MyWebSocketActor(ActorRef out) {
         this.out = out;
+        this.code = Constant.currentServer;
+        this.clients = helper();
 
+    }
+    private List<ActorRef> helper(){
+        for (int i =0; i<Constant.ClientList.size(); i++){
+            if (this.code.equals(Constant.ClientList.get(i).getCode())){
+                return Constant.ClientList.get(i).getActorList();
+            }
+        }
+        return new ArrayList<ActorRef>();
     }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
-//                    System.out.println(this.out);
-                    if (!Constant.list.contains(this.out)){
-                        Constant.list.add(this.out);
+                    if (!clients.contains(this.out)){
+                        clients.add(this.out);
                     }
                     String test = Json.stringify(message);
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
@@ -72,12 +83,11 @@ public class MyWebSocketActor extends AbstractActor {
                     }else if ("status".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
 //                        String live = Json.stringify(message.findPath("live")).replace("\"","");
-
                         test = "{\"messageType\":\""+messageType+"\"}";
                     }
 
-                    for (int i = 0; i<Constant.list.size();i++){
-                        Constant.list.get(i).tell(Json.parse(test), this.self());
+                    for (int i = 0; i<clients.size();i++){
+                        clients.get(i).tell(Json.parse(test), this.self());
                     }
                 })
                 .build();
