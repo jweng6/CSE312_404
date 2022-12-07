@@ -26,3 +26,5 @@ GET     /course/:code                       controllers.HomeController.showCours
 GET     /course/:code/:status                   controllers.HomeController.showCourse_with_status(code,status,request : Request)
 
 GET     /profile                      controllers.HomeController.showProfile(request : Request)
+GET     /editprofile                  controllers.HomeController.editProfile(request : Request)
+POST    /editprofile                         controllers.HomeController.posteditprofile(request :Request)       
