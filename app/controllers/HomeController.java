@@ -226,7 +226,7 @@ public class HomeController extends Controller {
                 List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
                 System.out.println(listq);
                 Question currq = new Question();
-                return ok(views.html.course_ins.render(courseInfo,listq,s,currq,session_email,questionFrom,request, messagesApi.preferred(request)));
+                return ok(views.html.course_ins.render(courseInfo,listq,s,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
             }
             else {
                 Integer n = 0;

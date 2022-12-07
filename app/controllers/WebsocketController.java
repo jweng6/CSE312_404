@@ -4,6 +4,7 @@ import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.WebSocket;
 import utility.MyWebSocketActor;
 
@@ -19,7 +20,7 @@ public class WebsocketController extends Controller {
         this.materializer = materializer;
     }
 
-    public WebSocket socket(String code) {
+    public WebSocket socket() {
         return WebSocket.Json.accept(
                 request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer));
     }

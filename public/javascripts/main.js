@@ -86,9 +86,9 @@ function assign_question(assign){
 
 
 class websocket extends Object {
-    constructor(chat) {
+    constructor(courseId) {
         super();
-        this.socket = new WebSocket('ws://' + window.location.host + '/'+ chat);
+        this.socket = new WebSocket('ws://' + window.location.host + '/course/ws');
         // Called whenever data is received from the server over the WebSocket connection
 
         this.socket.onmessage = function (ws_message) {
@@ -154,5 +154,6 @@ class websocket extends Object {
     }
 
 }
+var join_code =document.getElementById("join_code").innerHTML.toString()
+const ws = new websocket();
 
-const ws = new websocket('chat');
