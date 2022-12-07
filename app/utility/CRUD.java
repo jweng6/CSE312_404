@@ -14,7 +14,11 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-        crud.updateAnswer(1, "a");
+        ArrayList<Student_Answer> all = crud.getAnswerByCourse(123123);
+        for (int i = 0; i < all.size(); i++) {
+            System.out.println(all.get(i).getId());
+            System.out.println(all.get(i).getAnswer());
+        }
     }
 
     /* --------------------------------------- userTable -------------------------------------------*/
@@ -62,6 +66,33 @@ public class CRUD {
         conn.close();
         return user;
     }
+
+    public void updateFirstName(int id, String first_name) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateUserTable();
+        String sql = "" +
+                "update userTable set firstname = ? where id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, first_name);
+        psmt.setInt(2, id);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
+    public void updateLastName(int id, String last_name) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateUserTable();
+        String sql = "" +
+                "update userTable set lastname = ? where id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, last_name);
+        psmt.setInt(2, id);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
 
     public void updateDescription(int id, String description) throws Exception{
         JDBC.getConnection();
