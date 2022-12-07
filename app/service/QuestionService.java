@@ -20,4 +20,8 @@ public interface QuestionService {
     void answerQuestion(int question_id, String email, String answer);
 
     void grading(int qid);
+
+    void expires(int qid, long time);
+
+    long getExpire(int qid);
 }

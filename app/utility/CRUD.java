@@ -4,6 +4,8 @@ import domain.Course;
 import domain.Question;
 import domain.Student_Answer;
 import domain.User;
+
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +16,7 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-
+        System.out.println(crud.getExpire(1));
     }
 
     /* --------------------------------------- userTable -------------------------------------------*/
@@ -344,7 +346,7 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         ArrayList<Question> ret = new ArrayList<>();
         String sql = "" +
-                "SELECT id,header,detail,answer,grade,expires FROM questionTable WHERE courseId = ? AND expires is not null";
+                "SELECT id,header,detail,answer,grade,expires FROM questionTable WHERE courseId = ? AND expires != 0";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
         ResultSet rs = psmt.executeQuery();
@@ -355,7 +357,7 @@ public class CRUD {
             curr_ques.setDetail(rs.getString("detail"));
             curr_ques.setAnswer(rs.getString("answer"));
             curr_ques.setGrade(rs.getInt("grade"));
-            curr_ques.setExpires(rs.getString("expires"));
+            curr_ques.setExpires(rs.getLong("expires"));
             ret.add(curr_ques);
         }
         psmt.close();
@@ -378,6 +380,7 @@ public class CRUD {
             curr_ques.setDetail(rs.getString("detail"));
             curr_ques.setAnswer(rs.getString("answer"));
             curr_ques.setGrade(rs.getInt("grade"));
+            curr_ques.setExpires(rs.getLong("expires"));
             ret.add(curr_ques);
         }
         psmt.close();
@@ -427,16 +430,30 @@ public class CRUD {
         return total;
     }
 
-    public void updateExpire(int questionId, String expire) throws SQLException, ClassNotFoundException {
+    public void updateExpire(int questionId, Long expire) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
         String sql = "update questionTable set expires = ? where id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setString(1, expire);
+        psmt.setLong(1, expire);
         psmt.setInt(2, questionId);
         psmt.executeUpdate();
         psmt.close();
         conn.close();
+    }
+
+    public long getExpire(int qid) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateQuestionTable();
+        String sql = "select expires from questionTable where id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,qid);
+        ResultSet rs = psmt.executeQuery();
+        long re = 0;
+        while (rs.next()){
+            re= rs.getLong("expires");
+        }
+        return re;
     }
 
 

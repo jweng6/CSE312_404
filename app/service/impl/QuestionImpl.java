@@ -94,6 +94,27 @@ public class QuestionImpl implements QuestionService {
         }
     }
 
+    @Override
+    public void expires(int qid, long expire) {
+        try {
+            crud.updateExpire(qid, expire);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public long getExpire(int qid) {
+        try {
+           return crud.getExpire(qid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         QuestionImpl q = new QuestionImpl();
         q.answerQuestion(1, "chuanlon@buffalo.edu", "budui");
