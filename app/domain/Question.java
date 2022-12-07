@@ -8,7 +8,6 @@ public class Question {
     private int from;
     private int id;
     private int grade;
-    private int totalGrade;
     private String answerA;
     private String answerB;
     private String answerC;
@@ -107,14 +106,6 @@ public class Question {
 
     public void setAnswerD(String answerD) {
         this.answerD = answerD;
-    }
-
-    public int getTotalGrade() {
-        return totalGrade;
-    }
-
-    public void setTotalGrade(int totalGrade) {
-        this.totalGrade = totalGrade;
     }
 
     public String getExpires() {

@@ -16,6 +16,7 @@ public interface QuestionService {
 
     Question getQuestion(int question_id);
 
-    Answer answerQuestion(int question_id, String email, String answer);
+    void answerQuestion(int question_id, String email, String answer);
 
+    void grading(int qid);
 }

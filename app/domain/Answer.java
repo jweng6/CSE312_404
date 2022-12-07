@@ -5,6 +5,7 @@ public class Answer {
     private String student_email;
     private Boolean check;
     private int return_grade;
+    private int totalGrade;
 
     public Answer() {
     }

@@ -69,7 +69,6 @@ public class UserImpl implements UserService {
         return null;
     }
 
-
     @Override
     public ArrayList<Course> getAllCourse(String email) {
         ArrayList<Course> ret = new ArrayList<>();
@@ -118,6 +117,11 @@ public class UserImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public User updateName(String first, String last, String email) {
         return null;
     }
 
