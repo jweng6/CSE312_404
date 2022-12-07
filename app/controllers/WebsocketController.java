@@ -9,9 +9,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Function;
 import domain.socketActor;
 import play.libs.F;
-import play.libs.Json;
 import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.WebSocket;
 import utility.Constant;
@@ -31,6 +31,7 @@ public class WebsocketController extends Controller {
         this.materializer = materializer;
     }
     public WebSocket socket(String code) {
+
         Constant.currentServer = code;
         if (Constant.ClientList.isEmpty()){
             Constant.ClientList.add(new socketActor(code,new ArrayList<>()));
@@ -47,8 +48,13 @@ public class WebsocketController extends Controller {
                 Constant.ClientList.add(temp);
             }
         }
+        System.out.println(code);
+        System.out.println(Constant.currentServer);
 //        return WebSocket.Json.accept(
 //                request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer));
+
+
+
         return WebSocket.Json.acceptOrResult(
                 request ->
                         CompletableFuture.completedFuture(
@@ -60,6 +66,8 @@ public class WebsocketController extends Controller {
                                                                 ActorFlow.actorRef(
                                                                         MyWebSocketActor::props, actorSystem, materializer)))
                                         .orElseGet(() -> F.Either.Left(forbidden()))));
+
+
     }
 //    public WebSocket socket(String code) {
 //        System.out.println(code);

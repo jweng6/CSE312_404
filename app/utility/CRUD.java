@@ -371,6 +371,28 @@ public class CRUD {
         conn.close();
         return ret;
     }
+
+    public boolean getAllExpireCheckByQid(Integer qid,Integer courseId) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Boolean ret = false;
+        Connection conn = JDBC.CreateQuestionTable();
+        LocalDateTime dateTime = LocalDateTime.now();
+        ZoneOffset zoneOffset = OffsetDateTime.now().getOffset();
+        long nowTime = dateTime.toEpochSecond(zoneOffset);
+        String sql = "" +
+                "SELECT id FROM questionTable WHERE courseId = ? AND expires < ? AND id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, courseId);
+        psmt.setLong(2,nowTime);
+        psmt.setInt(3, qid);
+        ResultSet rs = psmt.executeQuery();
+        if(rs.next()) {
+            ret = true;
+        }
+        psmt.close();
+        conn.close();
+        return ret;
+    }
     public ArrayList<Question> getAllQuestionByHeaderIns(Integer courseId) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
