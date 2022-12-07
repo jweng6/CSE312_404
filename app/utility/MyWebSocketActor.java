@@ -32,7 +32,10 @@ public class MyWebSocketActor extends AbstractActor {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
 //                    System.out.println(this.out);
-                    Constant.list.add(this.out);
+                    if (!Constant.list.contains(this.out)){
+                        Constant.list.add(this.out);
+                    }
+                    String test = Json.stringify(message);
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
                     LocalDateTime dateTime = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -42,19 +45,16 @@ public class MyWebSocketActor extends AbstractActor {
                         String comment = Json.stringify(message.findPath("comment"));
                         String fullName = user.getFirstname() + " " + user.getLastname();
                         comment = comment.replace("\"","");
-                        String test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
+                        test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
                                 "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
-                        for (int i = 0; i<Constant.list.size();i++){
-                            Constant.list.get(i).tell(Json.parse(test), this.self());
-                        }
+
                     }else if ("assign".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
                         String question  = Json.stringify(message.findPath("question")).replace("\"","");
                         int min = Integer.parseInt(Json.stringify(message.findPath("min")).replace("\"",""));
                         dateTime = dateTime.plusMinutes(min);
-                        String test = "{\"messageType\":\""+messageType+"\",\"question\":\""+question+"\"" + "," +
+                        test = "{\"messageType\":\""+messageType+"\",\"question\":\""+question+"\"" + "," +
                                 "\"expire\":\""+dateTime.format(formatter)+"\"}";
-                        out.tell(message,self());
                     }else if("answer".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment }));
                         String email = Json.stringify(message.findPath("email")).replace("\"","");
@@ -64,6 +64,10 @@ public class MyWebSocketActor extends AbstractActor {
 
                     }else if ("status".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
+                    }
+
+                    for (int i = 0; i<Constant.list.size();i++){
+                        Constant.list.get(i).tell(Json.parse(test), this.self());
                     }
                 })
                 .build();

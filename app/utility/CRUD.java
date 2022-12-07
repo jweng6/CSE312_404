@@ -14,7 +14,7 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
-        crud.updateAnswer(1, "a");
+
     }
 
     /* --------------------------------------- userTable -------------------------------------------*/
@@ -62,6 +62,33 @@ public class CRUD {
         conn.close();
         return user;
     }
+
+    public void updateFirstName(int id, String first_name) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateUserTable();
+        String sql = "" +
+                "update userTable set firstname = ? where id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, first_name);
+        psmt.setInt(2, id);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
+    public void updateLastName(int id, String last_name) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateUserTable();
+        String sql = "" +
+                "update userTable set lastname = ? where id = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, last_name);
+        psmt.setInt(2, id);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
 
     public void updateDescription(int id, String description) throws Exception{
         JDBC.getConnection();
@@ -335,7 +362,6 @@ public class CRUD {
         conn.close();
         return ret;
     }
-
     public ArrayList<Question> getAllQuestionByHeaderIns(Integer courseId) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
@@ -364,11 +390,12 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         Question ret = new Question();
         String sql = "" +
-                "SELECT header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
+                "SELECT courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, questionId);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
+            ret.setFrom(rs.getInt("courseId"));
             ret.setHeader(rs.getString("header"));
             ret.setDetail(rs.getString("detail"));
             ret.setAnswer(rs.getString("answer"));
