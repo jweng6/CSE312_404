@@ -2,6 +2,7 @@ package utility;
 
 import domain.Course;
 import domain.Question;
+import domain.Student_Answer;
 import domain.User;
 import java.sql.*;
 import java.util.ArrayList;
@@ -256,18 +257,17 @@ public class CRUD {
         conn.close();
     }
 
-    public ArrayList<Map<Integer, String>> getAnswerByCourse(Integer courseId) throws SQLException, ClassNotFoundException {
+    public ArrayList<Student_Answer> getAnswerByCourse(Integer courseId) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
-        ArrayList<Map<Integer, String>> ret = new ArrayList<>();
+        ArrayList<Student_Answer> ret = new ArrayList<>();
         String sql = "" +
                 "select userid,answer from joinCourse where courseCode = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
-            Map<Integer, String> curr_user = new HashMap<>();
-            curr_user.put(rs.getInt("userid"), rs.getString("answer"));
+            Student_Answer curr_user = new Student_Answer(rs.getInt("userid"),rs.getString("answer"));
             ret.add(curr_user);
         }
         psmt.close();
