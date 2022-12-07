@@ -4,7 +4,7 @@
 @import domain.User
 
 
-@(courseInfo:Course,show:String)
+@(listuser: List[User],courseInfo:Course,show:String)
 
 
 
@@ -139,34 +139,21 @@
 
             }
             @if(show.equals("roster")){
-                
                 <table>
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
                     </tr>
+                @for( i <- listuser){
                     <tr>
-                        <td>Peter</td>
-                        <td>Griffin</td>
-                        <td>123</td>
+                        <th>@i.getId</th>
+                        <th>@i.getLastname</th>
+                        <th>@i.getEmail</th>
                     </tr>
-                    <tr>
-                        <td>Lois</td>
-                        <td>Griffin</td>
-                        <td>123</td>
-                    </tr>
-                    <tr>
-                        <td>Joe</td>
-                        <td>Swanson</td>
-                        <td>123</td>
-                    </tr>
-                    <tr>
-                        <td>@courseInfo.getCode()</td>
-                        <td>Brown</td>
-                        <td>1234567</td>
-                    </tr>
+                }
                 </table>
+                
             }
 
 
