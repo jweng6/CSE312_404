@@ -4,6 +4,7 @@ import domain.Course;
 import domain.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import scala.concurrent.java8.FuturesConvertersImpl;
 import service.UserService;
 import utility.CRUD;
 import utility.Constant;
@@ -121,13 +122,28 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public User updateName(String first, String last) {
-        return null;
+    public User updateName(String email, String first, String last) throws SQLException, ClassNotFoundException {
+        User user = crud.getUserByEmail(email);
+        try {
+            if (first != null && last == null) {
+                crud.updateFirstName(user.getId(), first);
+            } else if (first == null && last != null) {
+                crud.updateLastName(user.getId(), last);
+            } else if (first != null && last != null) {
+                crud.updateFirstName(user.getId(), first);
+                crud.updateLastName(user.getId(), last);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         UserImpl u = new UserImpl();
 //        System.out.println(u.nowChat("chuanlon@buffalo.edu").getLastname());
+
 
     }
 

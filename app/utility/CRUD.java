@@ -372,11 +372,12 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         Question ret = new Question();
         String sql = "" +
-                "SELECT header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
+                "SELECT courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, questionId);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
+            ret.setFrom(rs.getInt("courseId"));
             ret.setHeader(rs.getString("header"));
             ret.setDetail(rs.getString("detail"));
             ret.setAnswer(rs.getString("answer"));
