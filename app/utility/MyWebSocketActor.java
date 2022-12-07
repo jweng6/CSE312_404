@@ -62,19 +62,20 @@ public class MyWebSocketActor extends AbstractActor {
                         String email = Json.stringify(message.findPath("email")).replace("\"","");
                         String comment = Json.stringify(message.findPath("comment")).replace("\"","");
                         int question  = Integer.parseInt(Json.stringify(message.findPath("question")).replace("\"",""));
-                        qService.answerQuestion(question,email,comment);
-                        test = "{\"messageType\":\""+messageType+"\",\"email\":\""+email+"\"" + "," +
-                                "\"question\":\""+question+"\",\"comment\":\""+comment+"\"}";
+                        long expireTime = qService.getExpire(question);
+                        long nowTime = dateTime.toEpochSecond(zoneOffset);
+                        if (nowTime <= expireTime){
+                            qService.answerQuestion(question,email,comment);
+                        }
+                        test = "{\"messageType\":\""+messageType+"\"}";
                     }else if ("status".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
-                        String live = Json.stringify(message.findPath("live")).replace("\"","");
+//                        String live = Json.stringify(message.findPath("live")).replace("\"","");
                         String question = Json.stringify(message.findPath("question"));
-                        if ("1".equals(live)){
-                            if ("".equals(question)){
-                                test = "{\"messageType\":\""+messageType+"\",\"live\":\""+0+"\"" + "," +
-                                        "\"question\":\""+question+"\",\"comment\":\""+comment+"\"}";
-                            }
+                        if (!"".equals(question)){
+                                qService.grading(Integer.parseInt(question));
                         }
+                        test = "{\"messageType\":\""+messageType+"\"}";
                     }
 
                     for (int i = 0; i<Constant.list.size();i++){

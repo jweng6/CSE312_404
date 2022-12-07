@@ -105,6 +105,16 @@ public class QuestionImpl implements QuestionService {
         }
     }
 
+    @Override
+    public long getExpire(int qid) {
+        try {
+           return crud.getExpire(qid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         QuestionImpl q = new QuestionImpl();
         q.answerQuestion(1, "chuanlon@buffalo.edu", "budui");

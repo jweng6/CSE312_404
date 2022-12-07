@@ -12,7 +12,7 @@ public class Question {
     private String answerB;
     private String answerC;
     private String answerD;
-    private String expires;
+    private long expires;
 //    private String dueDay;
 
     public Question() {
@@ -108,11 +108,11 @@ public class Question {
         this.answerD = answerD;
     }
 
-    public String getExpires() {
+    public long getExpires() {
         return expires;
     }
 
-    public void setExpires(String expires) {
+    public void setExpires(long expires) {
         this.expires = expires;
     }
 

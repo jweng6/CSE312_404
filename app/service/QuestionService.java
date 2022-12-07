@@ -22,4 +22,6 @@ public interface QuestionService {
     void grading(int qid);
 
     void expires(int qid, long time);
+
+    long getExpire(int qid);
 }
