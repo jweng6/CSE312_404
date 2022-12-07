@@ -1,3 +1,9 @@
+@import play.mvc.Http.Request
+
+@import domain.Info
+@import domain.Question
+@(list: List[Info],grade: List[Integer])
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,43 +15,50 @@
 <body>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/gradebook.css")">
     <div class="topnav">
-        <a class="active">Gradebook</a>
-        <a href="#news">Home</a>
+        <a class="active" onclick="location.href='/gradebook'">GradeBook</a>
+        <a onclick="location.href='/main'">Home</a>
     </div>
+
     <div>
-        <li>
-            <div class="courses">
-                <div class="coursesleft">
-                    Course Name
-                    <div class="instructoremail">
-                        <p>Instructor email: 12345gmail.com</p>
-                    </div> 
-                </div>
-                <div class="coursesright">
-                    <p>100/100</p>
-                    <div class="view">
-                        <p>View All Work</p>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="mycourses">
-                <div class="mycoursesleft">
-                    <p>Course Name</p>
-                    <div class="myinstructoremail">
-                        <p>Instructor email: 12345gmail.com</p>
-                    </div> 
-                </div>
-                <div class="mycoursesright">
-                        <p>Manage</p>
-                    <div class="myview">
-                        <p>View All Work</p>
-                    </div>
-                </div>
-            </div>
-        </li>
         
+        @for(i<-0 until list.length){
+            @if(list(i).getCheck()=="0"){
+                <li>
+                    <div class="courses">
+                        <div class="coursesleft">
+                            @list(i).getCourseName()
+                            <div class="instructoremail">
+                                <p>Instructor email: @list(i).getEmail()</p>
+                            </div> 
+                        </div>
+                        <div class="coursesright">
+                            <p>@grade(i)</p>
+                            <div class="view" onclick="location.href='/studentgradebook/@list(i).getCode()'">
+                                <p>View All Work</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+            @if(list(i).getCheck()=="1"){
+                <li>
+                    <div class="mycourses">
+                        <div class="mycoursesleft">
+                            <p>@list(i).getCourseName()</p>
+                            <div class="myinstructoremail">
+                                <p>Instructor email: @list(i).getEmail()</p>
+                            </div> 
+                        </div>
+                        <div class="mycoursesright">
+                                <p>Manage</p>
+                            <div class="myview" onclick="location.href='/instructorgradebook/@list(i).getCode()'">
+                                <p >View All Work</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        }
     </div>
 </body>
 </html>
