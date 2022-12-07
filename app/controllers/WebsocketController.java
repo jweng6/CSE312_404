@@ -41,7 +41,6 @@ public class WebsocketController extends Controller {
                 Constant.ClientList.add(temp);
             }
         }
-        System.out.println(Constant.ClientList.get(0).getActorList().size());
         System.out.println(code);
         System.out.println(Constant.currentServer);
 
