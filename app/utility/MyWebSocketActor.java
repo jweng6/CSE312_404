@@ -31,7 +31,7 @@ public class MyWebSocketActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
-                    
+
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
                     LocalDateTime dateTime = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
