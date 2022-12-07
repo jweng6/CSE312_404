@@ -1,5 +1,8 @@
 package domain;
 import play.data.validation.Constraints.*;
+import scala.Int;
+
+import java.util.HashMap;
 
 
 public class User {
