@@ -17,6 +17,8 @@
 
 </head>
 <body>
+
+
 <div class="row" style="min-width: 1000px;" >
 
     <div class="header">
@@ -26,12 +28,14 @@
         <p  class="direct" style="float:right ;margin-right: 3%" id="current_user_email">@curre</p>
 
     </div>
+    <p id="join_code" hidden>@courseInfo.getCode()</p>
 
     <div  class="column side" style="width: 15%;float: left;margin-left: 4%;" >
         <div class="course_info">
             <p class="course_name" id='course_name' style="cursor:pointer;" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"none")' >@courseInfo.getCourseName()</p><br>
             <p class="course_text">Instructor: @courseInfo.getEmail()</p><br>
-            <p class="course_text">Join Code: @courseInfo.getCode()</p>
+            <p class="course_text" >Join Code: @courseInfo.getCode()</p>
+
         </div>
         <div class="left_retangle" id ='left_retangle'>
             <input id="current_select_question_id" value="0" hidden>
