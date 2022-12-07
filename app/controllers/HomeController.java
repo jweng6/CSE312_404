@@ -206,5 +206,125 @@ public class HomeController extends Controller {
         return unauthorized("Oops, you are not connected");
 
     }
+    
+    public Result showinstructorgradebook(Integer code,Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        List<Info> allCourse = course.showCourse(session_email);
+        UserImpl user = new UserImpl();
+        List<User> allUser = user.showAllStudent(code);
+        String coursename="";
+        int x=0;
+        while(x!=allCourse.size()){
+            if(Integer.parseInt(allCourse.get(x).getCode())==code){
+                coursename=allCourse.get(x).getCourseName();
+            }
+            x=x+1;
+        }
+
+        List<Integer> allgrades= new ArrayList<Integer>();
+
+        int count=0;
+        while(allUser.size()!=count){
+            System.out.print(allUser.get(count).getEmail());
+            List<Info> allCourse2 = course.showCourse(allUser.get(count).getEmail());
+            int xxx=0;
+            System.out.println(code);
+            QuestionImpl allques2= new QuestionImpl();
+            List<Question>  allquestions2 = null;
+            while(xxx!=allCourse2.size()){
+                if(Integer.parseInt(allCourse2.get(xxx).getCode())==code){
+                    allquestions2=allques2.showAllQuestion(Integer.parseInt(allCourse2.get(xxx).getCode()));
+                    System.out.println(allques2.showAllQuestion(Integer.parseInt(allCourse2.get(xxx).getCode())));
+                }
+                xxx=xxx+1;
+            }
+            int totalgrade=0;
+            int zzz=0;
+            if(allquestions2!=null){
+                while(zzz!=allquestions2.size()){
+                    totalgrade=totalgrade+allquestions2.get(zzz).getGrade();
+                    zzz=zzz+1;
+                }
+            }
+            allgrades.add(totalgrade);
+            count=count+1;
+        }
+        System.out.println(allgrades);
+        
+        if (connecting.isPresent() == true){
+            return ok(views.html.instructorgradebook.render(allUser,session_email,coursename,allgrades));
+        }
+        return unauthorized("Oops, you are not connected");
+    }
+    public Result showstudentgradebook(Integer code,Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        List<Info> allCourse = course.showCourse(session_email);
+        int x=0;
+        System.out.println(code);
+        QuestionImpl allques= new QuestionImpl();
+        List<Question>  allquestions = null;
+        String coursename="";
+        while(x!=allCourse.size()){
+            if(Integer.parseInt(allCourse.get(x).getCode())==code){
+                coursename=allCourse.get(x).getCourseName();
+                allquestions=allques.showAllQuestion(Integer.parseInt(allCourse.get(x).getCode()));
+                System.out.println(allques.showAllQuestion(Integer.parseInt(allCourse.get(x).getCode())));
+            }
+            x=x+1;
+        }
+        int totalgrade=0;
+        int z=0;
+        while(z!=allquestions.size()){
+            totalgrade=totalgrade+allquestions.get(z).getGrade();
+            z=z+1;
+        }
+        if (connecting.isPresent() == true){
+            return ok(views.html.studentgradebook.render(code,allquestions,totalgrade,coursename));
+        }
+        return unauthorized("Oops, you are not connected");
+    }
+
+    public Result showGradebook(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+
+        List<Info> allCourse = course.showCourse(session_email);
+        System.out.println(allCourse);
+        
+        int zz=0;
+        QuestionImpl allques= new QuestionImpl();
+        List<Integer> allgrade= new ArrayList<Integer>();
+        while(zz!=allCourse.size()){
+            String code=allCourse.get(zz).getCode();
+            int x=0;
+            String coursename=code;
+            List<Question>  allquestions = null;
+            while(x!=allCourse.size()){
+                if(allCourse.get(x).getCode()==code){
+                    coursename=allCourse.get(x).getCourseName();
+                    allquestions=allques.showAllQuestion(Integer.parseInt(allCourse.get(x).getCode()));
+                }
+                x=x+1;
+            }
+            int totalgrade=0;
+            int z=0;
+            while(z!=allquestions.size()){
+                totalgrade=totalgrade+allquestions.get(z).getGrade();
+                z=z+1;
+            }
+            allgrade.add(totalgrade);
+            zz=zz+1;
+        }
+
+
+
+        if (connecting.isPresent() == true){
+            return ok(views.html.gradebook.render(allCourse,allgrade));
+        }
+        return unauthorized("Oops, you are not connected");
+    }
 
 }
