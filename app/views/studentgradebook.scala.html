@@ -1,4 +1,9 @@
+
 @import play.mvc.Http.Request
+
+@import domain.Question
+
+@(code:Integer,list: List[Question],totalgrade:Integer,coursename:String)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,16 +21,13 @@
     </div>
     <div class="courses">
         <div class="coursesleft">
-                <p>Course Name</p>
-            <div class="instructoremail">
-                <p>Instructor email: 12345gmail.com</p>
-            </div> 
+            <p>@coursename</p>
         </div>
         <div class="coursesright">
-            <p>10/10</p>
+            <p>@totalgrade</p>
         </div>
     </div>
-    <div class="table">
+    <div class="t">
         <table>
             <tr>
                 <th>Submission Date</th>
@@ -33,19 +35,14 @@
                 <th>Answer</th>
                 <th>Grade</th>
             </tr>
-            <tr>
-                <td>2022-10-14</td>
-                <td>How are you?</td>
-                <td>Great</td>
-                <td>5/5</td>
-            </tr>
-            
-            <tr>
-                <td>2022-10-14</td>
-                <td>How are you?</td>
-                <td>Good</td>
-                <td>5/5</td>
-            </tr>
+            @for(i<-list){
+                <tr>
+                    <td>AAAAA</td>
+                    <td>@i.getHeader()</td>
+                    <td>@i.getAnswer()</td>
+                    <td>@i.getGrade()</td>
+                </tr>
+            }
           </table>
     </div>
 </body>

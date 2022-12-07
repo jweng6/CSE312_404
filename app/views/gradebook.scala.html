@@ -1,7 +1,8 @@
 @import play.mvc.Http.Request
 
 @import domain.Info
-@(list: List[Info])
+@import domain.Question
+@(list: List[Info],grade: List[Integer])
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,37 +20,38 @@
     </div>
 
     <div>
-        @for(i<-list){
-            @if(i.getCheck()=="0"){
+        
+        @for(i<-0 until list.length){
+            @if(list(i).getCheck()=="0"){
                 <li>
                     <div class="courses">
                         <div class="coursesleft">
-                            @i.getCourseName()
+                            @list(i).getCourseName()
                             <div class="instructoremail">
-                                <p>Instructor email: @i.getEmail()</p>
+                                <p>Instructor email: @list(i).getEmail()</p>
                             </div> 
                         </div>
                         <div class="coursesright">
-                            <p>100/100</p>
-                            <div class="view" onclick="location.href='/studentgradebook'">
+                            <p>@grade(i)</p>
+                            <div class="view" onclick="location.href='/studentgradebook/@list(i).getCode()'">
                                 <p>View All Work</p>
                             </div>
                         </div>
                     </div>
                 </li>
             }
-            @if(i.getCheck()=="1"){
+            @if(list(i).getCheck()=="1"){
                 <li>
                     <div class="mycourses">
                         <div class="mycoursesleft">
-                            <p>@i.getCourseName()</p>
+                            <p>@list(i).getCourseName()</p>
                             <div class="myinstructoremail">
-                                <p>Instructor email: @i.getEmail()</p>
+                                <p>Instructor email: @list(i).getEmail()</p>
                             </div> 
                         </div>
                         <div class="mycoursesright">
                                 <p>Manage</p>
-                            <div class="myview" onclick="location.href='/instructorgradebook'">
+                            <div class="myview" onclick="location.href='/instructorgradebook/@list(i).getCode()'">
                                 <p >View All Work</p>
                             </div>
                         </div>
