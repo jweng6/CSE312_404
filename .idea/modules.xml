@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.g8/.g8.iml" filepath="$PROJECT_DIR$/.g8/.g8.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cse312_project.iml" filepath="$PROJECT_DIR$/.idea/modules/cse312_project.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cse312_project-build.iml" filepath="$PROJECT_DIR$/.idea/modules/cse312_project-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/target/target.iml" filepath="$PROJECT_DIR$/target/target.iml" />
     </modules>
   </component>
 </project>
