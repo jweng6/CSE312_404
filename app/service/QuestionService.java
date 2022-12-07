@@ -24,4 +24,6 @@ public interface QuestionService {
     void expires(int qid, long time);
 
     long getExpire(int qid);
+
+    boolean getAllExpireCheckByQid(int qid, int courseId);
 }

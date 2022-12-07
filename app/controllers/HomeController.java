@@ -228,7 +228,7 @@ public class HomeController extends Controller {
             }
             else { //if is student
                 List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                return ok(views.html.course_student.render(courseInfo,listq,s,currq,session_email,listqed,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                return ok(views.html.course_student.render(courseInfo,listqed,s,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
             }
         }
         //不在线（没登入） 返回401
@@ -259,7 +259,7 @@ public class HomeController extends Controller {
             else { //if is student
 
                 List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                return ok(views.html.course_student.render(courseInfo,listq,status,currq,session_email,listqed,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                return ok(views.html.course_student.render(courseInfo,listqed,status,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
             }
         }
         //不在线（没登入） 返回401
@@ -308,6 +308,9 @@ public class HomeController extends Controller {
     public Result show_question(String code,String questionId,Http.Request request){
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+
+
+
         if (connecting.isPresent() == true){
             Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
             Course courseInfo = course.course_info(Integer.parseInt(code));
@@ -319,9 +322,12 @@ public class HomeController extends Controller {
             }
             else {
                 String qid = request.path().split("/")[4];
-                List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-
-                return ok(views.html.course_student.render(courseInfo,listqed,"show_question",currq,session_email,listqed,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                boolean answerd_question = question.getAllExpireCheckByQid(Integer.parseInt(qid ),Integer.parseInt(code));
+                if (answerd_question){
+                    List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
+                    return ok(views.html.course_student.render(courseInfo,listqed,"show_question",currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                }
+                return unauthorized("Oops, you are not connected");
             }
         }
         //不在线（没登入） 返回401

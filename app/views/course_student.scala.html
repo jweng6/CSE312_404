@@ -3,7 +3,7 @@
 @import domain.Course
 @import domain.Question
 
-@(courseInfo:Course,listq: List[Question],show:String,currq:Question,curre:String,listqed:List[Question])(questionForm: Form[domain.Question])(implicit request: Request, messages: Messages)
+@(courseInfo:Course,listq: List[Question],show:String,currq:Question,curre:String)(questionForm: Form[domain.Question])(implicit request: Request, messages: Messages)
 
 
 <!DOCTYPE html>
@@ -40,7 +40,7 @@
         <div class="left_retangle" id ='left_retangle'>
             <input id="current_select_question_id" value="0" hidden>
             <table>
-                @for( i <- listqed){
+                @for( i <- listq){
                     <tr  >
                         <td class="" id="question_@i.getId()" onclick="select(@i.getId().toString(),@courseInfo.getCode().toString())">@i.getHeader()</td>
                     </tr>
@@ -155,6 +155,6 @@
 
 
 </div>
-<script  type="text/javascript" src="@routes.Assets.versioned("javascripts/main.js")""> </script>
+<script  type="text/javascript" src="@routes.Assets.versioned("javascripts/student.js")""> </script>
 </body>
 </html>

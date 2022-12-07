@@ -10,20 +10,10 @@ function check(input) {
     }
 }
 
-
 function select(id,code){
     document.getElementById("current_select_question_id").value = id;
     location.href = '/course/'+code +'/question/'+id;
-
 }
-
-var assign_form = document.getElementById("assign_form");
-function handleForm(event) { event.preventDefault(); }
-if (assign_form!=null){
-    assign_form.addEventListener('submit', handleForm);
-}
-
-
 
 // Establish a WebSocket connection with the server
 // Allow users to send messages by pressing enter instead of clicking the Send button
@@ -57,9 +47,8 @@ var showtime = function (endtime) {
         lefts = Math.floor(lefttime/1000%60);  //计算秒数
     return [lefth,leftm,lefts]   //返回倒计时的字符串
 }
+
 var timer = null;
-
-
 function assign_question(assign){
     if (timer!==null){
         clearInterval(timer);

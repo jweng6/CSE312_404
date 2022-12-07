@@ -56,6 +56,19 @@ public class QuestionImpl implements QuestionService {
     }
 
     @Override
+    public boolean getAllExpireCheckByQid(int qid, int courseId) {
+        try {
+            return crud.getAllExpireCheckByQid(qid,courseId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    @Override
     public Question getQuestion(int question_id) {
         try {
             return crud.getQuestion(question_id);
