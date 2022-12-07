@@ -1,3 +1,5 @@
+
+
 function check(input) {
     if (input.value !== document.getElementById('password').value) {
         input.setCustomValidity('Password Must be Matching.');
@@ -15,13 +17,14 @@ function select(id,code){
 
 // Establish a WebSocket connection with the server
 // Allow users to send messages by pressing enter instead of clicking the Send button
-document.addEventListener("keypress", function (event) {
+document.getElementById('chatSubmit_div').addEventListener("keypress", function (event) {
     if (event.code === "Enter") {
         var email = document.getElementById('current_user_email').innerHTML;
-
         ws.sendMessage(email);
     }
 });
+
+setInterval(function (){ws.sendStatus('0')}, 1000*20)
 
 function addMessage(chatMessage) {
     const chat = document.getElementById('chat_all_message');
@@ -33,6 +36,8 @@ function addMessage(chatMessage) {
     chat.innerHTML += '<div class="chat_message">' + '<b>'+ name +'</b>' +' '+ chatMessage.current.slice(10, -3) +  '<div class="chat_message_white">'  + chatMessage.comment + ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
 }
+
+
 
 
 class websocket extends Object {
@@ -73,14 +78,20 @@ class websocket extends Object {
     sendStatus(status) {
         const id = document.getElementById("current_select_question_id").value;
         this.socket.send(JSON.stringify({'messageType':"status", "live" : status, "question": id}));
+        return null;
     }
 
-    sendAssign(id){
-        this.socket.send(JSON.stringify({'messageType':"assign",'question': id}));
+    sendAssign(){
+        const timeBox = document.getElementById("timeBox");
+        const comment = timeBox.value;
+        timeBox.value = "";
+        timeBox.focus();
+        const id = document.getElementById('current_select_question_id');
+        if (comment !== "") {
+            this.socket.send(JSON.stringify({'messageType': "assign", 'question': id, 'time':comment}));
+        }
     }
-
-
-
-// Renders a new chat message to the page
 
 }
+
+const ws = new websocket('chat');
