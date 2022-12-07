@@ -362,6 +362,28 @@ public class CRUD {
         conn.close();
         return ret;
     }
+    public ArrayList<Question> getAllQuestionByHeaderIns(Integer courseId) throws SQLException, ClassNotFoundException {
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateQuestionTable();
+        ArrayList<Question> ret = new ArrayList<>();
+        String sql = "" +
+                "SELECT id,header,detail,answer,grade,expires FROM questionTable WHERE courseId = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1, courseId);
+        ResultSet rs = psmt.executeQuery();
+        while(rs.next()) {
+            Question curr_ques = new Question();
+            curr_ques.setId(rs.getInt("id"));
+            curr_ques.setHeader(rs.getString("header"));
+            curr_ques.setDetail(rs.getString("detail"));
+            curr_ques.setAnswer(rs.getString("answer"));
+            curr_ques.setGrade(rs.getInt("grade"));
+            ret.add(curr_ques);
+        }
+        psmt.close();
+        conn.close();
+        return ret;
+    }
 
     public Question getQuestion(Integer questionId) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();

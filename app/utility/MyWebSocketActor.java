@@ -31,7 +31,9 @@ public class MyWebSocketActor extends AbstractActor {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
 //                    System.out.println(this.out);
-                    Constant.list.add(this.out);
+                    if (!Constant.list.contains(this.out)){
+                        Constant.list.add(this.out);
+                    }
                     String test = Json.stringify(message);
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
                     LocalDateTime dateTime = LocalDateTime.now();
@@ -58,7 +60,7 @@ public class MyWebSocketActor extends AbstractActor {
                         String comment = Json.stringify(message.findPath("comment")).replace("\"","");
                         int question  = Integer.parseInt(Json.stringify(message.findPath("question")).replace("\"",""));
                         qService.answerQuestion(question,email,comment);
-                        
+
                     }else if ("status".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
                     }
