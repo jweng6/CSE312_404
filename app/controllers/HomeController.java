@@ -337,6 +337,20 @@ public class HomeController extends Controller {
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
+    public Result showGradebook(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+
+        CourseImpl C = new CourseImpl();
+        List<Info> allCourse = course.showCourse(session_email);
+        System.out.println(allCourse);
+        
+        if (connecting.isPresent() == true){
+            return ok(views.html.gradebook.render(allCourse));
+        }
+        return unauthorized("Oops, you are not connected");
+    }
 //    public Result showGradebook(Http.Request request){
 //        Optional<String> connecting = request.session().get("connecting");
 //        if (connecting.isPresent() == true){

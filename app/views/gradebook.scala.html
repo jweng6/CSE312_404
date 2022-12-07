@@ -1,5 +1,8 @@
-
 @import play.mvc.Http.Request
+
+@import domain.Info
+@(list: List[Info])
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,40 +17,46 @@
         <a class="active" onclick="location.href='/gradebook'">GradeBook</a>
         <a onclick="location.href='/main'">Home</a>
     </div>
+
     <div>
-        <li>
-            <div class="courses">
-                <div class="coursesleft">
-                    Course Name
-                    <div class="instructoremail">
-                        <p>Instructor email: 12345gmail.com</p>
-                    </div> 
-                </div>
-                <div class="coursesright">
-                    <p>100/100</p>
-                    <div class="view" onclick="location.href='/studentgradebook'">
-                        <p>View All Work</p>
+        @for(i<-list){
+            @if(i.getCheck()=="0"){
+                <li>
+                    <div class="courses">
+                        <div class="coursesleft">
+                            @i.getCourseName()
+                            <div class="instructoremail">
+                                <p>Instructor email: @i.getEmail()</p>
+                            </div> 
+                        </div>
+                        <div class="coursesright">
+                            <p>100/100</p>
+                            <div class="view" onclick="location.href='/studentgradebook'">
+                                <p>View All Work</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="mycourses">
-                <div class="mycoursesleft">
-                    <p>Course Name</p>
-                    <div class="myinstructoremail">
-                        <p>Instructor email: 12345gmail.com</p>
-                    </div> 
-                </div>
-                <div class="mycoursesright">
-                        <p>Manage</p>
-                    <div class="myview" onclick="location.href='/instructorgradebook'">
-                        <p >View All Work</p>
+                </li>
+            }
+            @if(i.getCheck()=="1"){
+                <li>
+                    <div class="mycourses">
+                        <div class="mycoursesleft">
+                            <p>@i.getCourseName()</p>
+                            <div class="myinstructoremail">
+                                <p>Instructor email: @i.getEmail()</p>
+                            </div> 
+                        </div>
+                        <div class="mycoursesright">
+                                <p>Manage</p>
+                            <div class="myview" onclick="location.href='/instructorgradebook'">
+                                <p >View All Work</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </li>
-        
+                </li>
+            }
+        }
     </div>
 </body>
 </html>
