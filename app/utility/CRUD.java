@@ -427,12 +427,12 @@ public class CRUD {
         return total;
     }
 
-    public void updateExpire(int questionId, String expire) throws SQLException, ClassNotFoundException {
+    public void updateExpire(int questionId, long expire) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
         String sql = "update questionTable set expires = ? where id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setString(1, expire);
+        psmt.setLong(1, expire);
         psmt.setInt(2, questionId);
         psmt.executeUpdate();
         psmt.close();
