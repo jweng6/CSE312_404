@@ -17,7 +17,7 @@
 
 </head>
 <body>
-@if(show.equals("none")){
+@if(show.equals("none") || show.equals("show_question") || show.equals("add_question")){
     <script>var ws = new websocket()</script>
 }
 <div class="row" style="min-width: 1000px;" >

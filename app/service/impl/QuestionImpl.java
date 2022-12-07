@@ -44,6 +44,18 @@ public class QuestionImpl implements QuestionService {
     }
 
     @Override
+    public List<Question> showAllQuestionIns(int courseId) {
+        try {
+            return crud.getAllQuestionByHeaderIns(courseId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public Question getQuestion(int question_id) {
         try {
             return crud.getQuestion(question_id);

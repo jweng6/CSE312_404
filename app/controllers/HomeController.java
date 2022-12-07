@@ -19,6 +19,7 @@ import service.impl.UserImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.awt.*;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -222,7 +223,8 @@ public class HomeController extends Controller {
 //                    show：0 = 不显示东西 ; 1 = 选择问题后，准备输入时间，然后发布 ; 2 = add question ; 3 = roster
 
                 String s = "none";
-                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
+                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
+                System.out.println(listq);
                 Question currq = new Question();
                 return ok(views.html.course_ins.render(courseInfo,listq,s,currq,session_email,questionFrom,request, messagesApi.preferred(request)));
             }
@@ -253,7 +255,7 @@ public class HomeController extends Controller {
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
 //              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request),currq))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
-                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
+                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
                 Question currq = new Question();
                 return ok(views.html.course_ins.render(courseInfo,listq,status,currq,session_email,questionFrom,request, messagesApi.preferred(request) ));
             }
@@ -278,7 +280,7 @@ public class HomeController extends Controller {
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
 //              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request)))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
-                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
+                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
                 Question currq = new Question();
                 if (status.equals("add_question")){
                     final Form<Question> addQuestionForm = questionFrom.bindFromRequest(request);
@@ -319,7 +321,7 @@ public class HomeController extends Controller {
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
 
                 Question currq = question.getQuestion(Integer.parseInt(questionId));
-                List<Question> listq = question.showAllQuestion(Integer.parseInt(code));
+                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
 
 
                 System.out.println(questionId);

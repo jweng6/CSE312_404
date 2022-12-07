@@ -13,6 +13,7 @@ public interface QuestionService {
                      String answerA, String answerB, String answerC, String answerD );
 
     List<Question> showAllQuestion(int courseId);
+    List<Question> showAllQuestionIns(int courseId);
 
     Question getQuestion(int question_id);
 
