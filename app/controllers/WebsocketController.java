@@ -1,7 +1,10 @@
 package controllers;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.stream.Materializer;
+import com.google.common.base.Function;
 import domain.socketActor;
 import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
@@ -22,8 +25,9 @@ public class WebsocketController extends Controller {
         this.materializer = materializer;
     }
     public WebSocket socket(String code) {
+        Constant.currentServer = code;
         if (Constant.ClientList.isEmpty()){
-            new socketActor(code,new ArrayList<>());
+            Constant.ClientList.add(new socketActor(code,new ArrayList<>()));
         }else {
             boolean flag = true;
             for (int i = 0; i<Constant.ClientList.size(); i++){
@@ -33,10 +37,12 @@ public class WebsocketController extends Controller {
                 }
             }
             if (flag){
-
+                socketActor temp = new socketActor(code,new ArrayList<>());
+                Constant.ClientList.add(temp);
             }
         }
         System.out.println(code);
+        System.out.println(Constant.currentServer);
         return WebSocket.Json.accept(
                 request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer));
     }
