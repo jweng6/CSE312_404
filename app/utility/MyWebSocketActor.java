@@ -1,6 +1,7 @@
 package utility;
 import akka.actor.*;
 import com.fasterxml.jackson.databind.JsonNode;
+import domain.Question;
 import domain.User;
 import domain.socketActor;
 import play.libs.Json;
@@ -65,9 +66,16 @@ public class MyWebSocketActor extends AbstractActor {
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
                         String question  = Json.stringify(message.findPath("question")).replace("\"","");
                         int min = Integer.parseInt(Json.stringify(message.findPath("min")).replace("\"",""));
+                        Question q = qService.getQuestion(Integer.parseInt(question));
                         dateTime = dateTime.plusMinutes(min);
                         qService.expires(Integer.parseInt(question),dateTime.toEpochSecond(zoneOffset));
                         test = "{\"messageType\":\""+messageType+"\",\"question\":\""+question+"\"" + "," +
+                                "\"title\":\""+q.getHeader()+"\"," +
+                                "\"details\":\""+q.getDetail()+"\"," +
+                                "\"A\":\""+q.getAnswerA()+"\"," +
+                                "\"B\":\""+q.getAnswerB()+"\"," +
+                                "\"C\":\""+q.getAnswerC()+"\"," +
+                                "\"D\":\""+q.getAnswerD()+"\"," +
                                 "\"expire\":\""+dateTime.format(formatter)+"\"}";
                     }else if("answer".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment}));
