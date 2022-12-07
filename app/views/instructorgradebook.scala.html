@@ -1,3 +1,10 @@
+
+@import play.mvc.Http.Request
+
+@import domain.User
+
+@(list: List[User],instructoremail: String,coursename:String, allgrades:List[Integer])
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,38 +16,33 @@
 <body>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/instructorgradebook.css")">
     <div class="topnav">
-        <a class="active">Gradebook</a>
-        <a>Home</a>
+        <a class="active" onclick="location.href='/gradebook'">GradeBook</a>
+        <a onclick="location.href='/main'">Home</a>
     </div>
     <div class="courses">
         <div class="coursesleft">
-                <p>Course Name</p>
+                <p>@coursename</p>
             <div class="instructoremail">
-                <p>Instructor email: 12345gmail.com</p>
+                <p>Instructor email:@instructoremail</p>
             </div> 
         </div>
     </div>
     <div class="table">
         <table>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>FirstName</th>
                 <th>Email</th>
+                <th>LastName</th>
                 <th>Grade</th>
             </tr>
-            <tr>
-                <td>AAAAA</td>
-                <td>BBBBB</td>
-                <td>12345gmail.com</td>
-                <td>100/100</td>
-            </tr>
-            
-            <tr>
-                <td>AAAAA</td>
-                <td>BBBBB</td>
-                <td>12345gmail.com</td>
-                <td>99/100</td>
-            </tr>
+            @for(i<-0 until list.length){
+                <tr>
+                    <td>@list(i).getFirstname</td>
+                    <td>@list(i).getLastname</td>
+                    <td>@list(i).getEmail</td>
+                    <td>@allgrades(i)</td>
+                </tr>
+            }
           </table>
     </div>
 </body>
