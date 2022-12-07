@@ -121,7 +121,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public User updateName(String first, String last) {
+    public User updateName(String first, String last, String email) {
         return null;
     }
 
