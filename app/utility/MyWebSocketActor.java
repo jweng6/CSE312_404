@@ -24,6 +24,7 @@ public class MyWebSocketActor extends AbstractActor {
     private QuestionService qService = new QuestionImpl();
     public MyWebSocketActor(ActorRef out) {
         this.out = out;
+
     }
 
     @Override

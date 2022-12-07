@@ -12,11 +12,13 @@ function select(id,code){
     location.href = '/course/'+code +'/question/'+id
 }
 
+
 // Establish a WebSocket connection with the server
 // Allow users to send messages by pressing enter instead of clicking the Send button
 document.addEventListener("keypress", function (event) {
     if (event.code === "Enter") {
         var email = document.getElementById('current_user_email').innerHTML;
+
         ws.sendMessage(email);
     }
 });
@@ -34,9 +36,9 @@ function addMessage(chatMessage) {
 
 
 class websocket extends Object {
-    constructor() {
+    constructor(chat) {
         super();
-        this.socket = new WebSocket('ws://' + window.location.host + '/ws');
+        this.socket = new WebSocket('ws://' + window.location.host + '/'+ chat);
         // Called whenever data is received from the server over the WebSocket connection
 
         this.socket.onmessage = function (ws_message) {
@@ -52,7 +54,8 @@ class websocket extends Object {
                     console.log("received an invalid WS messageType");
             }
         }
-    }
+
+}
 // Read the comment the user is sending to chat and send it to the server over the WebSocket as a JSON string
     sendMessage(email) {
         const chatBox = document.getElementById("chat-comment");
@@ -77,9 +80,7 @@ class websocket extends Object {
     }
 
 
+
 // Renders a new chat message to the page
 
 }
-
-
-
