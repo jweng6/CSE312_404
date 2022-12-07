@@ -16,4 +16,5 @@ public interface UserService {
      List<User> showAllStudent(int courseId);
      void updateDescription(String email, String description);
      User nowChat(String email);
+     User updateName(String first, String last);
 }

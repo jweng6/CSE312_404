@@ -65,11 +65,17 @@ public class QuestionImpl implements QuestionService {
         }
     }
 
-    public void grading(int courseId){
+    public void grading(int courseId, int qid){
         try {
             ArrayList<Student_Answer> answers = crud.getAnswerByCourse(courseId);
+            Question question = crud.getQuestion(qid);
             for (int i = 0; i < answers.size();i++){
-                answers.get(i).getAnswer();
+                Student_Answer student = answers.get(i);
+                int current = crud.returnGrade(student.getId());
+                if (question.getAnswer().equals(student.getAnswer())){
+                    int newGrade = current + question.getGrade();
+                    crud.updateGrade(student.getId(), newGrade);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

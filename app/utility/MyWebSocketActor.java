@@ -38,7 +38,7 @@ public class MyWebSocketActor extends AbstractActor {
                         out.tell(Json.parse(test), self());
                     }else if ("assign".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
-                        System.out.println("hahahah");
+//                        String question  = Json.stringify(message.findPath())
                         out.tell(message,self());
                     }else if("answer".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment }));
