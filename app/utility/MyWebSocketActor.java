@@ -10,6 +10,7 @@ import service.UserService;
 import service.impl.QuestionImpl;
 import service.impl.UserImpl;
 
+import javax.sound.midi.Soundbank;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -30,25 +31,39 @@ public class MyWebSocketActor extends AbstractActor {
     public MyWebSocketActor(ActorRef out) {
         this.out = out;
         this.code = Constant.currentServer;
-        this.clients = helper();
-
+        this.clients = new ArrayList<>();
     }
-    private List<ActorRef> helper(){
-        for (int i =0; i<Constant.ClientList.size(); i++){
-            if (this.code.equals(Constant.ClientList.get(i).getCode())){
-                return Constant.ClientList.get(i).getActorList();
-            }
-        }
-        return new ArrayList<ActorRef>();
-    }
+//    private List<ActorRef> helper(){
+//        List<ActorRef> res = new ArrayList<>();
+//        for (int i =0; i<Constant.ClientList.size(); i++){
+//            if (this.code.equals(Constant.ClientList.get(i).getCode())){
+//                res = Constant.ClientList.get(i).getActorList();
+//            }
+//        }
+//        return res;
+//    }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
-                    if (!clients.contains(this.out)){
-                        clients.add(this.out);
+//                    if (!clients.contains(this.out)){
+//                        clients.add(this.out);
+//                        for (int i = 0; i < Constant.ClientList.size(); i++){
+//
+//                        }
+//                    }
+                    for (int i = 0; i < Constant.ClientList.size(); i++){
+                        socketActor temp = Constant.ClientList.get(i);
+                        if (this.code.equals(temp.getCode())){
+                            if (!temp.getActorList().contains(this.out)){
+                                Constant.ClientList.get(i).getActorList().add(this.out);
+                            }
+                            this.clients = Constant.ClientList.get(i).getActorList();
+                            break;
+                        }
                     }
+
                     String test = Json.stringify(message);
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
                     LocalDateTime dateTime = LocalDateTime.now();

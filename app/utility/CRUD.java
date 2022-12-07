@@ -422,7 +422,7 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         Question ret = new Question();
         String sql = "" +
-                "SELECT courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
+                "SELECT id,courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, questionId);
         ResultSet rs = psmt.executeQuery();
@@ -436,6 +436,7 @@ public class CRUD {
             ret.setAnswerC(rs.getString("choiceC"));
             ret.setAnswerD(rs.getString("choiceD"));
             ret.setGrade(rs.getInt("grade"));
+            ret.setId(rs.getInt("id"));
         }
         psmt.close();
         conn.close();
