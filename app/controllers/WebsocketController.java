@@ -52,8 +52,7 @@ public class WebsocketController extends Controller {
         return WebSocket.Json.acceptOrResult(
                 request ->
                         CompletableFuture.completedFuture(
-                                request
-                                        .session()
+                                request.session()
                                         .get("connecting")
                                         .map(
                                                 user ->
