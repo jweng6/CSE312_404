@@ -25,6 +25,8 @@ import utility.CRUD;
 import java.util.List;
 
 
+
+
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
@@ -32,10 +34,12 @@ import java.util.List;
 @Singleton
 public class HomeController extends Controller {
 
+
     UserService user = new UserImpl();
     CourseService course = new CourseImpl();
     Form<User> userForm;
     Form<Course> courseForm;
+    Form<User> editForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
@@ -44,6 +48,7 @@ public class HomeController extends Controller {
     public HomeController(FormFactory formFactory, MessagesApi messagesApi) {
         this.userForm = formFactory.form(User.class);
         this.courseForm = formFactory.form(Course.class);
+        this.editForm = formFactory.form(User.class);
         this.messagesApi = messagesApi;
     }
         /**
@@ -216,7 +221,10 @@ public class HomeController extends Controller {
 //                    show：0 = 不显示东西 ; 1 = 选择问题后，准备输入时间，然后发布 ; 2 = add question ; 3 = roster
 
                 String s = "none";
-                return ok(views.html.course_ins.render(courseInfo,s));
+
+                List<User> listuser = user.showAllStudent(Integer.parseInt(code));
+               
+                return ok(views.html.course_ins.render(listuser,courseInfo,s));
             }
             else {
                 Integer n = 0;
@@ -243,11 +251,15 @@ public class HomeController extends Controller {
             if (isInstrutor){
                 Course courseInfo = course.course_info(Integer.parseInt(code));
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
+
+                List<User> listuser = user.showAllStudent(Integer.parseInt(code));
+                
+
 //              这里面是：main_instrutor.render(courseInfo,show))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
 
                 System.out.println(status);
-                return ok(views.html.course_ins.render(courseInfo,status));
+                return ok(views.html.course_ins.render(listuser,courseInfo,status));
 
 
             }
@@ -262,16 +274,50 @@ public class HomeController extends Controller {
 
 
 
-    public Result showProfile(Http.Request request){
+    public Result showProfile(Http.Request request) throws SQLException, ClassNotFoundException {
         Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         if (connecting.isPresent() == true){
-            return ok(views.html.user_profile.render(courseForm,request,messagesApi.preferred(request)));
+            User userInfo = user.getUserByEmail(session_email);
+            //List<Info> allCourse = course.showCourse(session_email);
+            //User user = crud.getUserByEmail(session_email);
+           
+            String show="show_profile";
+            return ok(views.html.user_profile.render(userInfo,show,editForm,request,messagesApi.preferred(request)));
         }
-
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
 
+    public Result editProfile(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+            String show="edit_profile";
+            User userInfo=new User();
+            return ok(views.html.user_profile.render(userInfo,show,editForm,request,messagesApi.preferred(request)));
+        }
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+    }
+
+    public Result posteditprofile(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+            final Form<User> editf = editForm.bindFromRequest(request);
+            //User data = editform.get();
+            //System.out.println("edit_info_here");
+            //System.out.println(editf.get().getFirstname());
+            //System.out.println(data.getLastname());
+            //System.out.println(data.description());
+
+            
+            return redirect("/main").addingToSession(request,"connecting",session_email);
+        }
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+    }
 
 
 
