@@ -12,6 +12,10 @@ body p {
     font-weight: 300; /* You specify the number you see next to the fonts to change from light to bold ie you would put 700 etc. etc. */
 }
 
+
+.noClick{
+    pointer-events:none
+}
 .direct{
     cursor: pointer;
 }

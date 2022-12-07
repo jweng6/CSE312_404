@@ -14,6 +14,10 @@ function select(id,code){
     location.href = '/course/'+code +'/question/'+id
 }
 
+var assign_form = document.getElementById("assign_form");
+function handleForm(event) { event.preventDefault(); }
+assign_form.addEventListener('submit', handleForm);
+
 
 // Establish a WebSocket connection with the server
 // Allow users to send messages by pressing enter instead of clicking the Send button
@@ -37,6 +41,26 @@ function addMessage(chatMessage) {
     chat.scrollTop = chat.scrollHeight;
 }
 
+var showtime = function (endtime) {
+    var nowtime = new Date()  //获取当前时间
+    var lefttime = new Date(endtime).getTime() - nowtime.getTime(),  //距离结束时间的毫秒数
+        lefth = Math.floor(lefttime/(1000*60*60)%24),  //计算小时数
+        leftm = Math.floor(lefttime/(1000*60)%60),  //计算分钟数
+        lefts = Math.floor(lefttime/1000%60);  //计算秒数
+    return [lefth,leftm,lefts]   //返回倒计时的字符串
+}
+
+function assign_question(assign){
+    document.getElementById('left_retangle').classList.add('noClick');
+    let time = document.getElementById('time_remaining');
+    setInterval (function () {
+        let t =  showtime(assign.time)
+        if( t.reduce((a, b) => a + b, 0) >=  0) {
+            time.innerHTML = t[0].toString() + ":" + t[1].toString()  + ":" + t[2].toString();
+        }
+    }, 1000);  //反复执行函数本身;
+
+}
 
 
 
@@ -49,12 +73,17 @@ class websocket extends Object {
         this.socket.onmessage = function (ws_message) {
             const message = JSON.parse(ws_message.data);
             const messageType = message.messageType
-            console.log(message)
-            console.log(messageType)
+
             switch (messageType) {
                 case 'chat':
                     addMessage(message);
                     break;
+                case 'assign':
+                    assign_question(message);
+                    break;
+                case 'status':
+                    break;
+
                 default:
                     console.log("received an invalid WS messageType");
             }
@@ -86,7 +115,8 @@ class websocket extends Object {
         const comment = timeBox.value;
         timeBox.value = "";
         timeBox.focus();
-        const id = document.getElementById('current_select_question_id');
+        const id = document.getElementById('current_select_question_id').value;
+        console.log(id);
         if (comment !== "") {
             this.socket.send(JSON.stringify({'messageType': "assign", 'question': id, 'time':comment}));
         }

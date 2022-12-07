@@ -27,13 +27,13 @@
 
     </div>
 
-    <div  class="column side" style="width: 15%;float: left;margin-left: 4%;">
+    <div  class="column side" style="width: 15%;float: left;margin-left: 4%;" >
         <div class="course_info">
             <p class="course_name" id='course_name' style="cursor:pointer;" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"none")' >@courseInfo.getCourseName()</p><br>
             <p class="course_text">Instructor: @courseInfo.getEmail()</p><br>
             <p class="course_text">Join Code: @courseInfo.getCode()</p>
         </div>
-        <div class="left_retangle" >
+        <div class="left_retangle" id ='left_retangle'>
             <input id="current_select_question_id" value="0" hidden>
 
             <table>
@@ -145,14 +145,14 @@
                     </div>
 
                     <div class="middle_blue_end" style="float: right;">
-                        <div style="padding-right: 5%;margin-top: 10px;" action="/">
+                        <form id="assign_form" style="padding-right: 5%;margin-top: 10px;" onsubmit="ws.sendAssign()" action="#">
                             <input style="float: right;"class="submit_button" type="submit" value="Assign">
-                            <input onclick="ws.sendAssign()" style="width: 20%;float: right;border:none;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number" placeholder="minutes"  id="timeBox" value="" required>
+                            <input  min="1" style="width: 20%;float: right;border:none;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number"  placeholder="minutes"  id="timeBox" value="" required>
+                            <button id= "time_remaining" style="text-align:center;border:none;float: right;margin-right:20px;height: 34px;border-radius: 5px;color: red;width: auto" class="input_box" hidden></button>
+                        </form>
 
-                        </div>
                     </div>
                 </div>
-
 
             }
             @if(show.equals("roster")){
@@ -199,7 +199,7 @@
             </div>
 
             <div class="chat_input" id="chatSubmit_div">
-                <input class="chat_input_box" id='chat-comment' type="text">
+                <input class="chat_input_box" id='chat-comment' type="text" >
 
                 <button class="chat_submit" onclick=ws.sendMessage("@curre")>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
