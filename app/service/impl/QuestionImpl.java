@@ -2,13 +2,14 @@ package service.impl;
 
 import domain.Answer;
 import domain.Question;
+import domain.Student_Answer;
 import domain.User;
 import org.apache.commons.lang3.StringUtils;
 import service.QuestionService;
 import utility.CRUD;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 public class QuestionImpl implements QuestionService {
     CRUD crud = new CRUD();
@@ -55,33 +56,30 @@ public class QuestionImpl implements QuestionService {
     }
 
     @Override
-    public Answer answerQuestion(int question_id, String email, String answer) {
-        Answer ret = new Answer();
+    public void answerQuestion(int question_id, String email, String answer) {
         try {
-            Question question = crud.getQuestion(question_id);
             User user = crud.getUserByEmail(email);
-            ret.setQuestion_id(question_id);
-            ret.setStudent_email(email);
-            int current = crud.returnGrade(user.getId());
-            if (answer.equals(question.getAnswer())){
-                int nowGrade = current + question.getGrade();
-                crud.updateGrade(user.getId(),nowGrade);
-                ret.setCheck(true);
-                ret.setReturn_grade(nowGrade);
-            }else {
-                ret.setCheck(false);
-                ret.setReturn_grade(current);
+            crud.updateAnswer(user.getId(),answer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void grading(int courseId){
+        try {
+            ArrayList<Student_Answer> answers = crud.getAnswerByCourse(courseId);
+            for (int i = 0; i < answers.size();i++){
+                answers.get(i).getAnswer();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ret;
     }
 
     public static void main(String[] args) {
         QuestionImpl q = new QuestionImpl();
-        Answer answer = q.answerQuestion(1, "chuanlon@buffalo.edu", "budui");
-        System.out.println(answer.getReturn_grade());
+        q.answerQuestion(1, "chuanlon@buffalo.edu", "budui");
+
     }
 //    @Override
 //    public void setTimer(int question_id, int min) {
