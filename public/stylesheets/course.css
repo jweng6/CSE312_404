@@ -22,6 +22,7 @@ body p {
 .direct:hover{
     color: #003366;
 }
+
 .header {
     position: absolute;
     width: 100%;
@@ -131,8 +132,12 @@ th, td {
     padding: 15px;
     text-align: center;
     border-bottom: 1px solid #ddd;
-    background: none;
 
+
+}
+
+.select{
+    background-color: #7b93b0;
 }
 
 tr:hover {background-color: #9f9f9f;}

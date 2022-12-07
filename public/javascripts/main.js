@@ -1,5 +1,6 @@
 
 
+
 function check(input) {
     if (input.value !== document.getElementById('password').value) {
         input.setCustomValidity('Password Must be Matching.');
@@ -9,14 +10,19 @@ function check(input) {
     }
 }
 
+
 function select(id,code){
-    document.getElementById("current_select_question_id").value = id
-    location.href = '/course/'+code +'/question/'+id
+    document.getElementById("current_select_question_id").value = id;
+    location.href = '/course/'+code +'/question/'+id;
+
 }
 
 var assign_form = document.getElementById("assign_form");
 function handleForm(event) { event.preventDefault(); }
-assign_form.addEventListener('submit', handleForm);
+if (assign_form!=null){
+    assign_form.addEventListener('submit', handleForm);
+}
+
 
 
 // Establish a WebSocket connection with the server
@@ -28,7 +34,9 @@ document.getElementById('chatSubmit_div').addEventListener("keypress", function 
     }
 });
 
-setInterval(function (){ws.sendStatus('0')}, 1000*20)
+setInterval(function (){ws.sendStatus('0')}, 1000*10)
+
+
 
 function addMessage(chatMessage) {
     const chat = document.getElementById('chat_all_message');
@@ -49,18 +57,31 @@ var showtime = function (endtime) {
         lefts = Math.floor(lefttime/1000%60);  //计算秒数
     return [lefth,leftm,lefts]   //返回倒计时的字符串
 }
+var timer = null;
+
 
 function assign_question(assign){
+    if (timer!==null){
+        clearInterval(timer);
+    }
     document.getElementById('left_retangle').classList.add('noClick');
     let time = document.getElementById('time_remaining');
-    setInterval (function () {
-        let t =  showtime(assign.time)
+    time.hidden = false;
+    timer =setInterval (function (){
+        let t =  showtime(assign.expire);
         if( t.reduce((a, b) => a + b, 0) >=  0) {
             time.innerHTML = t[0].toString() + ":" + t[1].toString()  + ":" + t[2].toString();
         }
-    }, 1000);  //反复执行函数本身;
+        else {
+            clearInterval(timer);
+            time.hidden = true;
+            document.getElementById('left_retangle').classList.remove('noClick');
+
+        }
+    } ,1000);
 
 }
+
 
 
 
@@ -116,10 +137,20 @@ class websocket extends Object {
         timeBox.value = "";
         timeBox.focus();
         const id = document.getElementById('current_select_question_id').value;
-        console.log(id);
         if (comment !== "") {
-            this.socket.send(JSON.stringify({'messageType': "assign", 'question': id, 'time':comment}));
+            this.socket.send(JSON.stringify({'messageType': "assign", 'question': id, 'min':comment}));
         }
+    }
+
+    sendAnswer(email) {
+        const timeBox = document.getElementById("answerBox");
+        const comment = timeBox.value;
+        timeBox.value = "";
+        timeBox.focus();
+
+        const id = document.getElementById("current_select_question_id").value;
+        this.socket.send(JSON.stringify({'messageType':"answer", "email" : email, "question": id,"comment":comment}));
+        return null;
     }
 
 }

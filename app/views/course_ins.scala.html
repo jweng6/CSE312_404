@@ -38,8 +38,8 @@
 
             <table>
                 @for( i <- listq){
-                    <tr>
-                        <td id="question_@i.getId()" onclick="select(@i.getId().toString(),@courseInfo.getCode().toString())">@i.getHeader()</td>
+                    <tr  >
+                        <td class="" id="question_@i.getId()" onclick="select(@i.getId().toString(),@courseInfo.getCode().toString())">@i.getHeader()</td>
                     </tr>
                 }
             </table>

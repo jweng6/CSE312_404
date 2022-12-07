@@ -19,7 +19,7 @@ public class WebsocketController extends Controller {
         this.materializer = materializer;
     }
 
-    public WebSocket socket() {
+    public WebSocket socket(String code) {
         return WebSocket.Json.accept(
                 request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer));
     }

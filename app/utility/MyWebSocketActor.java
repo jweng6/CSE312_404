@@ -72,10 +72,7 @@ public class MyWebSocketActor extends AbstractActor {
                     }else if ("status".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
 //                        String live = Json.stringify(message.findPath("live")).replace("\"","");
-                        String question = Json.stringify(message.findPath("question"));
-                        if (!"".equals(question)){
-                                qService.grading(Integer.parseInt(question));
-                        }
+
                         test = "{\"messageType\":\""+messageType+"\"}";
                     }
 

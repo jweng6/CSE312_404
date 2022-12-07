@@ -28,6 +28,6 @@ POST    /course/:code/:status                   controllers.HomeController.post_
 
 GET     /course/:code/question/:questionId                   controllers.HomeController.show_question(code,questionId,request : Request)
 
-GET      /chat                                   controllers.WebsocketController.socket
+GET      /chat/:code                                   controllers.WebsocketController.socket(code)
 
 
