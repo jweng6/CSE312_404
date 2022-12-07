@@ -13,7 +13,9 @@ public class CRUD {
 
     public static void main(String[] args) throws Exception {
         CRUD crud = new CRUD();
+        crud.updateAnswer(1, "a");
     }
+
     /* --------------------------------------- userTable -------------------------------------------*/
     public Integer addUser(User user) throws Exception{
         JDBC.getConnection();
@@ -164,11 +166,12 @@ public class CRUD {
         Connection conn = JDBC.CreateJoinCourse();
         String sql = "" +
                 "INSERT INTO joinCourse" +
-                "(userid, courseCode)" +
-                "values(?,?)";
+                "(userid, courseCode, answer)" +
+                "values(?,?,?)";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, uid);
         psmt.setInt(2, code);
+        psmt.setString(3, "noAnswer");
         psmt.executeUpdate();
         psmt.close();
         conn.close();
@@ -253,17 +256,19 @@ public class CRUD {
         conn.close();
     }
 
-    public Map<Integer, String> getAnswerByCourse(Integer courseId) throws SQLException, ClassNotFoundException {
+    public ArrayList<Map<Integer, String>> getAnswerByCourse(Integer courseId) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
-        Map<Integer, String> ret = new HashMap<>();
+        ArrayList<Map<Integer, String>> ret = new ArrayList<>();
         String sql = "" +
                 "select userid,answer from joinCourse where courseCode = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
-            ret.put(rs.getInt("userid"), rs.getString("answer"));
+            Map<Integer, String> curr_user = new HashMap<>();
+            curr_user.put(rs.getInt("userid"), rs.getString("answer"));
+            ret.add(curr_user);
         }
         psmt.close();
         conn.close();
