@@ -210,6 +210,7 @@ public class CRUD {
     }
 
 
+
     /* --------------------------------------- joinCourse -------------------------------------------*/
     public void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
@@ -375,7 +376,7 @@ public class CRUD {
 
 
     /* --------------------------------------- Question Table -------------------------------------------*/
-    public void addQuestion(Question question) throws Exception{
+    public int addQuestion(Question question) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateQuestionTable();
         String sql = ""+
@@ -392,9 +393,10 @@ public class CRUD {
         psmt.setString(7, question.getAnswerC());
         psmt.setString(8, question.getAnswerD());
         psmt.setInt(9, question.getGrade());
-        psmt.executeUpdate();
+        int i = psmt.executeUpdate();
         psmt.close();
         conn.close();
+        return i;
     }
 
 //    public void setTimer(int question_id, long expires) throws Exception{
@@ -589,6 +591,33 @@ public class CRUD {
             ret.add(answer);
         }
         return ret;
+    }
+
+    public void updateStudentGrade(int qid, int grade) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateStudentAnswer();
+        String sql = ""+
+                "update studentTable set grade = ? where questionId = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,grade);
+        psmt.setInt(2,qid);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
+    public void updateCurrentGrade(int qid, int uid, int grade) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateStudentAnswer();
+        String sql = ""+
+                "update studentTable set grade = ? where questionId = ? and userId = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,grade);
+        psmt.setInt(2,qid);
+        psmt.setInt(3,uid);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
     }
 
     /* --------------------------------------- Main page -------------------------------------------*/

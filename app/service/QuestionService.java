@@ -26,4 +26,6 @@ public interface QuestionService {
     long getExpire(int qid);
 
     boolean getAllExpireCheckByQid(int qid, int courseId);
+
+    void assignQuestion(Question q);
 }
