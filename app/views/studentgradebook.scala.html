@@ -16,7 +16,8 @@
 <body>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/studentgradebook.css")">
     <div class="topnav">
-        <a class="active" onclick="location.href='/gradebook'">GradeBook</a>
+        <a onclick="location.href='/'">LogOut</a>
+        <a onclick="location.href='/gradebook'">GradeBook</a>
         <a onclick="location.href='/main'">Home</a>
     </div>
     <div class="courses">
@@ -35,7 +36,7 @@
                 <th>Answer</th>
                 <th>Grade</th>
             </tr>
-            @for(i<-0 until list.length){
+            @for(i<-1 until list.length){
                 <tr>
                     <td>@expires(i)</td>
                     <td>@list(i)</td>
