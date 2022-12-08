@@ -2,7 +2,7 @@ logs
 target
 /.bsp
 #/.idea
-/.idea_modules
+#/.idea_modules
 /.classpath
 /.project
 #/.settings
