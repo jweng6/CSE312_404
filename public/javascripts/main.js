@@ -1,5 +1,7 @@
-
-
+history.pushState(null, null, document.URL);
+window.addEventListener('popstate', function () {
+    history.pushState(null, null, document.URL);
+})
 
 function check(input) {
     if (input.value !== document.getElementById('password').value) {
@@ -13,7 +15,7 @@ function check(input) {
 
 function selects(id,code){
     document.getElementById("current_select_question_id").value = id;
-    location.href = '/course/'+code.toString() +'/question/'+id.toString();
+    window.location.replace("/course/'+code.toString() +'/question/'+id.toString()") ;
 
 }
 
@@ -38,7 +40,7 @@ function addTimeUp(assign) {
     var currentDateTime = new Date();
     const now = new Date();
     const current = now.getHours() + ':' + now.getMinutes();
-    chat.innerHTML += '<div class="chat_message">' + '<b>'+'reminder</b>'+current+ '<div class="chat_message_white"> <b Question:'  + assign.title + '</b><br>'+ 'Time UP! <br> The answers are graded'+ '</br>'+ ' </div>' +'<br>' +  '</div>';
+    chat.innerHTML += '<div class="chat_message">' + '<b>'+'reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP! <br> The answers are graded'+ '</br>'+ ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
 }
 
@@ -62,8 +64,8 @@ function assign_question(assign){
     time.hidden = false;
     timer =setInterval (function (){
         let t =  showtime(assign.expire);
-        const timer = t.reduce((a, b) => a + b, 0);
-        if( timer >=  0) {
+
+        if( t.reduce((a, b) => a + b, 0) >=  0) {
             time.innerHTML = t[0].toString() + ":" + t[1].toString()  + ":" + t[2].toString();
 
 

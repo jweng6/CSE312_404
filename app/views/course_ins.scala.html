@@ -16,23 +16,24 @@
 
 
 </head>
-<body>
-
+<body >
 
 <div class="row" style="min-width: 1000px;" >
 
     <div class="header">
-        <p onclick=location.href='/main' class="direct" style="float: Left;white-space: nowrap;padding-left: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
+        <p onclick=window.location.replace("/main") class="direct" style="float: Left;white-space: nowrap;padding-left: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
         </svg></p>
+        <p  class="direct" style="float:right ;margin-right: 3%" id="current_user_email" onclick=window.location.replace("/")>Log out</p>
         <p  class="direct" style="float:right ;margin-right: 3%" id="current_user_email">@curre</p>
+
 
     </div>
     <p id="join_code" hidden>@courseInfo.getCode()</p>
 
     <div  class="column side" style="width: 15%;float: left;margin-left: 4%;" >
         <div class="course_info">
-            <p class="course_name" id='course_name' style="cursor:pointer;" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"none")' >@courseInfo.getCourseName()</p><br>
+            <p class="course_name" id='course_name' style="cursor:pointer;" onclick=window.location.replace('@routes.HomeController.showCourse(courseInfo.getCode().toString())') >@courseInfo.getCourseName()</p><br>
             <p class="course_text">Instructor: @courseInfo.getEmail()</p><br>
             <p class="course_text" >Join Code: @courseInfo.getCode()</p>
 
@@ -43,7 +44,7 @@
             <table>
                 @for( i <- listq){
                     <tr  >
-                        <td class="" id="question_@i.getId()" onclick=location.href='@routes.HomeController.show_question(courseInfo.getCode().toString(),i.getId().toString())'>@i.getHeader()</td>
+                        <td class="" id="question_@i.getId()" onclick=window.location.replace('@routes.HomeController.show_question(courseInfo.getCode().toString(),i.getId().toString())')>@i.getHeader()</td>
                     </tr>
                 }
             </table>
@@ -61,7 +62,7 @@
                 GradeBook
             </button>
 
-            <button class="roster_button" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"roster")' value="Javascript">
+            <button class="roster_button" onclick=window.location.replace('@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"roster")') value="Javascript">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
                     <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
                     <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
@@ -69,7 +70,7 @@
                 Roster
             </button>
 
-            <button class="add_question_button" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"add_question")' value="Javascript">
+            <button class="add_question_button" onclick=window.location.replace('@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"add_question")') value="Javascript">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                     <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
