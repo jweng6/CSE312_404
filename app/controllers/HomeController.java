@@ -335,6 +335,7 @@ public class HomeController extends Controller {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         List<User> users = course.instrSeeGrade(code);
+
         if (connecting.isPresent() == true) {
             return ok(views.html.instructorgradebook.render(users));
         }

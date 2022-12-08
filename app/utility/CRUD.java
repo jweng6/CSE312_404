@@ -325,7 +325,7 @@ public class CRUD {
         JDBC.getConnection();
         Connection connection = JDBC.CreateJoinCourse();
         String sql = "" +
-                "select userid, grade from joinCourse where code = ?";
+                "select userid, grade from joinCourse where courseCode = ?";
         PreparedStatement psmt = connection.prepareStatement(sql);
         psmt.setInt(1,code);
         ResultSet rs = psmt.executeQuery();
@@ -333,6 +333,7 @@ public class CRUD {
         CRUD crud = new CRUD();
         while (rs.next()){
             User user = crud.getUserByid(rs.getInt("userid"));
+            System.out.println(user.getEmail());
             user.setGrade(rs.getInt("grade"));
             ret.add(user);
         }

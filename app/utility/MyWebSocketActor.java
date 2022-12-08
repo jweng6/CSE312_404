@@ -63,7 +63,6 @@ public class MyWebSocketActor extends AbstractActor {
                             break;
                         }
                     }
-
                     String test = Json.stringify(message);
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
                     LocalDateTime dateTime = LocalDateTime.now();
@@ -76,7 +75,7 @@ public class MyWebSocketActor extends AbstractActor {
                         String fullName = user.getFirstname() + " " + user.getLastname();
                         comment = comment.replace("\"","");
                         test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
-                                "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
+                                "\"email\":\""+email.replace("\"","")+"\",\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
                     }else if ("assign".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
                         String question  = Json.stringify(message.findPath("question")).replace("\"","");
