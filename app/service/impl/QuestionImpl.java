@@ -114,7 +114,8 @@ public class QuestionImpl implements QuestionService {
                 int current = crud.returnGrade(student.getId());
                 if (question.getAnswer().equals(student.getAnswer())){
                     int newGrade = current + question.getGrade();
-                    crud.updateCurrentGrade(qid,student.getId(),newGrade);
+
+                    crud.updateCurrentGrade(qid,student.getId(),question.getGrade());
                     crud.updateGrade(student.getId(), newGrade);
                 }else {
                     crud.updateCurrentGrade(qid, student.getId(),0);
