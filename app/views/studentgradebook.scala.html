@@ -3,7 +3,7 @@
 
 @import domain.Question
 
-@(code:Integer,list: List[Question],totalgrade:Integer,coursename:String)
+@(code:Integer,list: List[Question],earnGrade:Integer,totalgrade:Integer,coursename:String,expires:List[String])
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@
             <p>@coursename</p>
         </div>
         <div class="coursesright">
-            <p>@totalgrade</p>
+            <p>@earnGrade/@totalgrade</p>
         </div>
     </div>
     <div class="t">
@@ -35,12 +35,12 @@
                 <th>Answer</th>
                 <th>Grade</th>
             </tr>
-            @for(i<-list){
+            @for(i<-0 until list.length){
                 <tr>
-                    <td>AAAAA</td>
-                    <td>@i.getHeader()</td>
-                    <td>@i.getAnswer()</td>
-                    <td>@i.getGrade()</td>
+                    <td>@expires(i)</td>
+                    <td>@list(i)</td>
+                    <td>@list(i).getAnswer</td>
+                    <td>@list(i).getGrade</td>
                 </tr>
             }
           </table>
