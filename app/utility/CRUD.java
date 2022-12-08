@@ -359,6 +359,20 @@ public class CRUD {
         return ret;
     }
 
+    public void clearAnswer(int uid, int code) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = ""+
+                "update joinCourse set answer = ? where userid =? and courseCode = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, "noAnswer");
+        psmt.setInt(2,uid);
+        psmt.setInt(3,code);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
 
     /* --------------------------------------- Question Table -------------------------------------------*/
     public void addQuestion(Question question) throws Exception{

@@ -100,6 +100,7 @@ public class QuestionImpl implements QuestionService {
                     int newGrade = current + question.getGrade();
                     crud.insertStudentAnswer(qid, student.getId(),question.getFrom(),question.getGrade());
                     crud.updateGrade(student.getId(), newGrade);
+                    crud.clearAnswer(student.getId(), question.getFrom());
                 }else {
                     crud.insertStudentAnswer(qid, student.getId(),question.getFrom(),0);
                 }
