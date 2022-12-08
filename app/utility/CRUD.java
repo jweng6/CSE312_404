@@ -1,9 +1,6 @@
 package utility;
 
-import domain.Course;
-import domain.Question;
-import domain.Student_Answer;
-import domain.User;
+import domain.*;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -12,6 +9,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -210,6 +208,7 @@ public class CRUD {
         conn.close();
     }
 
+
     public ArrayList<Integer> getAllCourseByID(int uid) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
@@ -256,6 +255,21 @@ public class CRUD {
         psmt.executeUpdate();
         psmt.close();
         conn.close();
+    }
+
+    public int getGradeWithCourse(int uid, int courseCode) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = "select grade from joinCourse where userid = ? and courseCode =?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,uid);
+        psmt.setInt(2,courseCode);
+        ResultSet rs = psmt.executeQuery();
+        int ret = 0;
+        while (rs.next()){
+            ret = rs.getInt("grade");
+        }
+        return ret;
     }
 
     public int returnGrade(int userid) throws Exception{
@@ -486,6 +500,42 @@ public class CRUD {
         return re;
     }
 
+    /* --------------------------------------- Student Table -------------------------------------------*/
+    public void insertStudentAnswer(int question, int userid, int courseId, int grade)throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateStudentAnswer();
+        String sql = ""+
+                "INSERT INTO studentTable" +
+                "(questionId,userId,courseId,grade)"+
+                "values(?,?,?,?)";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,question);
+        psmt.setInt(2,userid);
+        psmt.setInt(3,courseId);
+        psmt.setInt(4,grade);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
+    }
+
+    public List<Answer> showAllStudentAnswer(int userId, int courseId) throws Exception{
+        JDBC.getConnection();
+        Connection connection = JDBC.CreateStudentAnswer();
+        String sql = "" +
+                "select questionId, userId, courseId, grade from studentTable where userId = ? and courseId = ?";
+        PreparedStatement psmt = connection.prepareStatement(sql);
+        psmt.setInt(1,userId);
+        psmt.setInt(2,courseId);
+        ResultSet rs = psmt.executeQuery();
+        List<Answer> ret = new ArrayList<>();
+        while (rs.next()){
+            Answer answer = new Answer(rs.getInt("questionId"),
+                    rs.getInt("courseId"),
+                    rs.getInt("grade"));
+            ret.add(answer);
+        }
+        return ret;
+    }
 
     /* --------------------------------------- Main page -------------------------------------------*/
 

@@ -1,24 +1,18 @@
 package controllers;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import akka.stream.Materializer;
-import akka.stream.javadsl.Flow;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.base.Function;
+
 import domain.socketActor;
-import play.libs.F;
 import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
 import play.mvc.Http;
-import play.mvc.Result;
 import play.mvc.WebSocket;
 import utility.Constant;
 import utility.MyWebSocketActor;
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
+
 
 
 public class WebsocketController extends Controller {
@@ -31,7 +25,6 @@ public class WebsocketController extends Controller {
         this.materializer = materializer;
     }
     public WebSocket socket(String code) {
-
         Constant.currentServer = code;
         if (Constant.ClientList.isEmpty()){
             Constant.ClientList.add(new socketActor(code,new ArrayList<>()));
@@ -50,10 +43,21 @@ public class WebsocketController extends Controller {
         }
         System.out.println(code);
         System.out.println(Constant.currentServer);
+
         return WebSocket.Json.accept(
                 request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer));
 
-
+//        return WebSocket.Json.acceptOrResult(
+//                request ->
+//                        CompletableFuture.completedFuture(
+//                                request.session()
+//                                        .get("connecting")
+//                                        .map(
+//                                                user ->
+//                                                        F.Either.<Result, Flow<JsonNode, JsonNode, ?>>Right(
+//                                                                ActorFlow.actorRef(
+//                                                                        MyWebSocketActor::props, actorSystem, materializer)))
+//                                        .orElseGet(() -> F.Either.Left(forbidden()))));
 
 
     }

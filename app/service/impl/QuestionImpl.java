@@ -1,6 +1,5 @@
 package service.impl;
 
-import domain.Answer;
 import domain.Question;
 import domain.Student_Answer;
 import domain.User;
@@ -99,7 +98,10 @@ public class QuestionImpl implements QuestionService {
                 int current = crud.returnGrade(student.getId());
                 if (question.getAnswer().equals(student.getAnswer())){
                     int newGrade = current + question.getGrade();
+                    crud.insertStudentAnswer(qid, student.getId(),question.getFrom(),question.getGrade());
                     crud.updateGrade(student.getId(), newGrade);
+                }else {
+                    crud.insertStudentAnswer(qid, student.getId(),question.getFrom(),0);
                 }
             }
         } catch (Exception e) {
