@@ -577,6 +577,8 @@ public class CRUD {
     public List<Answer> showAllStudentAnswer(int userId, int courseId) throws Exception{
         JDBC.getConnection();
         Connection connection = JDBC.CreateStudentAnswer();
+        System.out.println(userId);
+        System.out.println(courseId);
         String sql = "" +
                 "select questionId, userId, courseId, grade from studentTable where userId = ? and courseId = ?";
         PreparedStatement psmt = connection.prepareStatement(sql);
@@ -588,6 +590,7 @@ public class CRUD {
             Answer answer = new Answer(rs.getInt("questionId"),
                     rs.getInt("courseId"),
                     rs.getInt("grade"));
+
             ret.add(answer);
         }
         return ret;
@@ -609,12 +612,14 @@ public class CRUD {
     public void updateCurrentGrade(int qid, int uid, int grade) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateStudentAnswer();
+
         String sql = ""+
-                "update studentTable set grade = ? where questionId = ? and userId = ?";
+                "update studentTable set grade = '"+grade+"' where questionId = '"+qid+"' and userId = '"+uid+"'";
+        System.out.println(sql);
         PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setInt(1,grade);
-        psmt.setInt(2,qid);
-        psmt.setInt(3,uid);
+//        psmt.setInt(1,grade);
+//        psmt.setInt(2,qid);
+//        psmt.setInt(3,uid);
         psmt.executeUpdate();
         psmt.close();
         conn.close();

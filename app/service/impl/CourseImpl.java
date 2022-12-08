@@ -1,9 +1,6 @@
 package service.impl;
 
-import domain.Answer;
-import domain.Course;
-import domain.User;
-import domain.Info;
+import domain.*;
 import org.apache.commons.lang3.StringUtils;
 import service.CourseService;
 import utility.CRUD;
@@ -64,11 +61,17 @@ public class CourseImpl implements CourseService {
                 ArrayList<Integer> userAllCourse = crud.getAllCourseByID(userByEmail.getId());
                 if (userByEmail != null && courseByCode != null && !userAllCourse.contains(code)){
                     crud.joinCourse(userByEmail.getId(),courseByCode.getCode());
+                    ArrayList<Question> questions = crud.getAllQuestionByHeader(code);
+                    for (int i = 0; i < questions.size(); i++){
+                        crud.insertStudentAnswer(questions.get(i).getId(),userByEmail.getId(),code,0);
+                    }
                     return true;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
