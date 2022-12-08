@@ -17,6 +17,8 @@ public class User {
 
     private String description;
 
+    private int grade;
+
     public User() {
 
     }
@@ -104,5 +106,11 @@ public class User {
     }
 
 
+    public int getGrade() {
+        return grade;
+    }
 
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
 }

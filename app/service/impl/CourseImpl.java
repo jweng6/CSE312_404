@@ -186,4 +186,14 @@ public class CourseImpl implements CourseService {
         return null;
     }
 
+    @Override
+    public List<User> instrSeeGrade(int code) {
+        try {
+            return crud.InstrSeeGrade(code);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

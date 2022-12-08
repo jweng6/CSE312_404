@@ -321,6 +321,24 @@ public class CRUD {
         return ret;
     }
 
+    public List<User> InstrSeeGrade(int code) throws Exception{
+        JDBC.getConnection();
+        Connection connection = JDBC.CreateJoinCourse();
+        String sql = "" +
+                "select userid, grade from joinCourse where code = ?";
+        PreparedStatement psmt = connection.prepareStatement(sql);
+        psmt.setInt(1,code);
+        ResultSet rs = psmt.executeQuery();
+        List<User> ret = new ArrayList<>();
+        CRUD crud = new CRUD();
+        while (rs.next()){
+            User user = crud.getUserByid(rs.getInt("userid"));
+            user.setGrade(rs.getInt("grade"));
+            ret.add(user);
+        }
+        return ret;
+    }
+
 
     /* --------------------------------------- Question Table -------------------------------------------*/
     public void addQuestion(Question question) throws Exception{
@@ -436,7 +454,7 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         Question ret = new Question();
         String sql = "" +
-                "SELECT id,courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
+                "SELECT id,courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade,expires FROM questionTable WHERE id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, questionId);
         ResultSet rs = psmt.executeQuery();
@@ -451,6 +469,7 @@ public class CRUD {
             ret.setAnswerD(rs.getString("choiceD"));
             ret.setGrade(rs.getInt("grade"));
             ret.setId(rs.getInt("id"));
+            ret.setExpires(rs.getLong("expires"));
         }
         psmt.close();
         conn.close();

@@ -1,8 +1,6 @@
 package controllers;
 
-import domain.Course;
-import domain.Question;
-import domain.User;
+import domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import play.api.i18n.MessagesApi;
@@ -23,14 +21,13 @@ import javax.inject.Singleton;
 import java.awt.*;
 import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-
-import domain.Info;
-import utility.CRUD;
-
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.List;
+
+import utility.CRUD;
 
 
 /**
@@ -337,49 +334,9 @@ public class HomeController extends Controller {
     public Result showinstructorgradebook(Integer code, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-        List<Info> allCourse = course.showCourse(session_email);
-        UserImpl user = new UserImpl();
-        List<User> allUser = user.showAllStudent(code);
-        String coursename = "";
-        int x = 0;
-        while (x != allCourse.size()) {
-            if (Integer.parseInt(allCourse.get(x).getCode()) == code) {
-                coursename = allCourse.get(x).getCourseName();
-            }
-            x = x + 1;
-        }
-        List<Integer> allgrades = new ArrayList<Integer>();
-        System.out.println("halo");
-        int count = 0;
-        while (allUser.size() != count) {
-            System.out.print(allUser.get(count).getEmail());
-            List<Info> allCourse2 = course.showCourse(allUser.get(count).getEmail());
-            int xxx = 0;
-            System.out.println(code);
-            QuestionImpl allques2 = new QuestionImpl();
-            List<Question> allquestions2 = null;
-            while (xxx != allCourse2.size()) {
-                if (Integer.parseInt(allCourse2.get(xxx).getCode()) == code) {
-                    allquestions2 = allques2.showAllQuestion(Integer.parseInt(allCourse2.get(xxx).getCode()));
-                    System.out.println(allques2.showAllQuestion(Integer.parseInt(allCourse2.get(xxx).getCode())));
-                }
-                xxx = xxx + 1;
-            }
-            int totalgrade = 0;
-            int zzz = 0;
-            if (allquestions2 != null) {
-                while (zzz != allquestions2.size()) {
-                    totalgrade = totalgrade + allquestions2.get(zzz).getGrade();
-                    zzz = zzz + 1;
-                }
-            }
-            allgrades.add(totalgrade);
-            count = count + 1;
-        }
-        System.out.println("allgrades");
-
+        List<User> users = course.instrSeeGrade(code);
         if (connecting.isPresent() == true) {
-            return ok(views.html.instructorgradebook.render(allUser, session_email, coursename, allgrades));
+            return ok(views.html.instructorgradebook.render(users));
         }
         return unauthorized("Oops, you are not connected");
     }
@@ -389,38 +346,39 @@ public class HomeController extends Controller {
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         try {
             User current  = user.getUserByEmail(session_email);
-
+            Course thisCourse = course.course_info(code);
+            List<Answer> li = course.showAllStudentAnswer(current.getId(), thisCourse.getId());
+            List<Question> allquestions = new ArrayList<>();
+            List<String> expires = new ArrayList<>();
+            int earnGrade = 0;
+            int totalGrade = 0;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            for (int i = 0; i< li.size(); i++){
+                Question question = this.question.getQuestion(li.get(i).getQuestion_id());
+                earnGrade += li.get(i).getReturn_grade();
+                totalGrade += question.getGrade();
+                question.setGrade(li.get(i).getReturn_grade());
+                LocalDateTime triggerTime =
+                        LocalDateTime.ofInstant(Instant.ofEpochMilli(question.getExpires()),
+                                TimeZone.getDefault().toZoneId());
+                expires.add(triggerTime.format(formatter));
+                allquestions.add(question);
+            }
+            if (connecting.isPresent() == true) {
+                //earnGrade 是这个学生在这节课获得的分
+                //totalGrade 是这节课的中分
+                //expires list类型 是这节课问题的提交日期 格式 yyyy/MM/dd
+                return ok(views.html.studentgradebook.render(code, allquestions, earnGrade, totalGrade,thisCourse.getCourseName(),expires));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        List<Info> allCourse = course.showCourse(session_email);
-        int x = 0;
-        QuestionImpl allques = new QuestionImpl();
-        List<Question> allquestions = null;
-        String coursename = "";
-        while (x != allCourse.size()) {
-            if (Integer.parseInt(allCourse.get(x).getCode()) == code) {
-                coursename = allCourse.get(x).getCourseName();
-                allquestions = allques.showAllQuestion(Integer.parseInt(allCourse.get(x).getCode()));
-                System.out.println(allques.showAllQuestion(Integer.parseInt(allCourse.get(x).getCode())));
-            }
-            x = x + 1;
-        }
-        int totalgrade = 0;
-        int z = 0;
-        while (z != allquestions.size()) {
-            totalgrade = totalgrade + allquestions.get(z).getGrade();
-            z = z + 1;
-        }
-        if (connecting.isPresent() == true) {
-            return ok(views.html.studentgradebook.render(code, allquestions, totalgrade, coursename));
         }
         return unauthorized("Oops, you are not connected");
     }
 
     public Result showGradebook(Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
-        
+
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         List<Info> allCourse = course.showCourse(session_email);
         try {
@@ -437,13 +395,13 @@ public class HomeController extends Controller {
                     int thisGrade = course.showGrade(current.getId(), allCourseId.get(zz));
                     for (int i = 0; i < questions.size(); i++){
                         temp += questions.get(i).getGrade();
-                        total.add(temp);
                     }
+                    total.add(temp);
                     allgrade.add(thisGrade);
                 }
                 zz = zz + 1;
             }
-            // total 是每一个course的总成绩
+            // total 是一个list ｜｜ 是每一个course的总成绩
             if (connecting.isPresent() == true) {
                 return ok(views.html.gradebook.render(allCourse, allgrade));
             }

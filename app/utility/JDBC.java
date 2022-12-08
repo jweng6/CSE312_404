@@ -106,7 +106,7 @@ public class JDBC {
                 "questionId INT," +
                 "userId INT, " +
                 "courseId INT, " +
-                "grade INT DEFALUT 0," +
+                "grade INT DEFAULT 0," +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
