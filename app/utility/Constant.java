@@ -16,7 +16,6 @@ public class Constant {
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
-                .replace("/","&#47;")
-                .replace("@","&#64");
+                .replace("/","&#47;");
     }
 }
