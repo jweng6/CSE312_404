@@ -394,7 +394,12 @@ public class CRUD {
         psmt.setString(7, question.getAnswerC());
         psmt.setString(8, question.getAnswerD());
         psmt.setInt(9, question.getGrade());
-        int i = psmt.executeUpdate();
+        psmt.executeUpdate();
+        int i= 0;
+        ResultSet rs = psmt.getGeneratedKeys();
+        if (rs.next()){
+            i = rs.getInt(1);
+        }
         psmt.close();
         conn.close();
         return i;
@@ -578,8 +583,7 @@ public class CRUD {
     public List<Answer> showAllStudentAnswer(int userId, int courseId) throws Exception{
         JDBC.getConnection();
         Connection connection = JDBC.CreateStudentAnswer();
-        System.out.println(userId);
-        System.out.println(courseId);
+
         String sql = "" +
                 "select questionId, userId, courseId, grade from studentTable where userId = ? and courseId = ?";
         PreparedStatement psmt = connection.prepareStatement(sql);
@@ -591,9 +595,9 @@ public class CRUD {
             Answer answer = new Answer(rs.getInt("questionId"),
                     rs.getInt("courseId"),
                     rs.getInt("grade"));
-
             ret.add(answer);
         }
+
         return ret;
     }
 

@@ -69,6 +69,7 @@ public class GradeController extends Controller {
         try {
             User current  = user.getUserByEmail(session_email);
             Course thisCourse = course.course_info(code);
+            System.out.println(code);
             List<Answer> li = course.showAllStudentAnswer(current.getId(), code);
             List<Question> allquestions = new ArrayList<>();
             List<String> expires = new ArrayList<>();
@@ -77,27 +78,20 @@ public class GradeController extends Controller {
 //            LocalDateTime now = LocalDateTime.now().toEpochSecond();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             for (int i = 0; i< li.size(); i++){
-                Question question = this.question.getQuestion(li.get(i).getQuestion_id());
+                Question q = question.getQuestion(li.get(i).getQuestion_id());
 
                 earnGrade += li.get(i).getReturn_grade();
-                totalGrade += question.getGrade();
-                question.setGrade(li.get(i).getReturn_grade());
-                LocalDateTime triggerTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(question.getExpires()), TimeZone
+                totalGrade += q.getGrade();
+                q.setGrade(li.get(i).getReturn_grade());
+                LocalDateTime triggerTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(q.getExpires()), TimeZone
                         .getDefault().toZoneId());
                 expires.add(triggerTime.format(formatter));
-
-                allquestions.add(question);
+                allquestions.add(q);
             }
             if (connecting.isPresent() == true) {
                 //earnGrade 是这个学生在这节课获得的分
                 //totalGrade 是这节课的中分
                 //expires list类型 是这节课问题的提交日期 格式 yyyy/MM/dd
-                System.out.println(earnGrade);
-                System.out.println(totalGrade);
-                System.out.println(code);
-                System.out.println(allquestions.get(0).getDetail());
-                System.out.println(thisCourse.getCourseName());
-                System.out.println(expires.get(0));
                 return ok(views.html.studentgradebook.render(code, allquestions, earnGrade, totalGrade,thisCourse.getCourseName(),expires));
             }
         } catch (Exception e) {
