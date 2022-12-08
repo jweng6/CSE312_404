@@ -118,6 +118,7 @@ public class CourseImpl implements CourseService {
         return null;
     }
 
+
     @Override
     public Boolean isInstrutor(int code,String email){
         boolean ret = false;
@@ -150,6 +151,28 @@ public class CourseImpl implements CourseService {
             e.printStackTrace();
         }
         return new Course();
+    }
+
+    @Override
+    public List<Integer> getAllCourse(int uid) {
+        try {
+            return crud.getAllCourseByID(uid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public int showGrade(int uid, int course) {
+        try {
+            return crud.getGradeWithCourse(uid,course);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

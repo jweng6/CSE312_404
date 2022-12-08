@@ -210,6 +210,7 @@ public class CRUD {
         conn.close();
     }
 
+
     public ArrayList<Integer> getAllCourseByID(int uid) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
@@ -256,6 +257,21 @@ public class CRUD {
         psmt.executeUpdate();
         psmt.close();
         conn.close();
+    }
+
+    public int getGradeWithCourse(int uid, int courseCode) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateJoinCourse();
+        String sql = "select grade from joinCourse where userid = ? and courseCode =?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,uid);
+        psmt.setInt(2,courseCode);
+        ResultSet rs = psmt.executeQuery();
+        int ret = 0;
+        while (rs.next()){
+            ret = rs.getInt("grade");
+        }
+        return ret;
     }
 
     public int returnGrade(int userid) throws Exception{
@@ -484,6 +500,23 @@ public class CRUD {
             re= rs.getLong("expires");
         }
         return re;
+    }
+
+    /* --------------------------------------- Student Table -------------------------------------------*/
+    public void insertStudentAnswer(int question, int userid, int grade)throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateStudentAnswer();
+        String sql = ""+
+                "INSERT INTO studentTable" +
+                "(questionId,userId,grade)"+
+                "values(?,?,?)";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,question);
+        psmt.setInt(2,userid);
+        psmt.setInt(3,grade);
+        psmt.executeUpdate();
+        psmt.close();
+        conn.close();
     }
 
 

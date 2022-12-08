@@ -1,5 +1,7 @@
 package utility;
 
+import domain.Student_Answer;
+
 import java.sql.*;
 
 public class JDBC {
@@ -90,6 +92,20 @@ public class JDBC {
                 "choiceD TEXT, " +
                 "grade INT, " +
                 "expires BIGINT DEFAULT 0," +
+                "PRIMARY KEY (id))";
+        statement.executeUpdate(sql);
+        statement.close();
+        return connection;
+    }
+
+    public static Connection CreateStudentAnswer() throws Exception{
+        Connection connection = JDBC.getConnection();
+        Statement statement = connection.createStatement();
+        String sql = "create table if not exists studentTable" +
+                "(id INT AUTO_INCREMENT, " +
+                "questionId INT," +
+                "userId INT, " +
+                "grade INT DEFALUT 0," +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();

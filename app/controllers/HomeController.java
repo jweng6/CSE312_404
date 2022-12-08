@@ -9,6 +9,7 @@ import play.api.i18n.MessagesApi;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
+import scala.Int;
 import service.CourseService;
 import service.QuestionService;
 import service.UserService;
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+
 import domain.Info;
 import utility.CRUD;
 
@@ -45,7 +47,7 @@ public class HomeController extends Controller {
     Form<Question> questionFrom;
     Form<Course> courseForm;
     MessagesApi messagesApi;
-    private final Logger logger = LoggerFactory.getLogger(getClass()) ;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
 
     @Inject
@@ -55,15 +57,16 @@ public class HomeController extends Controller {
         this.questionFrom = formFactory.form(Question.class);
         this.messagesApi = messagesApi;
     }
-        /**
-         * An action that renders an HTML page with a welcome message.
-         * The configuration in the <code>routes</code> file means that
-         * this method will be called when the application receives a
-         * <code>GET</code> request with a path of <code>/</code>.
-         */
 
-    public Result showRegister(Http.Request request){
-        return ok(views.html.sign_up.render(userForm,request,messagesApi.preferred(request)));
+    /**
+     * An action that renders an HTML page with a welcome message.
+     * The configuration in the <code>routes</code> file means that
+     * this method will be called when the application receives a
+     * <code>GET</code> request with a path of <code>/</code>.
+     */
+
+    public Result showRegister(Http.Request request) {
+        return ok(views.html.sign_up.render(userForm, request, messagesApi.preferred(request)));
     }
 
 
@@ -80,23 +83,23 @@ public class HomeController extends Controller {
 
 //            String email, String firstname, String lastname, String password
             //返回的是一个user
-            user.addUser(data.getEmail(),data.getFirstname(),data.getLastname(),data.getPassword());
+            user.addUser(data.getEmail(), data.getFirstname(), data.getLastname(), data.getPassword());
             return redirect("/").withNewSession();
         }
     }
 
-    public Result showLogin(Http.Request request){
+    public Result showLogin(Http.Request request) {
         Optional<String> connect_fail = request.session().get("connect_fail");
         String f = "false";
         String t = "true";
 
         //如果登入失败：返回alert,并且清空所有session
-        if (connect_fail.isPresent() == true){
+        if (connect_fail.isPresent() == true) {
 
-            return ok(views.html.sign_in.render(userForm,t,request, messagesApi.preferred(request))).withNewSession();
+            return ok(views.html.sign_in.render(userForm, t, request, messagesApi.preferred(request))).withNewSession();
         }
         //显示登入页面，并且清空所有session
-        return ok(views.html.sign_in.render(userForm,f,request, messagesApi.preferred(request))).withNewSession();
+        return ok(views.html.sign_in.render(userForm, f, request, messagesApi.preferred(request))).withNewSession();
 
     }
 
@@ -108,30 +111,30 @@ public class HomeController extends Controller {
         if (loginForm.hasErrors()) {
             String f = "false";
             logger.error("errors = {}", loginForm.errors());
-            return badRequest(views.html.sign_in.render(loginForm,f, request, messagesApi.preferred(request)));
+            return badRequest(views.html.sign_in.render(loginForm, f, request, messagesApi.preferred(request)));
         }
 
         //返回的是一个true和false
-        boolean check = user.login(request_email,request_password);
+        boolean check = user.login(request_email, request_password);
 
         //登入正确：去main page，并且添加connecting的session。
-        if (check ==true) {
+        if (check == true) {
 
-            return redirect("/main").addingToSession(request, "connecting",request_email);
+            return redirect("/main").addingToSession(request, "connecting", request_email);
         }
 
         //登入失败：返回登入页面，并且添加connect_fail的session。
-        return redirect("/").addingToSession(request, "connect_fail",request_email);
+        return redirect("/").addingToSession(request, "connect_fail", request_email);
 
 
     }
 
-    public Result showCreate(Http.Request request){
+    public Result showCreate(Http.Request request) {
 
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
-        if (connecting.isPresent() == true){
-            return ok(views.html.create_course.render(courseForm,request,messagesApi.preferred(request)));
+        if (connecting.isPresent() == true) {
+            return ok(views.html.create_course.render(courseForm, request, messagesApi.preferred(request)));
         }
 
         //不在线（没登入） 返回401
@@ -142,7 +145,7 @@ public class HomeController extends Controller {
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
-            return badRequest(views.html.create_course.render(boundForm,request, messagesApi.preferred(request)));
+            return badRequest(views.html.create_course.render(boundForm, request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
 
@@ -150,27 +153,28 @@ public class HomeController extends Controller {
             String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
             //返回的是一个course放到session中
             Course c = course.addCourse(data.getCourseName(), user.getUserByEmail(session_email));
-            return redirect("/main").addingToSession(request, "connecting",session_email);
+            return redirect("/main").addingToSession(request, "connecting", session_email);
         }
     }
 
-    public Result showJoin(Http.Request request){
+    public Result showJoin(Http.Request request) {
 
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
-        if (connecting.isPresent() == true){
-            return ok(views.html.join_course.render(courseForm,request,messagesApi.preferred(request)));
+        if (connecting.isPresent() == true) {
+            return ok(views.html.join_course.render(courseForm, request, messagesApi.preferred(request)));
         }
 
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
 
     }
-    public Result postJoin(Http.Request request){
+
+    public Result postJoin(Http.Request request) {
         final Form<Course> boundForm = courseForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             logger.error("errors = {}", boundForm.errors());
-            return badRequest(views.html.join_course.render(boundForm,request, messagesApi.preferred(request)));
+            return badRequest(views.html.join_course.render(boundForm, request, messagesApi.preferred(request)));
         } else {
             Course data = boundForm.get();
             //获取session里的email，然后转换从optional<String> -> String:
@@ -178,16 +182,17 @@ public class HomeController extends Controller {
 
             System.out.println(data.getCode());
             //加入课程，返回的是一个true(成功)或false(失败)
-            boolean join_course= course.joinCourse(session_email,data.getCode());
+            boolean join_course = course.joinCourse(session_email, data.getCode());
 //            "alert","You are already enrolled in this course"
-            if (!join_course ){
-                redirect("/main").addingToSession(request, "connecting",session_email);
+            if (!join_course) {
+                redirect("/main").addingToSession(request, "connecting", session_email);
             }
 
-            return redirect("/main").addingToSession(request, "connecting",session_email);
+            return redirect("/main").addingToSession(request, "connecting", session_email);
         }
     }
-    public Result showMain(Http.Request request){
+
+    public Result showMain(Http.Request request) {
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
         System.out.println("session connecting:");
@@ -196,7 +201,7 @@ public class HomeController extends Controller {
         //获取session里的email，然后转换从optional<String> -> String:
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
 
-        if (connecting.isPresent() == true){
+        if (connecting.isPresent() == true) {
             List<Info> allCourse = course.showCourse(session_email);
             return ok(views.html.main_page.render(allCourse));
         }
@@ -205,7 +210,7 @@ public class HomeController extends Controller {
         return unauthorized("Oops, you are not connected");
     }
 
-    public Result showCourse(String code, Http.Request request){
+    public Result showCourse(String code, Http.Request request) {
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
         System.out.println("session connecting:");
@@ -214,28 +219,27 @@ public class HomeController extends Controller {
 
         //获取session里的email，然后转换从optional<String> -> String:
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-        if (connecting.isPresent() == true){
+        if (connecting.isPresent() == true) {
             Course courseInfo = course.course_info(Integer.parseInt(code));
             courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code), session_email);
             String s = "none";
             List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
             Question currq = new Question();
-            if (isInstrutor){
+            if (isInstrutor) {
 //              这里面是：course_ins.render(courseInfo,listq,show,q, email, questionFrom,request,messageApi.preferred(request),currq))
 //                    show：0 = 不显示东西 ; 1 = 选择问题后，准备输入时间，然后发布 ; 2 = add question ; 3 = roster
-                return ok(views.html.course_ins.render(courseInfo,listq,s,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
-            }
-            else { //if is student
+                return ok(views.html.course_ins.render(courseInfo, listq, s, currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
+            } else { //if is student
                 List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                return ok(views.html.course_student.render(courseInfo,listqed,s,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                return ok(views.html.course_student.render(courseInfo, listqed, s, currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
             }
         }
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
 
-    public Result showCourse_with_status(String code,String status ,Http.Request request){
+    public Result showCourse_with_status(String code, String status, Http.Request request) {
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
         System.out.println("session connecting:");
@@ -244,22 +248,21 @@ public class HomeController extends Controller {
 
         //获取session里的email，然后转换从optional<String> -> String:
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-        if (connecting.isPresent()){
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+        if (connecting.isPresent()) {
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code), session_email);
             Course courseInfo = course.course_info(Integer.parseInt(code));
             courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
             List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
             Question currq = new Question();
-            if (isInstrutor){
+            if (isInstrutor) {
                 System.out.println("1111");
 //              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request),currq))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
-                return ok(views.html.course_ins.render(courseInfo,listq,status,currq,session_email,questionFrom,request, messagesApi.preferred(request) ));
-            }
-            else { //if is student
+                return ok(views.html.course_ins.render(courseInfo, listq, status, currq, session_email, questionFrom, request, messagesApi.preferred(request)));
+            } else { //if is student
 
                 List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                return ok(views.html.course_student.render(courseInfo,listqed,status,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                return ok(views.html.course_student.render(courseInfo, listqed, status, currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
             }
         }
         //不在线（没登入） 返回401
@@ -267,20 +270,20 @@ public class HomeController extends Controller {
     }
 
 
-    public Result post_course_with_status(String code,String status,Http.Request request) throws SQLException, ClassNotFoundException {
+    public Result post_course_with_status(String code, String status, Http.Request request) throws SQLException, ClassNotFoundException {
         //确定用户是在线的
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-        if (connecting.isPresent()){
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
-            if (isInstrutor){
+        if (connecting.isPresent()) {
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code), session_email);
+            if (isInstrutor) {
                 Course courseInfo = course.course_info(Integer.parseInt(code));
                 courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
 //              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request)))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
                 List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
                 Question currq = new Question();
-                if (status.equals("add_question")){
+                if (status.equals("add_question")) {
                     final Form<Question> addQuestionForm = questionFrom.bindFromRequest(request);
                     String request_header = addQuestionForm.get().getHeader();
                     Integer request_from = addQuestionForm.get().getFrom();
@@ -295,8 +298,8 @@ public class HomeController extends Controller {
 
                     String request_answerA = addQuestionForm.get().getHeader();
 
-                    question.addQuestion(request_header,request_details,request_answer,request_from,request_grade,request_A,request_B,request_C,request_D);
-                    return redirect("/course/"+code).addingToSession(request, "connecting",session_email);
+                    question.addQuestion(request_header, request_details, request_answer, request_from, request_grade, request_A, request_B, request_C, request_D);
+                    return redirect("/course/" + code).addingToSession(request, "connecting", session_email);
                 }
             }
         }
@@ -305,27 +308,24 @@ public class HomeController extends Controller {
     }
 
 
-    public Result show_question(String code,String questionId,Http.Request request){
+    public Result show_question(String code, String questionId, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
 
-
-
-        if (connecting.isPresent() == true){
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
+        if (connecting.isPresent() == true) {
+            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code), session_email);
             Course courseInfo = course.course_info(Integer.parseInt(code));
             courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
             Question currq = question.getQuestion(Integer.parseInt(questionId));
             List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
-            if (isInstrutor){
-                return ok(views.html.course_ins.render(courseInfo,listq,"show_question",currq,session_email,questionFrom,request, messagesApi.preferred(request)));
-            }
-            else {
+            if (isInstrutor) {
+                return ok(views.html.course_ins.render(courseInfo, listq, "show_question", currq, session_email, questionFrom, request, messagesApi.preferred(request)));
+            } else {
                 String qid = request.path().split("/")[4];
-                boolean answerd_question = question.getAllExpireCheckByQid(Integer.parseInt(qid ),Integer.parseInt(code));
-                if (answerd_question){
+                boolean answerd_question = question.getAllExpireCheckByQid(Integer.parseInt(qid), Integer.parseInt(code));
+                if (answerd_question) {
                     List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                    return ok(views.html.course_student.render(courseInfo,listqed,"show_question",currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                    return ok(views.html.course_student.render(courseInfo, listqed, "show_question", currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
                 }
                 return unauthorized("Oops, you are not connected");
             }
@@ -333,17 +333,117 @@ public class HomeController extends Controller {
         //不在线（没登入） 返回401
         return unauthorized("Oops, you are not connected");
     }
-    public Result showGradebook(Http.Request request){
+
+    public Result showinstructorgradebook(Integer code, Http.Request request) {
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        List<Info> allCourse = course.showCourse(session_email);
+        UserImpl user = new UserImpl();
+        List<User> allUser = user.showAllStudent(code);
+        String coursename = "";
+        int x = 0;
+        while (x != allCourse.size()) {
+            if (Integer.parseInt(allCourse.get(x).getCode()) == code) {
+                coursename = allCourse.get(x).getCourseName();
+            }
+            x = x + 1;
+        }
+        List<Integer> allgrades = new ArrayList<Integer>();
+        System.out.println("halo");
+        int count = 0;
+        while (allUser.size() != count) {
+            System.out.print(allUser.get(count).getEmail());
+            List<Info> allCourse2 = course.showCourse(allUser.get(count).getEmail());
+            int xxx = 0;
+            System.out.println(code);
+            QuestionImpl allques2 = new QuestionImpl();
+            List<Question> allquestions2 = null;
+            while (xxx != allCourse2.size()) {
+                if (Integer.parseInt(allCourse2.get(xxx).getCode()) == code) {
+                    allquestions2 = allques2.showAllQuestion(Integer.parseInt(allCourse2.get(xxx).getCode()));
+                    System.out.println(allques2.showAllQuestion(Integer.parseInt(allCourse2.get(xxx).getCode())));
+                }
+                xxx = xxx + 1;
+            }
+            int totalgrade = 0;
+            int zzz = 0;
+            if (allquestions2 != null) {
+                while (zzz != allquestions2.size()) {
+                    totalgrade = totalgrade + allquestions2.get(zzz).getGrade();
+                    zzz = zzz + 1;
+                }
+            }
+            allgrades.add(totalgrade);
+            count = count + 1;
+        }
+        System.out.println("allgrades");
+
+        if (connecting.isPresent() == true) {
+            return ok(views.html.instructorgradebook.render(allUser, session_email, coursename, allgrades));
+        }
+        return unauthorized("Oops, you are not connected");
+    }
+
+    public Result showstudentgradebook(Integer code, Http.Request request) {
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+
+        List<Info> allCourse = course.showCourse(session_email);
+        int x = 0;
+        QuestionImpl allques = new QuestionImpl();
+        List<Question> allquestions = null;
+        String coursename = "";
+        while (x != allCourse.size()) {
+            if (Integer.parseInt(allCourse.get(x).getCode()) == code) {
+                coursename = allCourse.get(x).getCourseName();
+                allquestions = allques.showAllQuestion(Integer.parseInt(allCourse.get(x).getCode()));
+                System.out.println(allques.showAllQuestion(Integer.parseInt(allCourse.get(x).getCode())));
+            }
+            x = x + 1;
+        }
+        int totalgrade = 0;
+        int z = 0;
+        while (z != allquestions.size()) {
+            totalgrade = totalgrade + allquestions.get(z).getGrade();
+            z = z + 1;
+        }
+        if (connecting.isPresent() == true) {
+            return ok(views.html.studentgradebook.render(code, allquestions, totalgrade, coursename));
+        }
+        return unauthorized("Oops, you are not connected");
+    }
+
+    public Result showGradebook(Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
 
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-
-        CourseImpl C = new CourseImpl();
         List<Info> allCourse = course.showCourse(session_email);
-        System.out.println(allCourse);
-        
-        if (connecting.isPresent() == true){
-            return ok(views.html.gradebook.render(allCourse));
+        try {
+            User current = user.getUserByEmail(session_email);
+            List<Integer> allCourseId = course.getAllCourse(current.getId());
+            int zz = 0;
+            List<Integer> allgrade = new ArrayList<>();
+            List<Integer> total = new ArrayList<>();
+            while (zz != allCourse.size()) {
+                String code = allCourse.get(zz).getCode();
+                if (allCourse.get(zz).getCode() == code) {
+                    int temp = 0;
+                    List<Question> questions = question.showAllQuestion(allCourseId.get(zz));
+                    int thisGrade = course.showGrade(current.getId(), allCourseId.get(zz));
+                    for (int i = 0; i < questions.size(); i++){
+                        temp += questions.get(i).getGrade();
+                        total.add(temp);
+                    }
+                    allgrade.add(thisGrade);
+                }
+                zz = zz + 1;
+            }
+            // total 是每一个course的总成绩
+            if (connecting.isPresent() == true) {
+                return ok(views.html.gradebook.render(allCourse, allgrade));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return unauthorized("Oops, you are not connected");
     }
@@ -368,10 +468,6 @@ public class HomeController extends Controller {
 //        }
 //        return unauthorized("Oops, you are not connected");
 //    }
-
-
-
-
 
 
 }

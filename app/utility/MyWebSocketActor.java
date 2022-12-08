@@ -107,6 +107,9 @@ public class MyWebSocketActor extends AbstractActor {
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
 //                        String live = Json.stringify(message.findPath("live")).replace("\"","");
                         test = "{\"messageType\":\""+messageType+"\"}";
+                    }else if("timeOut".equals(messageType)){
+                        //messageType|question id|
+
                     }
 
                     for (int i = 0; i<clients.size();i++){
