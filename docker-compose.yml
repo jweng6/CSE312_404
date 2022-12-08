@@ -1,0 +1,33 @@
+version: '8'
+services:
+  mysql:
+    platform: linux/x86_64
+    image: mysql:8.0.30
+    ports:
+      - "3307:3306"
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci',
+      '--max_connections=1000'
+    ]
+    environment:
+      WAIT_MYSQL_HOST: mysql:8.0.30
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: JayX2029
+
+  app:
+    build:
+      dockerfile: Dockerfile
+    image: my_app
+    ports:
+      - '9000:9000'
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      #      IP: "192.168.1.212"
+      PORT: "3306"
+      DRIVERCLASSNAME: "com.mysql.cj.jdbc.Driver"
+      DBNAME: "@localhost"
+      USERNAME: "root"
+      PASSWORD: "JayX2029"
