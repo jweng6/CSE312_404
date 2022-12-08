@@ -198,7 +198,7 @@ public class HomeController extends Controller {
 
         if (connecting.isPresent()) {
             List<Info> allCourse = course.showCourse(session_email);
-            return ok(views.html.main_page.render(allCourse));
+            return ok(views.html.main_page.render(allCourse,session_email));
         }
 
         //不在线（没登入） 返回401

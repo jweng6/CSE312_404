@@ -1,6 +1,6 @@
 @import play.mvc.Http.Request
 @import domain.Info
-@(list: List[Info])
+@(list: List[Info],email:String)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,14 +12,12 @@
     <title>CSE312 Main</title>
 </head>
 <body style="width:100%;height: 100%">
-
-
     <div style="height: 25%">
         <div class="topnav" >
             <a onclick="location.href='/'">LogOut</a>
             <a onclick="location.href='/gradebook'">GradeBook</a>
             <a onclick="location.href='/main'">Home</a>
-            <a onclick="location.href='/profile'">profile</a>
+            <a onclick="window.open('/profile/@email')">Profile</a>
         </div>
         <div class="buttons">
             <div class="b1" onclick="location.href='/all'">

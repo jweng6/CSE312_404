@@ -70,6 +70,7 @@ public class GradeController extends Controller {
             User current  = user.getUserByEmail(session_email);
             Course thisCourse = course.course_info(code);
             List<Answer> li = course.showAllStudentAnswer(current.getId(), thisCourse.getId());
+            System.out.println(li.get(0).getReturn_grade());
             List<Question> allquestions = new ArrayList<>();
             List<String> expires = new ArrayList<>();
             int earnGrade = 0;
