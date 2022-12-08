@@ -172,10 +172,10 @@
 
                         @for( r <- roster){
                             @if(!r.getEmail().equals(curre)){
-                                <tr>
-                                    <td>@r.getFirstname()</td>
-                                    <td>@r.getLastname()</td>
-                                    <td>@r.getEmail()</td>
+                                <tr >
+                                    <td>@r.getFirstname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
+                                    <td>@r.getLastname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
+                                    <td>@r.getEmail().toLowerCase.capitalize</td>
                                 </tr>
                             }
                         }
@@ -188,14 +188,16 @@
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
+                            <th>Grade</th>
                         </tr>
 
                         @for( r <- roster){
                             @if(!r.getEmail().equals(curre)){
                                 <tr>
-                                    <td>@r.getFirstname()</td>
-                                    <td>@r.getLastname()</td>
-                                    <td>@r.getEmail()</td>
+                                    <td>@r.getFirstname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
+                                    <td>@r.getLastname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
+                                    <td>@r.getEmail().toLowerCase.capitalize</td>
+                                    <td>@r.getGrade()</td>
                                 </tr>
                             }
                         }
