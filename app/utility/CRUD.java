@@ -433,7 +433,7 @@ public class CRUD {
         long nowTime = dateTime.toEpochSecond(zoneOffset);
 
         String sql = "" +
-                "SELECT * FROM questionTable WHERE courseId = ? AND expires < ? AND id = ?";
+                "SELECT * FROM questionTable WHERE courseId = ? AND exipres > 0 AND expires < ? AND id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
         psmt.setLong(2,nowTime);
