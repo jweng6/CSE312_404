@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import domain.Question;
 import domain.User;
 import domain.socketActor;
+import org.apache.commons.lang3.StringUtils;
 import play.libs.Json;
 import service.QuestionService;
 import service.UserService;
@@ -17,6 +18,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MyWebSocketActor extends AbstractActor {
 
@@ -31,66 +34,69 @@ public class MyWebSocketActor extends AbstractActor {
     public MyWebSocketActor(ActorRef out) {
         this.out = out;
         this.code = Constant.currentServer;
-        this.clients = new ArrayList<>();
+        this.clients = helper();
     }
-//    private List<ActorRef> helper(){
-//        List<ActorRef> res = new ArrayList<>();
-//        for (int i =0; i<Constant.ClientList.size(); i++){
-//            if (this.code.equals(Constant.ClientList.get(i).getCode())){
-//                res = Constant.ClientList.get(i).getActorList();
-//            }
-//        }
-//        return res;
-//    }
+    private List<ActorRef> helper(){
+        List<ActorRef> res = new ArrayList<>();
+        for (int i =0; i<Constant.ClientList.size(); i++){
+            if (this.code.equals(Constant.ClientList.get(i).getCode())){
+                res = Constant.ClientList.get(i).getActorList();
+            }
+        }
+        return res;
+    }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JsonNode.class, message -> {
-//                    if (!clients.contains(this.out)){
-//                        clients.add(this.out);
-//                        for (int i = 0; i < Constant.ClientList.size(); i++){
-//
-//                        }
-//                    }
-                    for (int i = 0; i < Constant.ClientList.size(); i++){
-                        socketActor temp = Constant.ClientList.get(i);
-                        if (this.code.equals(temp.getCode())){
-                            if (!temp.getActorList().contains(this.out)){
-                                Constant.ClientList.get(i).getActorList().add(this.out);
-                            }
-                            this.clients = Constant.ClientList.get(i).getActorList();
-                            break;
+                    if (!clients.contains(this.out)){
+                        clients.add(this.out);
+                        for (int i = 0; i < Constant.ClientList.size(); i++){
+
                         }
                     }
+//                    for (int i = 0; i < Constant.ClientList.size(); i++){
+//                        socketActor temp = Constant.ClientList.get(i);
+//                        if (this.code.equals(temp.getCode())){
+//                            if (!temp.getActorList().contains(this.out)){
+//                                Constant.ClientList.get(i).getActorList().add(this.out);
+//                            }
+//                            this.clients = Constant.ClientList.get(i).getActorList();
+//                            break;
+//                        }
+//                    }
                     String test = Json.stringify(message);
                     String messageType = Json.stringify(message.findPath("messageType")).replace("\"","");
                     LocalDateTime dateTime = LocalDateTime.now();
                     ZoneOffset zoneOffset = OffsetDateTime.now().getOffset();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     if ("chat".equals(messageType)){
-                        String email = Json.stringify(message.findPath("email"));
-                        User user = userService.nowChat(email.replace("\"",""));
+                        String email = Json.stringify(message.findPath("email")).replace("\"","");
+                        User user = userService.nowChat(email);
                         String comment = Json.stringify(message.findPath("comment"));
                         String fullName = user.getFirstname() + " " + user.getLastname();
                         comment = comment.replace("\"","");
+                        comment = Constant.injection(comment);
                         test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
-                                "\"email\":\""+email.replace("\"","")+"\",\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
+                                "\"email\":\""+email+"\",\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
                     }else if ("assign".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
                         String question  = Json.stringify(message.findPath("question")).replace("\"","");
-                        int min = Integer.parseInt(Json.stringify(message.findPath("min")).replace("\"",""));
-                        Question q = qService.getQuestion(Integer.parseInt(question));
-                        dateTime = dateTime.plusMinutes(min);
-                        qService.expires(Integer.parseInt(question),dateTime.toEpochSecond(zoneOffset));
-                        test = "{\"messageType\":\""+messageType+"\",\"question\":\""+question+"\"" + "," +
-                                "\"title\":\""+q.getHeader()+"\"," +
-                                "\"details\":\""+q.getDetail()+"\"," +
-                                "\"A\":\""+q.getAnswerA()+"\"," +
-                                "\"B\":\""+q.getAnswerB()+"\"," +
-                                "\"C\":\""+q.getAnswerC()+"\"," +
-                                "\"D\":\""+q.getAnswerD()+"\"," +
-                                "\"expire\":\""+dateTime.format(formatter)+"\"}";
+                        String  min = Constant.injection(Json.stringify(message.findPath("min")).replace("\"",""));
+                        if (StringUtils.isNumeric(min)){
+                            Question q = qService.getQuestion(Integer.parseInt(question));
+                            dateTime = dateTime.plusMinutes(Integer.parseInt(min));
+                            qService.expires(Integer.parseInt(question),dateTime.toEpochSecond(zoneOffset));
+                            test = "{\"messageType\":\""+messageType+"\",\"question\":\""+question+"\"" + "," +
+                                    "\"title\":\""+q.getHeader()+"\"," +
+                                    "\"details\":\""+q.getDetail()+"\"," +
+                                    "\"A\":\""+q.getAnswerA()+"\"," +
+                                    "\"B\":\""+q.getAnswerB()+"\"," +
+                                    "\"C\":\""+q.getAnswerC()+"\"," +
+                                    "\"D\":\""+q.getAnswerD()+"\"," +
+                                    "\"expire\":\""+dateTime.format(formatter)+"\"}";
+                        }
                     }else if("answer".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment}));
                         String email = Json.stringify(message.findPath("email")).replace("\"","");
