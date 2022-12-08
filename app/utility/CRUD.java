@@ -310,14 +310,15 @@ public class CRUD {
         return ret;
     }
 
-    public void updateAnswer(int userid, String answer) throws SQLException, ClassNotFoundException {
+    public void updateAnswer(int userid, String answer,int courseID) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
         String sql = "" +
-                "update joinCourse set answer = ? where userid = ?";
+                "update joinCourse set answer = ? where userid = ? and courseCode=?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setString(1, answer);
         psmt.setInt(2, userid);
+        psmt.setInt(3,courseID);
         psmt.executeUpdate();
         psmt.close();
         conn.close();
