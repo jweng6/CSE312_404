@@ -44,7 +44,7 @@ public class HomeController extends Controller {
     Form<User> userForm;
     Form<Question> questionFrom;
     Form<Course> courseForm;
-    Form<User> editForm;
+    Form<Question> editForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
@@ -54,7 +54,7 @@ public class HomeController extends Controller {
         this.userForm = formFactory.form(User.class);
         this.courseForm = formFactory.form(Course.class);
         this.questionFrom = formFactory.form(Question.class);
-        this.editForm = formFactory.form(User.class);
+        this.editForm = formFactory.form(Question.class);
         this.messagesApi = messagesApi;
     }
         /**
@@ -405,15 +405,19 @@ public class HomeController extends Controller {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         if (connecting.isPresent() == true){
-            //final Form<User> editf = editForm.bindFromRequest(request);
-            
-            //User data = editform.get();
+            final Form<Question> editf = editForm.bindFromRequest(request);
+    
+            String first = editf.get().getHeader();
+            String last = editf.get().getAnswer();
+            String desc = editf.get().getDetail();
             //System.out.println("edit_info_here");
-            //System.out.println(editf.get().getFirstname());
-            //System.out.println(data.getLastname());
+            //System.out.println(editf.get().getPassword());
+            System.out.println(first);
+            System.out.println(last);
+            System.out.println(desc);
             //System.out.println(data.description());
-            user.updateDescription(session_email, "hello");
-            User a = user.updateName(session_email, "first", "last");
+            user.updateDescription(session_email, desc);
+            User a = user.updateName(session_email, first, last);
             
             return redirect("/main").addingToSession(request,"connecting",session_email);
         }

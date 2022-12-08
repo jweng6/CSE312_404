@@ -1,7 +1,7 @@
 @import play.mvc.Http.Request
 @import domain.User
 
-@(userInfo:User, show:String, editForm: Form[domain.User])(implicit request: Request, messages: Messages)
+@(userInfo:User, show:String, editForm: Form[domain.Question])(implicit request: Request, messages: Messages)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,9 +47,9 @@
             </div>
             <form method="POST" action="/editprofile" >
                 @helper.CSRF.formField
-                <input class="input-first_name" placeholder="First name" type="text" name="firstname" required><br>
-                <input class="input-last_name" placeholder="Last name" type="text" name="lastname" required><br>
-                <input class="input-des" placeholder="Description..." type="text" name="description" required><br>
+                <input class="input-first_name" placeholder="First name" type="header" id="header" name="header" required><br>
+                <input class="input-last_name" placeholder="Last name" type="answer" id="answer" name="answer" required><br>
+                <input class="input-des" placeholder="Description..." type="detail" id="detail" name="detail" required><br>
                 
                 <input class="button_edit" type="submit" value="EDIT">
             </form>
