@@ -1,0 +1,52 @@
+@import play.mvc.Http.Request
+
+@import domain.Course
+@(list: List[Course])
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main_page.css")">
+    <title>CSE312 Main</title>
+</head>
+<body style="width:100%;height: 100%">
+
+    <div style="height: 25%">
+        <div class="topnav" >
+            <a onclick="location.href='/'">LogOut</a>
+            <a onclick="location.href='/gradebook'">GradeBook</a>
+            <a onclick="location.href='/main'">Home</a>
+        </div>
+        <div class="buttons">
+            <div class="b1" onclick="location.href='/main'">
+                My Course
+            </div>
+        </div>
+    </div>
+
+    <ul style="height: 70%">
+
+        @for( i <- list){
+            <li onclick="location.href='/course/@i.getCode()'">
+                <div class="courses">
+                    <div class="coursesleft" >
+                        @i.getCourseName()
+                        <div class="instructoremail">
+                            Instructor email: @i.getEmail()
+                            <div class="code">
+                                Join code:  @i.getCode()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+        }
+
+    </ul>
+    
+</body>
+</html>
