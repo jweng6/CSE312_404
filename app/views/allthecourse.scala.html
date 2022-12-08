@@ -30,15 +30,12 @@
     <ul style="height: 70%">
 
         @for( i <- list){
-            <li onclick="location.href='/course/@i.getCode()'">
+            <li>
                 <div class="courses">
                     <div class="coursesleft" >
                         @i.getCourseName()
                         <div class="instructoremail">
                             Instructor email: @i.getEmail()
-                            <div class="code">
-                                Join code:  @i.getCode()
-                            </div>
                         </div>
                     </div>
                 </div>
