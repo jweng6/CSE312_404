@@ -18,6 +18,87 @@ function select(id,code){
 // Allow users to send messages by pressing enter instead of clicking the Send button
 
 
+
+class websocket extends Object {
+    constructor(courseId) {
+        super();
+        this.socket = new WebSocket('ws://' + window.location.host + '/ws'+courseId);
+        // Called whenever data is received from the server over the WebSocket connection
+
+        this.socket.onopen=function (){
+            console.log(111111111);
+        }
+
+
+        this.socket.onmessage = function (ws_message) {
+            const message = JSON.parse(ws_message.data);
+            const messageType = message.messageType
+
+            switch (messageType) {
+                case 'chat':
+                    addMessage(message);
+                    break;
+                case 'assign':
+                    assign_question(message);
+                    break;
+                case 'status':
+                    break;
+                case 'answer':
+                    break;
+
+                default:
+                    console.log("received an invalid WS messageType");
+            }
+        }
+}
+// Read the comment the user is sending to chat and send it to the server over the WebSocket as a JSON string
+    sendMessage(email) {
+        console.log(this.socket.onopen);
+        const chatBox = document.getElementById("chat-comment");
+        const comment = chatBox.value;
+        chatBox.value = "";
+        chatBox.focus();
+        if (comment !== "") {
+            this.socket.send(JSON.stringify({'messageType':"chat",'email': email.toString(), 'comment': comment}));
+            //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
+            //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
+            //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment }));
+        }
+
+    }
+
+    sendStatus() {
+        const id = document.getElementById("current_select_question_id").value;
+        this.socket.send(JSON.stringify({'messageType':"status", "live" : '0', "question": id}));
+        return null;
+    }
+
+    sendAnswer(email) {
+        const answerBox = document.getElementById("answerBox");
+        const comment = answerBox.value.toUpperCase();
+        answerBox.value = "";
+        answerBox.focus();
+        const id = document.getElementById("do_id").innerHTML;
+        this.socket.send(JSON.stringify({'messageType':"answer", "email" : email, "question": id.toString(),"comment":comment}));
+        return null;
+    }
+
+    sendTimeOut(id) {
+        this.socket.send(JSON.stringify({'messageType':"timeOut", "question": id}));
+    }
+}
+
+var join_code =document.getElementById("join_code").innerHTML.toString()
+const ws = new websocket(join_code);
+
+
+document.getElementById('chatSubmit_div').addEventListener("keypress", function (event) {
+    if (event.code === "Enter") {
+        var email = document.getElementById('current_user_email').innerHTML;
+        ws.sendMessage(email);
+    }
+});
+
 function addMessage(chatMessage) {
     const chat = document.getElementById('chat_all_message');
     let name = chatMessage.user.toLowerCase().split(" ");
@@ -32,15 +113,15 @@ function addMessage(chatMessage) {
 }
 
 function addTimeUp(assign) {
+
     const chat = document.getElementById('chat_all_message');
-    var currentDateTime = new Date();
     const now = new Date();
     const current = now.getHours() + ':' + now.getMinutes();
     chat.innerHTML += '<div class="chat_message">' + '<b>'+'Reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP!<br> The answers are graded'+ '</br>chat message will be clear in a second'+ ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
+    ws.sendTimeOut(assign.question);
+
 }
-
-
 
 var showtime = function (endtime) {
     var nowtime = new Date()  //获取当前时间
@@ -50,6 +131,8 @@ var showtime = function (endtime) {
         lefts = Math.floor(lefttime/1000%60);  //计算秒数
     return [lefth,leftm,lefts]   //返回倒计时的字符串
 }
+
+
 
 var timer = null;
 var assignShowing = true;
@@ -89,105 +172,19 @@ function assign_question(assign){
                 document.getElementById("course_name").onclick;
                 addTimeUp(assign);
                 document.getElementById('left_retangle').classList.remove('noClick');
-                ws.socket.send(JSON.stringify({'messageType':"timeOut", "question": id.toString()}));
+                //ws.socket.send(JSON.stringify({'messageType':"timeOut", "question": id.toString()}));
 
             },5);
 
-            setTimeout(function (){
-                window.location.replace(document.location);
-            },1000*10);
+            // setTimeout(function (){
+            //     window.location.replace(document.location);
+            // },1000*10);
 
 
         }
     } ,1000);
 
 }
-
-
-
-class websocket extends Object {
-    constructor(courseId) {
-        super();
-        this.socket = new WebSocket('ws://' + window.location.host + '/ws'+courseId);
-        // Called whenever data is received from the server over the WebSocket connection
-
-        this.socket.onopen=function (){
-            console.log(111111111);
-        }
-
-
-        this.socket.onmessage = function (ws_message) {
-            const message = JSON.parse(ws_message.data);
-            const messageType = message.messageType
-
-            switch (messageType) {
-                case 'chat':
-                    addMessage(message);
-                    break;
-                case 'assign':
-                    assign_question(message);
-                    break;
-                case 'status':
-                    break;
-                case 'answer':
-                    break;
-
-                default:
-                    console.log("received an invalid WS messageType");
-            }
-        }
-
-
-
-
-}
-// Read the comment the user is sending to chat and send it to the server over the WebSocket as a JSON string
-    sendMessage(email) {
-        console.log(this.socket.onopen);
-        const chatBox = document.getElementById("chat-comment");
-        const comment = chatBox.value;
-        chatBox.value = "";
-        chatBox.focus();
-        if (comment !== "") {
-            this.socket.send(JSON.stringify({'messageType':"chat",'email': email.toString(), 'comment': comment}));
-            //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
-            //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
-            //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment }));
-        }
-
-    }
-
-    sendStatus() {
-        const id = document.getElementById("current_select_question_id").value;
-        this.socket.send(JSON.stringify({'messageType':"status", "live" : '0', "question": id}));
-        return null;
-    }
-
-    sendAnswer(email) {
-        const answerBox = document.getElementById("answerBox");
-        const comment = answerBox.value.toUpperCase();
-        answerBox.value = "";
-        answerBox.focus();
-        const id = document.getElementById("do_id").innerHTML;
-        this.socket.send(JSON.stringify({'messageType':"answer", "email" : email, "question": id.toString(),"comment":comment}));
-        return null;
-    }
-
-
-}
-
-var join_code =document.getElementById("join_code").innerHTML.toString()
-const ws = new websocket(join_code);
-
-
-document.getElementById('chatSubmit_div').addEventListener("keypress", function (event) {
-    if (event.code === "Enter") {
-        var email = document.getElementById('current_user_email').innerHTML;
-        ws.sendMessage(email);
-    }
-});
-
-
 
 
 setInterval(function (){ws.sendStatus()}, 1000);

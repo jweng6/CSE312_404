@@ -44,6 +44,7 @@ function addTimeUp(assign) {
     const current = now.getHours() + ':' + now.getMinutes();
     chat.innerHTML += '<div class="chat_message">' + '<b>'+'Reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP!<br> The answers are graded'+ '</br>chat message will be clear in a second'+ ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
+    ws.sendTimeOut(assign.question);
 }
 
 var showtime = function (endtime) {
@@ -163,6 +164,10 @@ class websocket extends Object {
         return null;
     }
 
+    sendTimeOut(id) {
+        this.socket.send(JSON.stringify({'messageType':"timeOut", "question": id}));
+    }
+
 
 
 }
@@ -175,6 +180,8 @@ document.getElementById('chatSubmit_div').addEventListener("keypress", function 
     }
 });
 
+
+
 var assign_form = document.getElementById("assign_form");
 function handleForm(event) { event.preventDefault();  ws.sendAssign();}
 
@@ -182,8 +189,8 @@ if (assign_form!=null){
     assign_form.addEventListener('submit', handleForm);
 }
 
+setInterval(function (){ws.sendStatus()}, 1000);
 
-setInterval(function (){ws.sendStatus('0')}, 1000)
 
 
 
