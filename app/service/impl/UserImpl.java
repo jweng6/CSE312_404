@@ -140,12 +140,6 @@ public class UserImpl implements UserService {
         return user;
     }
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserImpl u = new UserImpl();
-//        System.out.println(u.nowChat("chuanlon@buffalo.edu").getLastname());
-
-
-    }
 
 
 }
