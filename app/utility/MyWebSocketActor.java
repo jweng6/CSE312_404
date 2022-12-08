@@ -101,13 +101,19 @@ public class MyWebSocketActor extends AbstractActor {
                         //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment}));
                         String email = Json.stringify(message.findPath("email")).replace("\"","");
                         String comment = Json.stringify(message.findPath("comment")).replace("\"","");
-                        int question  = Integer.parseInt(Json.stringify(message.findPath("question")).replace("\"",""));
-                        long expireTime = qService.getExpire(question);
-                        long nowTime = dateTime.toEpochSecond(zoneOffset);
-                        if (nowTime <= expireTime){
-                            qService.answerQuestion(question,email,comment);
+                        if (comment.equalsIgnoreCase("A")
+                                ||comment.equalsIgnoreCase("B")
+                                || comment.equalsIgnoreCase("C")
+                                || comment.equalsIgnoreCase("D")) {
+                            int question  = Integer.parseInt(Json.stringify(message.findPath("question")).replace("\"",""));
+                            long expireTime = qService.getExpire(question);
+                            long nowTime = dateTime.toEpochSecond(zoneOffset);
+                            if (nowTime <= expireTime){
+                                qService.answerQuestion(question,email,comment);
+                            }
+                            test = "{\"messageType\":\""+messageType+"\"}";
                         }
-                        test = "{\"messageType\":\""+messageType+"\"}";
+
                     }else if ("status".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
 //                        String live = Json.stringify(message.findPath("live")).replace("\"","");
