@@ -42,7 +42,7 @@ function addTimeUp(assign) {
     const chat = document.getElementById('chat_all_message');
     const now = new Date();
     const current = now.getHours() + ':' + now.getMinutes();
-    chat.innerHTML += '<div class="chat_message">' + '<b>'+'Reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP!<br> The answers are graded'+ ' </div>' +'<br>' +  '</div>';
+    chat.innerHTML += '<div class="chat_message">' + '<b>'+'Reminder </b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP!<br> The answers are graded'+ ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
     ws.sendTimeOut(assign.question);
 }

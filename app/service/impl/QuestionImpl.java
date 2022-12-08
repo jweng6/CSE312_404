@@ -24,6 +24,7 @@ public class QuestionImpl implements QuestionService {
                 question.setAnswerC(answerC);
                 question.setAnswerD(answerD);
                 int qid = crud.addQuestion(question);
+                System.out.println(qid);
                 ArrayList<User> allStudent = crud.getAllUserByCourse(from);
                 for (int i = 0; i < allStudent.size(); i++){
                     crud.insertStudentAnswer(qid,allStudent.get(i).getId(),from,0);
