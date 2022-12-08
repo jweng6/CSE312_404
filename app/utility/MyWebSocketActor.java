@@ -109,7 +109,9 @@ public class MyWebSocketActor extends AbstractActor {
                         test = "{\"messageType\":\""+messageType+"\"}";
                     }else if("timeOut".equals(messageType)){
                         //messageType|question id|
-
+                        String qid = Json.stringify(message.findPath("question")).replace("\"","");
+                        qService.grading(Integer.parseInt(qid));
+                        test = "{\"messageType\":\""+messageType+"\",\"question\":\""+qid+"\"}";
                     }
 
                     for (int i = 0; i<clients.size();i++){
