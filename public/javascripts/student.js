@@ -88,6 +88,7 @@ function assign_question(assign){
                 document.getElementById("course_name").onclick;
                 addTimeUp(assign);
                 document.getElementById('left_retangle').classList.remove('noClick');
+                window.location.replace(document.location);
             },5)
         }
     } ,1000);
