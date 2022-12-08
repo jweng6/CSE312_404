@@ -191,6 +191,25 @@ public class CRUD {
         return ret;
     }
 
+    public List<Course> showAllCourse() throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateCourseTable();
+        ArrayList<Course> lis = new ArrayList<>();
+        String sql = ""+
+                "select instr_email, courseName, courseCode from courseTable";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        ResultSet rs = psmt.executeQuery();
+        while (rs.next()){
+            Course course = new Course();
+            course.setEmail(rs.getString("instr_email"));
+            course.setCourseName(rs.getString("courseName"));
+            course.setCode(rs.getInt("courseCode"));
+            lis.add(course);
+        }
+        return lis;
+    }
+
+
     /* --------------------------------------- joinCourse -------------------------------------------*/
     public void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();

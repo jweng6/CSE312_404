@@ -389,7 +389,6 @@ public class HomeController extends Controller {
 
     public Result showGradebook(Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
-
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         List<Info> allCourse = course.showCourse(session_email);
         try {
@@ -418,6 +417,17 @@ public class HomeController extends Controller {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return unauthorized("Oops, you are not connected");
+    }
+
+    public Result AllCourseYouSee(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        List<Course> allcourse = course.AllCourse();
+        //allcourse里面有 教授邮箱，课的名字，这节课的code前端可以不用显示
+        if (connecting.isPresent() == true) {
+//            return ok(views.html.gradebook.render());
+            //自己写return回去
         }
         return unauthorized("Oops, you are not connected");
     }
