@@ -40,7 +40,7 @@ function addTimeUp(assign) {
     var currentDateTime = new Date();
     const now = new Date();
     const current = now.getHours() + ':' + now.getMinutes();
-    chat.innerHTML += '<div class="chat_message">' + '<b>'+'reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP! <br> The answers are graded'+ '</br>'+ ' </div>' +'<br>' +  '</div>';
+    chat.innerHTML += '<div class="chat_message">' + '<b>'+'Reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP!<br> The answers are graded'+ '</br>chat message will be clear in a second'+ ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
 }
 
@@ -76,7 +76,12 @@ function assign_question(assign){
                 document.getElementById("course_name").onclick;
                 addTimeUp(assign);
                 document.getElementById('left_retangle').classList.remove('noClick');
-            },5)
+            },5);
+
+            setTimeout(function (){
+                window.location.replace(document.location);
+            },1000*10);
+
         }
     } ,1000);
 }
