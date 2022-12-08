@@ -16,7 +16,7 @@
 
 
 </head>
-<body>
+<body >
 
 
 <div class="row" style="min-width: 1000px;" >
@@ -32,28 +32,26 @@
 
     <div  class="column side" style="width: 15%;float: left;margin-left: 4%;" >
         <div class="course_info">
-            <p class="course_name" id='course_name' style="cursor:pointer;" onclick=location.href='@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"none")' >@courseInfo.getCourseName()</p><br>
+            <p class="course_name" id='course_name' style="cursor:pointer;" onclick=location.href='@routes.HomeController.showCourse(courseInfo.getCode().toString())' >@courseInfo.getCourseName()</p><br>
             <p class="course_text">Instructor: @courseInfo.getEmail()</p><br>
             <p class="course_text" >Join Code: @courseInfo.getCode()</p>
         </div>
 
         <div class="left_retangle" id ='left_retangle'>
-            <input id="current_select_question_id" value="0" hidden>
-            <table>
-                @for( i <- listq){
-                    <tr  >
-                        <td class="" id="question_@i.getId()" onclick="select(@i.getId().toString(),@courseInfo.getCode().toString())">@i.getHeader()</td>
-                    </tr>
-                }
-            </table>
-
+                <input id="current_select_question_id" value="@currq.getId()" hidden>
+                <table>
+                    @for( i <- listq){
+                        <tr  >
+                            <td class="" id="question_@i.getId()" onclick=location.href='@routes.HomeController.show_question(courseInfo.getCode().toString(),i.getId().toString())'>@i.getHeader()</td>
+                        </tr>
+                    }
+                </table>
         </div>
     </div>
 
     <div  class="column middle" style="width: 55%;float: left">
         <div class="div_middle_button">
-
-            <button class="gradebook_button" >
+            <button class="gradebook_button" onclick="viewgradebook()" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -64,33 +62,50 @@
         </div >
 
 
-        <div class="middle_retangle">
-            <div hidden>
+        <div id = "middle_retangle" class="middle_retangle">
+
+            <div id = "assign_div" hidden>
                 <div style="width: 100%;height: Calc(97%- 62px) ;min-height: 65vh;position: relative;overflow: auto">
+                    <p id = 'do_id' hidden></p>
                     <p id="do_title" class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
                         <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
-                    </svg>title</p>
+                    </svg></p>
 
                     <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
                         <label class="label_text" for="Detail2">Question Details: </label><br><br>
                         <input id="do_details" class="input_box"  style="border-color: #6e6e6e" value="" disabled>
 
                         </Textarea><br><br>
-                        <strong>A:</strong><p id="do_a" style="display:inline;"></p>
-                        <strong>B:</strong><p id="do_b" style="display:inline;"></p>
-                        <strong>C:</strong><p id="do_c" style="display:inline;"></p>
-                        <strong>D:</strong><p id="do_d" style="display:inline;"></p>
+                        <strong>A: </strong><p id="do_a" style="display:inline;"></p> <br>
+                        <strong>B: </strong><p id="do_b" style="display:inline;"></p><br>
+                        <strong>C: </strong><p id="do_c" style="display:inline;"></p><br>
+                        <strong>D: </strong><p id="do_d" style="display:inline;"></p><br>
 
-                        <div class="middle_blue_end" style="float: right;">
-                            <form id="assign_form" style="padding-right: 5%;margin-top: 10px;" onsubmit="" action="#">
-                                <input style="float: right;"class="submit_button" type="submit" value="Submit">
-                                <input id="answerBox" style="width: 20%;float: right;border:none;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" pattern="[A-Da-d]{1}"  placeholder="Answer"  value="" required>
-                                <button id= "time_remaining" style="text-align:center;border:none;float: right;margin-right:20px;height: 34px;border-radius: 5px;color: red;width: auto" class="input_box" hidden></button>
-                            </form>
-                        </div>
+
+                    </div>
+                    <div class="middle_blue_end" style="float: right;">
+                        <form id="assign_form" style="padding-right: 5%;margin-top: 10px;" onsubmit="ws.sendAnswer(document.getElementById('current_user_email').innerHTML)" action="javascript:void(0);" >
+                            <input style="float: right;"class="submit_button" type="submit" value="Submit">
+                            <input id="answerBox" style="width: 20%;float: right;border:none;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" pattern="[A-Da-d]{1}"  placeholder="Answer"  value="" required>
+                            <button id= "time_remaining" style="text-align:center;border:none;float: right;margin-right:20px;height: 34px;border-radius: 5px;color: red;width: auto" class="input_box" hidden></button>
+                        </form>
                     </div>
                 </div>
             </div>
+
+            <div id="show_div">
+
+            @if(show.equals("gradebook")){
+                <input id="current_select_question_id" value="@currq.getId()" hidden>
+                <table>
+                    @for( i <- listq){
+                        <tr  >
+                            <td class="" id="question_@i.getId()" onclick=location.href='@routes.HomeController.show_question(courseInfo.getCode().toString(),i.getId().toString())'>@i.getHeader()</td>
+                        </tr>
+                    }
+                </table>
+
+            }
 
             @if(show.equals("show_question")){
 
@@ -129,6 +144,30 @@
                     </div>
                 </div>
             }
+
+                @if(show.equals("show_onlyQ")){
+
+                    <div style="width: 100%;height: Calc(97%- 62px) ;min-height: 65vh;position: relative;overflow: auto">
+                        <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
+                            <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+                        </svg> @currq.getHeader()</p>
+
+                        <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
+                            <label class="label_text" for="Detail2">Question Details: </label><br><br>
+                            <input class="input_box"  style="border-color: #6e6e6e" id="Detail2" value="@currq.getDetail()" disabled>
+
+                            </Textarea><br><br>
+                            <p><strong>A:</strong> @currq.getAnswerA()</p>
+                            <p><strong>B: </strong>@currq.getAnswerB()</p>
+                            <p><strong>C: </strong>@currq.getAnswerC()</p>
+                            <p><strong>D: </strong>@currq.getAnswerD()</p>
+
+                        </div>
+                    </div>
+                }
+            </div>
+
+
         </div>
     </div>
 
@@ -144,7 +183,7 @@
             <div class="chat_input" id="chatSubmit_div">
                 <input class="chat_input_box" id='chat-comment' type="text" >
 
-                <button class="chat_submit" onclick=ws.sendMessage("@curre")>
+                <button id="send_message_button" class="chat_submit"  onclick=ws.sendMessage("@curre")>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
                         <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
                     </svg>
@@ -153,8 +192,7 @@
         </div>
     </div>
 
-
 </div>
-<script  type="text/javascript" src="@routes.Assets.versioned("javascripts/student.js")""> </script>
+    <script  type="text/javascript" src="@routes.Assets.versioned("javascripts/student.js")""> </script>
 </body>
 </html>

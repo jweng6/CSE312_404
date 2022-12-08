@@ -62,10 +62,12 @@ public class MyWebSocketActor extends AbstractActor {
                         comment = comment.replace("\"","");
                         test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
                                 "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
-                    }else if ("assign".equals(messageType)){
+                    }
+                    if ("assign".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
                         String question  = Json.stringify(message.findPath("question")).replace("\"","");
                         int min = Integer.parseInt(Json.stringify(message.findPath("min")).replace("\"",""));
+                        System.out.println(Integer.parseInt(question));
                         Question q = qService.getQuestion(Integer.parseInt(question));
                         dateTime = dateTime.plusMinutes(min);
                         qService.expires(Integer.parseInt(question),dateTime.toEpochSecond(zoneOffset));
@@ -77,7 +79,7 @@ public class MyWebSocketActor extends AbstractActor {
                                 "\"C\":\""+q.getAnswerC()+"\"," +
                                 "\"D\":\""+q.getAnswerD()+"\"," +
                                 "\"expire\":\""+dateTime.format(formatter)+"\"}";
-                    }else if("answer".equals(messageType)){
+                    }if("answer".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment}));
                         String email = Json.stringify(message.findPath("email")).replace("\"","");
                         String comment = Json.stringify(message.findPath("comment")).replace("\"","");
@@ -88,7 +90,7 @@ public class MyWebSocketActor extends AbstractActor {
                             qService.answerQuestion(question,email,comment);
                         }
                         test = "{\"messageType\":\""+messageType+"\"}";
-                    }else if ("status".equals(messageType)){
+                    }if ("status".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
 //                        String live = Json.stringify(message.findPath("live")).replace("\"","");
                         test = "{\"messageType\":\""+messageType+"\"}";

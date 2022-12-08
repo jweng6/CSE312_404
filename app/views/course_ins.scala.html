@@ -38,16 +38,15 @@
 
         </div>
         <div class="left_retangle" id ='left_retangle'>
-            <input id="current_select_question_id" value="0" hidden>
+            <input id="current_select_question_id" value="@currq.getId()" hidden>
 
             <table>
                 @for( i <- listq){
                     <tr  >
-                        <td class="" id="question_@i.getId()" onclick="select(@i.getId().toString(),@courseInfo.getCode().toString())">@i.getHeader()</td>
+                        <td class="" id="question_@i.getId()" onclick=location.href='@routes.HomeController.show_question(courseInfo.getCode().toString(),i.getId().toString())'>@i.getHeader()</td>
                     </tr>
                 }
             </table>
-
 
         </div>
     </div>
@@ -149,7 +148,7 @@
                     </div>
 
                     <div class="middle_blue_end" style="float: right;">
-                        <form id="assign_form" style="padding-right: 5%;margin-top: 10px;" onsubmit="ws.sendAssign()" action="#">
+                        <form id="assign_form" style="padding-right: 5%;margin-top: 10px;"  action="javascript:void(0);">
                             <input style="float: right;"class="submit_button" type="submit" value="Assign">
                             <input  min="1" style="width: 20%;float: right;border:none;margin-right:20px;height: 34px;border-radius: 5px;" class="input_box" type="number"  placeholder="minutes"  id="timeBox" value="" required>
                             <button id= "time_remaining" style="text-align:center;border:none;float: right;margin-right:20px;height: 34px;border-radius: 5px;color: red;width: auto" class="input_box" hidden></button>

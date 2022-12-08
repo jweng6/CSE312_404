@@ -11,31 +11,16 @@ function check(input) {
 }
 
 
-function select(id,code){
+function selects(id,code){
     document.getElementById("current_select_question_id").value = id;
-    location.href = '/course/'+code +'/question/'+id;
+    location.href = '/course/'+code.toString() +'/question/'+id.toString();
 
-}
-
-var assign_form = document.getElementById("assign_form");
-function handleForm(event) { event.preventDefault(); }
-if (assign_form!=null){
-    assign_form.addEventListener('submit', handleForm);
 }
 
 
 
 // Establish a WebSocket connection with the server
 // Allow users to send messages by pressing enter instead of clicking the Send button
-document.getElementById('chatSubmit_div').addEventListener("keypress", function (event) {
-    if (event.code === "Enter") {
-        var email = document.getElementById('current_user_email').innerHTML;
-        ws.sendMessage(email);
-    }
-});
-
-setInterval(function (){ws.sendStatus('0')}, 1000*10)
-
 
 
 function addMessage(chatMessage) {
@@ -46,6 +31,14 @@ function addMessage(chatMessage) {
     }
     name = name.join(" ");
     chat.innerHTML += '<div class="chat_message">' + '<b>'+ name +'</b>' +' '+ chatMessage.current.slice(10, -3) +  '<div class="chat_message_white">'  + chatMessage.comment + ' </div>' +'<br>' +  '</div>';
+    chat.scrollTop = chat.scrollHeight;
+}
+function addTimeUp(assign) {
+    const chat = document.getElementById('chat_all_message');
+    var currentDateTime = new Date();
+    const now = new Date();
+    const current = now.getHours() + ':' + now.getMinutes();
+    chat.innerHTML += '<div class="chat_message">' + '<b>'+'reminder</b>'+current+ '<div class="chat_message_white"> <b Question:'  + assign.title + '</b><br>'+ 'Time UP! <br> The answers are graded'+ '</br>'+ ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
 }
 
@@ -69,14 +62,19 @@ function assign_question(assign){
     time.hidden = false;
     timer =setInterval (function (){
         let t =  showtime(assign.expire);
-        if( t.reduce((a, b) => a + b, 0) >=  0) {
+        const timer = t.reduce((a, b) => a + b, 0);
+        if( timer >=  0) {
             time.innerHTML = t[0].toString() + ":" + t[1].toString()  + ":" + t[2].toString();
+
+
         }
         else {
-            clearInterval(timer);
-            time.hidden = true;
-            document.getElementById('left_retangle').classList.remove('noClick');
-
+            setTimeout(function (){
+                clearInterval(timer);
+                document.getElementById("course_name").onclick;
+                addTimeUp(assign);
+                document.getElementById('left_retangle').classList.remove('noClick');
+            },5)
         }
     } ,1000);
 }
@@ -104,6 +102,8 @@ class websocket extends Object {
                     break;
                 case 'status':
                     break;
+                case 'answer':
+                    break;
 
                 default:
                     console.log("received an invalid WS messageType");
@@ -125,10 +125,10 @@ class websocket extends Object {
         }
     }
 
-    sendStatus(status) {
+    sendStatus() {
         const id = document.getElementById("current_select_question_id").value;
-        this.socket.send(JSON.stringify({'messageType':"status", "live" : status, "question": id}));
-        return null;
+        this.socket.send(JSON.stringify({'messageType':"status", "live" : "0", "question": id}));
+
     }
 
     sendAssign(){
@@ -140,6 +140,7 @@ class websocket extends Object {
         if (comment !== "") {
             this.socket.send(JSON.stringify({'messageType': "assign", 'question': id, 'min':comment}));
         }
+        return null;
     }
 
     sendAnswer(email) {
@@ -153,7 +154,27 @@ class websocket extends Object {
         return null;
     }
 
+
+
 }
 var join_code =document.getElementById("join_code").innerHTML.toString()
 const ws = new websocket(join_code);
+document.getElementById('chatSubmit_div').addEventListener("keypress", function (event) {
+    if (event.code === "Enter") {
+        var email = document.getElementById('current_user_email').innerHTML;
+        ws.sendMessage(email);
+    }
+});
+
+var assign_form = document.getElementById("assign_form");
+function handleForm(event) { event.preventDefault();  ws.sendAssign();}
+
+if (assign_form!=null){
+    assign_form.addEventListener('submit', handleForm);
+}
+
+
+setInterval(function (){ws.sendStatus('0')}, 1000)
+
+
 

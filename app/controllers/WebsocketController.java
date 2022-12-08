@@ -50,23 +50,10 @@ public class WebsocketController extends Controller {
         }
         System.out.println(code);
         System.out.println(Constant.currentServer);
-//        return WebSocket.Json.accept(
-//                request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer));
+        return WebSocket.Json.accept(
+                request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer));
 
 
-
-        return WebSocket.Json.acceptOrResult(
-                request ->
-                        CompletableFuture.completedFuture(
-                                request
-                                        .session()
-                                        .get("connecting")
-                                        .map(
-                                                user ->
-                                                        F.Either.<Result, Flow<JsonNode, JsonNode, ?>>Right(
-                                                                ActorFlow.actorRef(
-                                                                        MyWebSocketActor::props, actorSystem, materializer)))
-                                        .orElseGet(() -> F.Either.Left(forbidden()))));
 
 
     }

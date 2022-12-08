@@ -221,6 +221,7 @@ public class HomeController extends Controller {
             String s = "none";
             List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
             Question currq = new Question();
+            currq.setId(-1);
             if (isInstrutor){
 //              这里面是：course_ins.render(courseInfo,listq,show,q, email, questionFrom,request,messageApi.preferred(request),currq))
 //                    show：0 = 不显示东西 ; 1 = 选择问题后，准备输入时间，然后发布 ; 2 = add question ; 3 = roster
@@ -250,6 +251,7 @@ public class HomeController extends Controller {
             courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
             List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
             Question currq = new Question();
+            currq.setId(-1);
             if (isInstrutor){
                 System.out.println("1111");
 //              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request),currq))
@@ -259,7 +261,7 @@ public class HomeController extends Controller {
             else { //if is student
 
                 List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                return ok(views.html.course_student.render(courseInfo,listqed,status,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                return ok(views.html.course_student.render(courseInfo,listq,status,currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
             }
         }
         //不在线（没登入） 返回401
@@ -280,6 +282,7 @@ public class HomeController extends Controller {
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
                 List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
                 Question currq = new Question();
+                currq.setId(-1);
                 if (status.equals("add_question")){
                     final Form<Question> addQuestionForm = questionFrom.bindFromRequest(request);
                     String request_header = addQuestionForm.get().getHeader();
@@ -309,13 +312,12 @@ public class HomeController extends Controller {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
 
-
-
         if (connecting.isPresent() == true){
             Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code),session_email);
             Course courseInfo = course.course_info(Integer.parseInt(code));
             courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
             Question currq = question.getQuestion(Integer.parseInt(questionId));
+
             List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code));
             if (isInstrutor){
                 return ok(views.html.course_ins.render(courseInfo,listq,"show_question",currq,session_email,questionFrom,request, messagesApi.preferred(request)));
@@ -325,9 +327,10 @@ public class HomeController extends Controller {
                 boolean answerd_question = question.getAllExpireCheckByQid(Integer.parseInt(qid ),Integer.parseInt(code));
                 if (answerd_question){
                     List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                    return ok(views.html.course_student.render(courseInfo,listqed,"show_question",currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
+                    return ok(views.html.course_student.render(courseInfo,listq,"show_question",currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
                 }
-                return unauthorized("Oops, you are not connected");
+
+                return ok(views.html.course_student.render(courseInfo,listq,"show_onlyQ",currq,session_email,questionFrom,request, messagesApi.preferred(request))).addingToSession(request, "code",code);
             }
         }
         //不在线（没登入） 返回401
