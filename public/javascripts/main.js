@@ -37,15 +37,16 @@ function addMessage(chatMessage) {
     chat.innerHTML += '<div class="chat_message"><b class="pointer">' +'<a onclick=' + url + '>'+ name +'</a></b>' +' '+ chatMessage.current.slice(10, -3) +  '<div class="chat_message_white">'  + chatMessage.comment + ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
 }
+
 function addTimeUp(assign) {
     const chat = document.getElementById('chat_all_message');
-    var currentDateTime = new Date();
     const now = new Date();
     const current = now.getHours() + ':' + now.getMinutes();
-    chat.innerHTML += '<div class="chat_message">' + '<b>'+'Reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP!<br> The answers are graded'+ '</br>chat message will be clear in a second'+ ' </div>' +'<br>' +  '</div>';
+    chat.innerHTML += '<div class="chat_message">' + '<b>'+'Reminder</b>'+current+ '<div class="chat_message_white"> <b> Question:'  + assign.title + '</b><br>'+ 'Time UP!<br> The answers are graded'+ ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
     ws.sendTimeOut(assign.question);
 }
+
 
 var showtime = function (endtime) {
     var nowtime = new Date()  //获取当前时间
@@ -62,6 +63,7 @@ function assign_question(assign){
     if (timer!==null){
         clearInterval(timer);
     }
+
     document.getElementById('left_retangle').classList.add('noClick');
     let time = document.getElementById('time_remaining');
     time.hidden = false;
@@ -69,9 +71,8 @@ function assign_question(assign){
         let t =  showtime(assign.expire);
 
         if( t.reduce((a, b) => a + b, 0) >=  0) {
+
             time.innerHTML = t[0].toString() + ":" + t[1].toString()  + ":" + t[2].toString();
-
-
         }
         else {
             setTimeout(function (){
@@ -79,11 +80,13 @@ function assign_question(assign){
                 document.getElementById("course_name").onclick;
                 addTimeUp(assign);
                 document.getElementById('left_retangle').classList.remove('noClick');
+
             },5);
 
-            setTimeout(function (){
-                window.location.replace(document.location);
-            },1000*10);
+
+            // setTimeout(function (){
+            //     window.location.replace(document.location);
+            // },1000*10);
 
         }
     } ,1000);

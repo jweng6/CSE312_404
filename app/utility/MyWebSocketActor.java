@@ -126,6 +126,8 @@ public class MyWebSocketActor extends AbstractActor {
                         test = "{\"messageType\":\""+messageType+"\",\"question\":\""+qid+"\"}";
                     }
 
+
+
                     for (int i = 0; i<clients.size();i++){
                         clients.get(i).tell(Json.parse(test), this.self());
                     }
