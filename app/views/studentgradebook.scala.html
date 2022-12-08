@@ -39,9 +39,9 @@
             @for(i<-0 until list.length){
                 <tr>
                     <td>@expires(i)</td>
-                    <td>@list(i).getDetail</td>
-                    <td>@list(i).getAnswer</td>
-                    <td>@list(i).getGrade</td>
+                    <td>@list(i).getHeader()</td>
+                    <td>@list(i).getAnswer()</td>
+                    <td>@list(i).getGrade()</td>
                 </tr>
             }
           </table>
