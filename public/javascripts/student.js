@@ -176,9 +176,9 @@ function assign_question(assign){
 
             },5);
 
-            // setTimeout(function (){
-            //     window.location.replace(document.location);
-            // },1000*10);
+            setTimeout(function (){
+                window.location.replace(document.location);
+            },1000*8);
 
 
         }
