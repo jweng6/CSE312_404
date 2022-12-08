@@ -47,7 +47,7 @@ li{
 .coursesleft{
     color: #ffffff;
     float: left;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-left: 5%;
 }
 .coursesright{
@@ -60,7 +60,7 @@ li{
     color: #ffffff;
     float: left;
     font-size: 10px;
-    margin-top: -1%;
+    margin-top: -5%;
     margin-right: 15%;
 }
 .view{
@@ -85,7 +85,7 @@ li{
 .mycoursesleft{
     color: #003366;
     float: left;
-    margin-top: 10px;
+    margin-top: 7px;
     margin-left: 5%;
 }
 .mycoursesright{
@@ -98,7 +98,7 @@ li{
     color: #003366;
     float: left;
     font-size: 10px;
-    margin-top: -20%;
+    margin-top: -13%;
     margin-right: 15%;
 }
 .myview{
