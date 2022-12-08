@@ -36,10 +36,10 @@
                 <th>Answer</th>
                 <th>Grade</th>
             </tr>
-            @for(i<-1 until list.length){
+            @for(i<-0 until list.length){
                 <tr>
                     <td>@expires(i)</td>
-                    <td>@list(i)</td>
+                    <td>@list(i).getDetail</td>
                     <td>@list(i).getAnswer</td>
                     <td>@list(i).getGrade</td>
                 </tr>
