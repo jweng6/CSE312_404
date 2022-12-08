@@ -39,4 +39,10 @@ GET     /instructorgradebook/:code        controllers.HomeController.showinstruc
 GET     /studentgradebook/:code            controllers.HomeController.showstudentgradebook(code:Integer,request : Request)
 
 
+GET     /profile/:email                      controllers.HomeController.showProfile(email,request : Request)
+POST    /profile/:email                         controllers.HomeController.posteditprofile(email,request :Request)
+
+
+
+
 

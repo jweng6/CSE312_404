@@ -24,8 +24,10 @@ function addMessage(chatMessage) {
     for (let i = 0; i < name.length; i++) {
         name[i] = name[i][0].toUpperCase() + name[i].substr(1);
     }
+    let url = 'window.open("/profile/' +chatMessage.email.toString()+'")';
+
     name = name.join(" ");
-    chat.innerHTML += '<div class="chat_message">' + '<b>'+ name +'</b>' +' '+ chatMessage.current.slice(10, -3) +  '<div class="chat_message_white">'  + chatMessage.comment + ' </div>' +'<br>' +  '</div>';
+    chat.innerHTML += '<div class="chat_message"><b class="pointer">' +'<a onclick=' + url + '>'+ name +'</a></b>' +' '+ chatMessage.current.slice(10, -3) +  '<div class="chat_message_white">'  + chatMessage.comment + ' </div>' +'<br>' +  '</div>';
     chat.scrollTop = chat.scrollHeight;
 }
 
@@ -67,7 +69,6 @@ function assign_question(assign){
 
     document.getElementById('left_retangle').classList.add('noClick');
     assignShowing = true;
-
 
     timer =setInterval (function (){
         let t =  showtime(assign.expire);

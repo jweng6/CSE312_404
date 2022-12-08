@@ -112,6 +112,13 @@ body p {
     flex-flow: row nowrap;
 
 }
+.pointer{
+    cursor: pointer;
+}
+.pointer:hover{
+    color: #003366;
+}
+
 .left_retangle{
     width: 100%;
     margin: auto;

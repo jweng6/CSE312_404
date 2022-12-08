@@ -61,7 +61,7 @@ public class MyWebSocketActor extends AbstractActor {
                         String fullName = user.getFirstname() + " " + user.getLastname();
                         comment = comment.replace("\"","");
                         test = "{\"messageType\":\""+messageType+"\",\"user\":\""+fullName+"\"" + "," +
-                                "\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
+                                "\"email\":\""+email.replace("\"","")+"\",\"comment\":\""+comment+"\",\"current\":\""+dateTime.format(formatter)+"\"}";
                     }
                     if ("assign".equals(messageType)){
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));

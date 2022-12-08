@@ -80,7 +80,6 @@ li{
     display: flex;
     align-items: center;
     text-decoration-line: underline;
-
     color: #003366;
 
     white-space:nowrap
@@ -101,7 +100,6 @@ li{
 
     display: flex;
     align-items: center;
-    text-decoration-line: underline;
 
     color: #003366;
 
@@ -123,7 +121,6 @@ li{
 
     display: flex;
     align-items: center;
-    text-decoration-line: underline;
 
     color: #003366;
 
@@ -145,7 +142,7 @@ li{
 
     display: flex;
     align-items: center;
-    text-decoration-line: underline;
+
 
     color: #003366;
 
