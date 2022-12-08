@@ -108,9 +108,10 @@ public class MyWebSocketActor extends AbstractActor {
                                 || comment.equalsIgnoreCase("D")) {
                             int question  = Integer.parseInt(Json.stringify(message.findPath("question")).replace("\"",""));
                             long expireTime = qService.getExpire(question);
+                            Question q = qService.getQuestion(question);
                             long nowTime = dateTime.toEpochSecond(zoneOffset);
                             if (nowTime <= expireTime){
-                                qService.answerQuestion(question,email,comment);
+                                qService.answerQuestion(q.getFrom(),email,comment);
                             }
                             test = "{\"messageType\":\""+messageType+"\"}";
                         }

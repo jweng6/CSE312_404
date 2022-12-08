@@ -96,10 +96,10 @@ public class QuestionImpl implements QuestionService {
     }
 
     @Override
-    public void answerQuestion(int question_id, String email, String answer) {
+    public void answerQuestion(int courseId, String email, String answer) {
         try {
             User user = crud.getUserByEmail(email);
-            crud.updateAnswer(user.getId(),answer);
+            crud.updateAnswer(user.getId(),answer,courseId);
         } catch (Exception e) {
             e.printStackTrace();
         }
