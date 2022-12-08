@@ -15,6 +15,7 @@ import service.UserService;
 import service.impl.CourseImpl;
 import service.impl.QuestionImpl;
 import service.impl.UserImpl;
+import utility.Constant;
 
 import javax.inject.Inject;
 import java.time.Instant;
@@ -74,6 +75,7 @@ public class GradeController extends Controller {
             List<String> expires = new ArrayList<>();
             int earnGrade = 0;
             int totalGrade = 0;
+//            LocalDateTime now = LocalDateTime.now().toEpochSecond();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             for (int i = 0; i< li.size(); i++){
                 Question question = this.question.getQuestion(li.get(i).getQuestion_id());
@@ -81,9 +83,8 @@ public class GradeController extends Controller {
                 earnGrade += li.get(i).getReturn_grade();
                 totalGrade += question.getGrade();
                 question.setGrade(li.get(i).getReturn_grade());
-                LocalDateTime triggerTime =
-                        LocalDateTime.ofInstant(Instant.ofEpochMilli(question.getExpires()),
-                                TimeZone.getDefault().toZoneId());
+                LocalDateTime triggerTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(question.getExpires()), TimeZone
+                        .getDefault().toZoneId());
                 expires.add(triggerTime.format(formatter));
 
                 allquestions.add(question);
