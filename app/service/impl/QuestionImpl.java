@@ -103,6 +103,7 @@ public class QuestionImpl implements QuestionService {
                 }else {
                     crud.insertStudentAnswer(qid, student.getId(),question.getFrom(),0);
                 }
+                crud.clearAnswer(student.getId(), question.getFrom());
             }
         } catch (Exception e) {
             e.printStackTrace();
