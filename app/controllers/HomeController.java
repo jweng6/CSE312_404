@@ -308,7 +308,7 @@ public class HomeController extends Controller {
     public Result show_question(String code, String questionId, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-
+        
         if (connecting.isPresent() == true) {
             Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code), session_email);
             Course courseInfo = course.course_info(Integer.parseInt(code));
@@ -335,9 +335,18 @@ public class HomeController extends Controller {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         List<User> users = course.instrSeeGrade(code);
-
+        List<Info> allCourse = course.showCourse(session_email);
+        System.out.println(users);
+        String coursename="";
+        int x=0;
+        while(x!=allCourse.size()){
+            if(Integer.parseInt(allCourse.get(x).getCode())==code){
+                coursename=allCourse.get(x).getCourseName();
+            }
+            x=x+1;
+        }
         if (connecting.isPresent() == true) {
-            return ok(views.html.instructorgradebook.render(users));
+            return ok(views.html.instructorgradebook.render(users,coursename,session_email));
         }
         return unauthorized("Oops, you are not connected");
     }
@@ -369,7 +378,8 @@ public class HomeController extends Controller {
                 //earnGrade 是这个学生在这节课获得的分
                 //totalGrade 是这节课的中分
                 //expires list类型 是这节课问题的提交日期 格式 yyyy/MM/dd
-                return ok(views.html.studentgradebook.render(code, allquestions, earnGrade, totalGrade,thisCourse.getCourseName(), expires));
+                
+                return ok(views.html.studentgradebook.render(code, allquestions, earnGrade, totalGrade,thisCourse.getCourseName(),expires));
             }
         } catch (Exception e) {
             e.printStackTrace();
