@@ -1,5 +1,6 @@
 package service.impl;
 
+import domain.Answer;
 import domain.Course;
 import domain.User;
 import domain.Info;
@@ -173,6 +174,16 @@ public class CourseImpl implements CourseService {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public List<Answer> showAllStudentAnswer(int uid, int cid) {
+        try {
+            return crud.showAllStudentAnswer(uid,cid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

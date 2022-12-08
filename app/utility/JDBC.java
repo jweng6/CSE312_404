@@ -105,6 +105,7 @@ public class JDBC {
                 "(id INT AUTO_INCREMENT, " +
                 "questionId INT," +
                 "userId INT, " +
+                "courseId INT, " +
                 "grade INT DEFALUT 0," +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);

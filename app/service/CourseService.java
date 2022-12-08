@@ -1,5 +1,6 @@
 package service;
 
+import domain.Answer;
 import domain.Course;
 import domain.User;
 import java.util.List;
@@ -12,4 +13,5 @@ public interface CourseService {
     Course course_info(int code);
     List<Integer> getAllCourse(int uid);
     int showGrade(int uid, int course);
+    List<Answer>  showAllStudentAnswer(int uid, int cid);
 }

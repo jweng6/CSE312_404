@@ -387,7 +387,12 @@ public class HomeController extends Controller {
     public Result showstudentgradebook(Integer code, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        try {
+            User current  = user.getUserByEmail(session_email);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         List<Info> allCourse = course.showCourse(session_email);
         int x = 0;
         QuestionImpl allques = new QuestionImpl();
@@ -415,7 +420,7 @@ public class HomeController extends Controller {
 
     public Result showGradebook(Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
-
+        
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         List<Info> allCourse = course.showCourse(session_email);
         try {
