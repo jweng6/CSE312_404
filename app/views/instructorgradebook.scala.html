@@ -3,7 +3,7 @@
 
 @import domain.User
 
-@(list: List[User],instructoremail: String,coursename:String, allgrades:List[Integer])
+@(list: List[User])
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,9 +21,9 @@
     </div>
     <div class="courses">
         <div class="coursesleft">
-                <p>@coursename</p>
+                <p>coursename</p>
             <div class="instructoremail">
-                <p>Instructor email:@instructoremail</p>
+                <p>Instructor email:instructoremail</p>
             </div> 
         </div>
     </div>
@@ -35,12 +35,12 @@
                 <th>LastName</th>
                 <th>Grade</th>
             </tr>
-            @for(i<-0 until list.length){
+            @for(i<-list){
                 <tr>
-                    <td>@list(i).getFirstname</td>
-                    <td>@list(i).getLastname</td>
-                    <td>@list(i).getEmail</td>
-                    <td>@allgrades(i)</td>
+                    <td>@i.getFirstname</td>
+                    <td>@i.getLastname</td>
+                    <td>@i.getEmail</td>
+                    <td>@i.getGrade</td>
                 </tr>
             }
           </table>
