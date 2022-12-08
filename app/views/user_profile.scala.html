@@ -1,0 +1,83 @@
+@import play.mvc.Http.Request
+@import domain.User
+
+@(userInfo:User, show:String, editForm: Form[domain.Question])(implicit request: Request, messages: Messages)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSE312</title>
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/user_profile.css")">
+</head>
+<body>
+
+<div style="width:100%;height: 100% ">
+    @if(show.equals("show_profile")){
+        <div style="height: 25%">
+            <div class="topnav" >
+                <a class="active">Gradebook</a>
+                <a onclick="location.href='/main'">Home</a>
+                <a onclick="location.href='/editprofile'">Edit Profile</a>
+            </div>
+        </div>
+    
+        <div class="middle-rectangle-profile">
+            <div class="p-div">
+                <p class="text-profile">Profile</p>
+                <p class="text-username">name: @userInfo.getFirstname @userInfo.getLastname</p>
+                <p class="text-email">email: @userInfo.getEmail</p>
+                <p class="text-description">Description:</p>
+            </div>
+            <div class="middle-rectangle-des">
+                <p class="text-des">@userInfo.getDescription</p>
+            </div>
+        </div>
+    }
+    @if(show.equals("edit_profile")){
+        <div style="height: 25%">
+            <div class="topnav" >
+                <a class="active">Gradebook</a>
+                <a onclick="location.href='/main'">Home</a>
+            </div>
+        </div>
+    
+        <div class="middle-rectangle-profile">
+            <div class="p-div">
+                <p class="text-profile">Edit Profile</p>
+            </div>
+            <form method="POST" action="/editprofile" >
+                @helper.CSRF.formField
+                <input class="input-first_name" placeholder="First name" type="header" id="header" name="header" required><br>
+                <input class="input-last_name" placeholder="Last name" type="answer" id="answer" name="answer" required><br>
+                <input class="input-des" placeholder="Description..." type="detail" id="detail" name="detail" required><br>
+                
+                <input class="button_edit" type="submit" value="EDIT">
+            </form>
+        </div>
+    }
+    @if(show.equals("show_otheruser")){
+        <div style="height: 25%">
+            <div class="topnav" >
+                <a class="active">Gradebook</a>
+                <a onclick="location.href='/main'">Home</a>
+            </div>
+        </div>
+    
+        <div class="middle-rectangle-profile">
+            <div class="p-div">
+                <p class="text-profile">Profile</p>
+                <p class="text-username">name: @userInfo.getFirstname @userInfo.getLastname</p>
+                <p class="text-email">email: @userInfo.getEmail</p>
+                <p class="text-description">Description:</p>
+            </div>
+            <div class="middle-rectangle-des">
+                <p class="text-des">@userInfo.getDescription</p>
+            </div>
+        </div>
+    }
+    
+    
+</div>
+
+</body>
+</html>
