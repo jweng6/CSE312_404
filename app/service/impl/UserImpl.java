@@ -22,6 +22,7 @@ import java.util.Optional;
 public class UserImpl implements UserService {
 
     CRUD crud = new CRUD();
+
 //    int courseId, String email,String firstname, String lastname, String password
     public User addUser(String email, String firstname, String lastname, String password){
         if (!StringUtils.isAnyBlank(email,firstname,lastname,password)){

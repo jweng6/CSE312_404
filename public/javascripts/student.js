@@ -101,22 +101,6 @@ function assign_question(assign){
 
 }
 
-function viewgradebook(){
-    console.log(assignShowing)
-    if(assignShowing){ // open grade book
-        document.getElementById("show_div").hidden = true;
-        document.getElementById("assign_div").hidden =false;
-        assignShowing = false;
-    }
-    else {
-        assignShowing = true;
-        document.getElementById("show_div").hidden = false;
-        document.getElementById("assign_div").hidden =true;
-    }
-}
-
-
-
 
 
 class websocket extends Object {
