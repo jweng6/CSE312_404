@@ -32,11 +32,13 @@ GET     /course/:code/question/:questionId                   controllers.HomeCon
 
 GET      /ws:code                                 controllers.WebsocketController.socket(code)
 
-GET     /gradebook                  controllers.HomeController.showGradebook(request : Request)
+GET     /gradebook                  controllers.GradeController.showGradebook(request : Request)
 
-GET     /instructorgradebook/:code        controllers.HomeController.showinstructorgradebook(code: Integer,request : Request)
+GET     /instructorgradebook/:code        controllers.GradeController.showinstructorgradebook(code: Integer,request : Request)
 
-GET     /studentgradebook/:code            controllers.HomeController.showstudentgradebook(code:Integer,request : Request)
+GET     /studentgradebook/:code            controllers.GradeController.showstudentgradebook(code:Integer,request : Request)
+
+GET     /all          controllers.GradeController.AllCourseYouSee(request : Request)
 
 
 GET     /profile/:email                      controllers.HomeController.showProfile(email,request : Request)

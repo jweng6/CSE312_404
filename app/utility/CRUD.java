@@ -191,6 +191,25 @@ public class CRUD {
         return ret;
     }
 
+    public List<Course> showAllCourse() throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateCourseTable();
+        ArrayList<Course> lis = new ArrayList<>();
+        String sql = ""+
+                "select instr_email, courseName, courseCode from courseTable";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        ResultSet rs = psmt.executeQuery();
+        while (rs.next()){
+            Course course = new Course();
+            course.setEmail(rs.getString("instr_email"));
+            course.setCourseName(rs.getString("courseName"));
+            course.setCode(rs.getInt("courseCode"));
+            lis.add(course);
+        }
+        return lis;
+    }
+
+
     /* --------------------------------------- joinCourse -------------------------------------------*/
     public void joinCourse(int uid, int code) throws SQLException, ClassNotFoundException {
         JDBC.getConnection();
@@ -321,6 +340,25 @@ public class CRUD {
         return ret;
     }
 
+    public List<User> InstrSeeGrade(int code) throws Exception{
+        JDBC.getConnection();
+        Connection connection = JDBC.CreateJoinCourse();
+        String sql = "" +
+                "select userid, grade from joinCourse where courseCode = ?";
+        PreparedStatement psmt = connection.prepareStatement(sql);
+        psmt.setInt(1,code);
+        ResultSet rs = psmt.executeQuery();
+        List<User> ret = new ArrayList<>();
+        CRUD crud = new CRUD();
+        while (rs.next()){
+            User user = crud.getUserByid(rs.getInt("userid"));
+            System.out.println(user.getEmail());
+            user.setGrade(rs.getInt("grade"));
+            ret.add(user);
+        }
+        return ret;
+    }
+
 
     /* --------------------------------------- Question Table -------------------------------------------*/
     public void addQuestion(Question question) throws Exception{
@@ -387,21 +425,21 @@ public class CRUD {
     }
 
     public boolean getAllExpireCheckByQid(Integer qid,Integer courseId) throws SQLException, ClassNotFoundException {
-
         JDBC.getConnection();
         Boolean ret = false;
         Connection conn = JDBC.CreateQuestionTable();
         LocalDateTime dateTime = LocalDateTime.now();
         ZoneOffset zoneOffset = OffsetDateTime.now().getOffset();
         long nowTime = dateTime.toEpochSecond(zoneOffset);
+
         String sql = "" +
-                "SELECT * FROM questionTable WHERE courseId = ?  AND expires > 0 AND expires < ? AND id = ?";
+                "SELECT * FROM questionTable WHERE courseId = ? AND expires < ? AND id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, courseId);
         psmt.setLong(2,nowTime);
         psmt.setInt(3, qid);
         ResultSet rs = psmt.executeQuery();
-        while (rs.next()) {
+        while(rs.next()) {
             ret = true;
         }
         psmt.close();
@@ -437,7 +475,7 @@ public class CRUD {
         Connection conn = JDBC.CreateQuestionTable();
         Question ret = new Question();
         String sql = "" +
-                "SELECT id,courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade FROM questionTable WHERE id = ?";
+                "SELECT id,courseId,header,detail,answer,choiceA,choiceB,choiceC,choiceD,grade,expires FROM questionTable WHERE id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1, questionId);
         ResultSet rs = psmt.executeQuery();
@@ -452,6 +490,7 @@ public class CRUD {
             ret.setAnswerD(rs.getString("choiceD"));
             ret.setGrade(rs.getInt("grade"));
             ret.setId(rs.getInt("id"));
+            ret.setExpires(rs.getLong("expires"));
         }
         psmt.close();
         conn.close();

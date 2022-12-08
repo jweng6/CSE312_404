@@ -15,8 +15,10 @@
 <body>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/gradebook.css")">
     <div class="topnav">
+        <a onclick="location.href='/'">LogOut</a>
         <a class="active" onclick="location.href='/gradebook'">GradeBook</a>
         <a onclick="location.href='/main'">Home</a>
+
     </div>
 
     <div>
@@ -49,7 +51,6 @@
                             </div> 
                         </div>
                         <div class="mycoursesright">
-                                <p>Manage</p>
                             <div class="myview" onclick="location.href='/instructorgradebook/@list(i).getCode()'">
                                 <p >View All Work</p>
                             </div>

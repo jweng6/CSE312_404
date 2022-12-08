@@ -14,8 +14,11 @@ public class User {
     private String email;
     @Required
     private String password;
+
     private String description;
+
     private int grade;
+
     public User() {
 
     }
@@ -70,11 +73,6 @@ public class User {
         return password;
     }
 
-    public int getGrade() {return grade;}
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -108,5 +106,11 @@ public class User {
     }
 
 
+    public int getGrade() {
+        return grade;
+    }
 
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
 }
