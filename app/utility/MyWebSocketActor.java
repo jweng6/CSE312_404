@@ -88,6 +88,7 @@ public class MyWebSocketActor extends AbstractActor {
                             Question q = qService.getQuestion(Integer.parseInt(question));
                             dateTime = dateTime.plusMinutes(Integer.parseInt(min));
                             qService.expires(Integer.parseInt(question),dateTime.toEpochSecond(zoneOffset));
+                            qService.assignQuestion(q);
                             test = "{\"messageType\":\""+messageType+"\",\"question\":\""+question+"\"" + "," +
                                     "\"title\":\""+q.getHeader()+"\"," +
                                     "\"details\":\""+q.getDetail()+"\"," +

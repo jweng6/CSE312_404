@@ -23,7 +23,11 @@ public class QuestionImpl implements QuestionService {
                 question.setAnswerB(answerB);
                 question.setAnswerC(answerC);
                 question.setAnswerD(answerD);
-                crud.addQuestion(question);
+                int qid = crud.addQuestion(question);
+                ArrayList<User> allStudent = crud.getAllUserByCourse(from);
+                for (int i = 0; i < allStudent.size(); i++){
+                    crud.insertStudentAnswer(qid,allStudent.get(i).getId(),from,0);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,6 +70,18 @@ public class QuestionImpl implements QuestionService {
         return false;
     }
 
+    @Override
+    public void assignQuestion(Question question) {
+        try {
+            ArrayList<User> allStudent = crud.getAllUserByCourse(question.getFrom());
+            for (int i = 0; i < allStudent.size(); i++){
+                crud.updateStudentGrade(allStudent.get(i).getId(),0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public Question getQuestion(int question_id) {
@@ -98,10 +114,10 @@ public class QuestionImpl implements QuestionService {
                 int current = crud.returnGrade(student.getId());
                 if (question.getAnswer().equals(student.getAnswer())){
                     int newGrade = current + question.getGrade();
-                    crud.insertStudentAnswer(qid, student.getId(),question.getFrom(),question.getGrade());
+                    crud.updateCurrentGrade(qid,student.getId(),newGrade);
                     crud.updateGrade(student.getId(), newGrade);
                 }else {
-                    crud.insertStudentAnswer(qid, student.getId(),question.getFrom(),0);
+                    crud.updateCurrentGrade(qid, student.getId(),0);
                 }
                 crud.clearAnswer(student.getId(), question.getFrom());
             }
