@@ -28,8 +28,6 @@ POST    /course/:code/:status                   controllers.HomeController.post_
 
 GET     /course/:code/question/:questionId                   controllers.HomeController.show_question(code,questionId,request : Request)
 
-
-
 GET      /ws:code                                 controllers.WebsocketController.socket(code)
 
 GET     /gradebook                  controllers.GradeController.showGradebook(request : Request)
@@ -39,7 +37,6 @@ GET     /instructorgradebook/:code        controllers.GradeController.showinstru
 GET     /studentgradebook/:code            controllers.GradeController.showstudentgradebook(code:Integer,request : Request)
 
 GET     /all          controllers.GradeController.AllCourseYouSee(request : Request)
-
 
 GET     /profile/:email                      controllers.HomeController.showProfile(email,request : Request)
 POST    /profile/:email                         controllers.HomeController.posteditprofile(email,request :Request)

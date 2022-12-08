@@ -89,6 +89,7 @@ function assign_question(assign){
                 document.getElementById("course_name").onclick;
                 addTimeUp(assign);
                 document.getElementById('left_retangle').classList.remove('noClick');
+                ws.socket.send(JSON.stringify({'messageType':"timeOut", "question": id.toString()}));
 
             },5);
 
