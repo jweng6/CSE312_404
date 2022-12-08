@@ -172,12 +172,10 @@ class websocket extends Object {
 
     sendAnswer(email) {
         const answerBox = document.getElementById("answerBox");
-        const comment = answerBox.value;
-
+        const comment = answerBox.value.toUpperCase();
         answerBox.value = "";
         answerBox.focus();
         const id = document.getElementById("do_id").innerHTML;
-        console.log(id);
         this.socket.send(JSON.stringify({'messageType':"answer", "email" : email, "question": id.toString(),"comment":comment}));
         return null;
     }
@@ -195,22 +193,8 @@ document.getElementById('chatSubmit_div').addEventListener("keypress", function 
         ws.sendMessage(email);
     }
 });
-var assign_form = document.getElementById("assign_form");
-document.getElementById('middle_retangle').addEventListener("keypress", function (event) {
-    if (event.code === "Enter") {
-        document.getElementById("assign_form").submit();
-    }
-});
 
-function handleForm(event) {
-    event.preventDefault();
-    const email = document.getElementById('current_user_email').innerHTML;
-    ws.sendAnswer(email);
-}
 
-if (assign_form!=null){
-    assign_form.addEventListener('submit', handleForm);
-}
 
 
 setInterval(function (){ws.sendStatus()}, 1000);
