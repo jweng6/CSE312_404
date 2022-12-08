@@ -92,12 +92,7 @@ public class GradeController extends Controller {
                 //earnGrade 是这个学生在这节课获得的分
                 //totalGrade 是这节课的中分
                 //expires list类型 是这节课问题的提交日期 格式 yyyy/MM/dd
-                System.out.println(earnGrade);
-                System.out.println(totalGrade);
-                System.out.println(code);
-                System.out.println(allquestions.get(0).getDetail());
-                System.out.println(thisCourse.getCourseName());
-                System.out.println(expires.get(0));
+
                 return ok(views.html.studentgradebook.render(code, allquestions, earnGrade, totalGrade,thisCourse.getCourseName(),expires));
             }
         } catch (Exception e) {
