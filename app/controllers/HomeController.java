@@ -368,7 +368,7 @@ public class HomeController extends Controller {
                 //earnGrade 是这个学生在这节课获得的分
                 //totalGrade 是这节课的中分
                 //expires list类型 是这节课问题的提交日期 格式 yyyy/MM/dd
-                return ok(views.html.studentgradebook.render(code, allquestions, earnGrade, totalGrade,thisCourse.getCourseName(),expires));
+                return ok(views.html.studentgradebook.render(code, allquestions, earnGrade, totalGrade,thisCourse.getCourseName(), expires));
             }
         } catch (Exception e) {
             e.printStackTrace();
