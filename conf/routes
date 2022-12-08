@@ -30,4 +30,6 @@ GET     /course/:code/question/:questionId                   controllers.HomeCon
 
 GET      /ws:code                                 controllers.WebsocketController.socket(code)
 
-
+GET     /profile                      controllers.HomeController.showProfile(request : Request)
+GET     /editprofile                  controllers.HomeController.editProfile(request : Request)
+POST    /editprofile                         controllers.HomeController.posteditprofile(request :Request)

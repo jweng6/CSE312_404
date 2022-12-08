@@ -44,6 +44,7 @@ public class HomeController extends Controller {
     Form<User> userForm;
     Form<Question> questionFrom;
     Form<Course> courseForm;
+    Form<User> editForm;
     MessagesApi messagesApi;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
@@ -53,6 +54,7 @@ public class HomeController extends Controller {
         this.userForm = formFactory.form(User.class);
         this.courseForm = formFactory.form(Course.class);
         this.questionFrom = formFactory.form(Question.class);
+        this.editForm = formFactory.form(User.class);
         this.messagesApi = messagesApi;
     }
         /**
@@ -371,6 +373,54 @@ public class HomeController extends Controller {
 //        }
 //        return unauthorized("Oops, you are not connected");
 //    }
+
+    public Result showProfile(Http.Request request) throws SQLException, ClassNotFoundException {
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+            User userInfo = user.getUserByEmail(session_email);
+            //List<Info> allCourse = course.showCourse(session_email);
+            //User user = crud.getUserByEmail(session_email);
+           
+            String show="show_profile";
+            return ok(views.html.user_profile.render(userInfo,show,editForm,request,messagesApi.preferred(request)));
+        }
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+    }
+
+    public Result editProfile(Http.Request request){
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+            String show="edit_profile";
+            User userInfo=new User();
+            return ok(views.html.user_profile.render(userInfo,show,editForm,request,messagesApi.preferred(request)));
+        }
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+    }
+
+    public Result posteditprofile(Http.Request request) throws SQLException, ClassNotFoundException {
+        Optional<String> connecting = request.session().get("connecting");
+        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (connecting.isPresent() == true){
+            //final Form<User> editf = editForm.bindFromRequest(request);
+            
+            //User data = editform.get();
+            //System.out.println("edit_info_here");
+            //System.out.println(editf.get().getFirstname());
+            //System.out.println(data.getLastname());
+            //System.out.println(data.description());
+            user.updateDescription(session_email, "hello");
+            User a = user.updateName(session_email, "first", "last");
+            
+            return redirect("/main").addingToSession(request,"connecting",session_email);
+        }
+        //不在线（没登入） 返回401
+        return unauthorized("Oops, you are not connected");
+    }
+
 
 
 
