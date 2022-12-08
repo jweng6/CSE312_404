@@ -311,7 +311,9 @@ public class HomeController extends Controller {
             //System.out.println(editf.get().getFirstname());
             //System.out.println(data.getLastname());
             //System.out.println(data.description());
-
+            
+            user.updateDescription(session_email, "hello");
+            User a = user.updateName(session_email, "first", "last");
             
             return redirect("/main").addingToSession(request,"connecting",session_email);
         }
