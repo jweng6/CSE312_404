@@ -66,6 +66,7 @@ public class GradeController extends Controller {
     public Result showstudentgradebook(Integer code, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+
         try {
             User current  = user.getUserByEmail(session_email);
             Course thisCourse = course.course_info(code);
@@ -87,7 +88,7 @@ public class GradeController extends Controller {
                 expires.add(triggerTime.format(formatter));
                 allquestions.add(question);
             }
-            if (connecting.isPresent() == true) {
+            if (connecting.isPresent()) {
                 //earnGrade 是这个学生在这节课获得的分
                 //totalGrade 是这节课的中分
                 //expires list类型 是这节课问题的提交日期 格式 yyyy/MM/dd
