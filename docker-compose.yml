@@ -28,6 +28,7 @@ services:
   app:
     build:
       dockerfile: Dockerfile
+      context: ./
     image: my_app
     ports:
       - '9000:9000'
