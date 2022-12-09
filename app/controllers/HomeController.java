@@ -424,11 +424,18 @@ public class HomeController extends Controller {
             // show_profile = has edit button
             // show_otheruser = no edit button
             // edit_profile = editing with form
+
+
+            System.out.println(session_email.equals(Constant.injection(email)));
             if(session_email.equals(Constant.injection(email))){ //是本人登入自己的主页
                 String show="show_profile";
                 return ok(views.html.user_profile.render(userInfo,show,editForm,request,messagesApi.preferred(request)));
             }
             else {//陌生人查看主页
+                User isUserExist = user.getUserByEmail(Constant.injection(email));
+                if(isUserExist== null){
+                    return Results.status(404, "Page not found");
+                }
                 String show="show_otheruser";
                 return ok(views.html.user_profile.render(userInfo,show,editForm,request,messagesApi.preferred(request)));
             }
