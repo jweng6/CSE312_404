@@ -310,22 +310,24 @@ function clearChatMessage(){
 }
 
 function show_GradeBook(message){
+
+    console.log(message);
     showHide('gradebook_div');
     var table = document.getElementById("gradebook_table");
     table.innerHTML="<tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Grade</th></tr>";
-    var row = table.insertRow(-1);
-    var first = row.insertCell(0);
-    var last = row.insertCell(1);
-    var email = row.insertCell(2);
-    var grade = row.insertCell(3);
+
 
     var listf = message.first;
     var listl = message.last;
     var liste = message.email;
     var listg = message.grade;
 
-
     for (let i = 0; i < message.first.length; i++) {
+        var row = table.insertRow(-1);
+        var first = row.insertCell(0);
+        var last = row.insertCell(1);
+        var email = row.insertCell(2);
+        var grade = row.insertCell(3);
         first.innerHTML = listf[i];
         last.innerHTML = listl[i];
         email.innerHTML = liste[i];
@@ -338,17 +340,17 @@ function show_roster(message) {
     showHide('roster_div');
     var table = document.getElementById("roster_table");
     table.innerHTML = "<tr><th>First Name</th><th>Last Name</th><th>Email</th></tr>";
-    var row = table.insertRow(-1);
-    var first = row.insertCell(0);
-    var last = row.insertCell(1);
-    var email = row.insertCell(2);
+
 
     var listf = message.first;
     var listl = message.last;
     var liste = message.email;
 
-
     for (let i = 0; i < message.first.length; i++) {
+        var row = table.insertRow(-1);
+        var first = row.insertCell(0);
+        var last = row.insertCell(1);
+        var email = row.insertCell(2);
         first.innerHTML = listf[i];
         last.innerHTML = listl[i];
         email.innerHTML = liste[i];
