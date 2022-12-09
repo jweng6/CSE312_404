@@ -15,10 +15,6 @@ import java.util.Map;
 
 public class CRUD {
 
-    public static void main(String[] args) throws Exception {
-        CRUD crud = new CRUD();
-        System.out.println(crud.getExpire(1));
-    }
 
     /* --------------------------------------- userTable -------------------------------------------*/
     public Integer addUser(User user) throws Exception{

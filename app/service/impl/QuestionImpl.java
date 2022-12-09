@@ -149,19 +149,4 @@ public class QuestionImpl implements QuestionService {
         return 0;
     }
 
-    public static void main(String[] args) {
-        QuestionImpl q = new QuestionImpl();
-        q.answerQuestion(1, "chuanlon@buffalo.edu", "budui");
-
-    }
-//    @Override
-//    public void setTimer(int question_id, int min) {
-//        LocalDateTime localDateTime = LocalDateTime.now();
-//        LocalDateTime now = localDateTime.plusMinutes(min);
-//        try {
-//            crud.setTimer(question_id,now.toEpochSecond(zoneOffset));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 }
