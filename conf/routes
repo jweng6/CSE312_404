@@ -14,6 +14,7 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /register                      controllers.HomeController.showRegister(request : Request)
 POST    /register                    controllers.HomeController.register(request: Request)
 
+
 GET     /create                        controllers.HomeController.showCreate(request : Request)
 POST    /create                         controllers.HomeController.postCreate(request : Request)
 
@@ -32,16 +33,15 @@ GET      /ws:code                                 controllers.WebsocketControlle
 
 GET     /gradebook                  controllers.GradeController.showGradebook(request : Request)
 
-GET     /instructorgradebook/:code        controllers.GradeController.showinstructorgradebook(code: Integer,request : Request)
-
-GET     /studentgradebook/:code            controllers.GradeController.showstudentgradebook(code:Integer,request : Request)
+GET     /instructorgradebook/:code        controllers.GradeController.showinstructorgradebook(code,request : Request)
+GET     /studentgradebook/:code            controllers.GradeController.showstudentgradebook(code,request : Request)
 
 GET     /all          controllers.GradeController.AllCourseYouSee(request : Request)
 
 GET     /profile/:email                      controllers.HomeController.showProfile(email,request : Request)
 POST    /profile/:email                         controllers.HomeController.posteditprofile(email,request :Request)
 
-
+GET     /*url                                       controllers.HomeController.notExistPage(url,request :Request)
 
 
 

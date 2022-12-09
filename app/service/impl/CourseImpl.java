@@ -128,8 +128,8 @@ public class CourseImpl implements CourseService {
         boolean ret = false;
 
         try {
-
             Course course = crud.getCourseByCode(code);
+
             if (course.getEmail().equals(email)){
                 ret = true;
             }

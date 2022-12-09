@@ -22,14 +22,13 @@ import javax.inject.Singleton;
 import java.awt.*;
 import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
+import java.util.List;
+
 import domain.Info;
 import utility.CRUD;
 import utility.Constant;
 
-import java.util.List;
 import utility.Constant;
 
 /**
@@ -70,6 +69,11 @@ public class HomeController extends Controller {
 
     public Result showRegister(Http.Request request) {
         return ok(views.html.sign_up.render(userForm, request, messagesApi.preferred(request)));
+    }
+
+    public Result notExistPage(String url,Http.Request request) {
+        System.out.println(request.path());
+        return Results.status(404, "Page not found");
     }
 
 
@@ -217,30 +221,44 @@ public class HomeController extends Controller {
         //获取session里的email，然后转换从optional<String> -> String:
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         if (connecting.isPresent()) {
-            Course courseInfo = course.course_info(Integer.parseInt(code_safe));
-            courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
-            String s = "none";
-            List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
-            Question currq = new Question();
-            currq.setId(-1);
-            if (isInstrutor) {
+            List<Info> allCourse = course.showCourse(session_email);
+            Iterator<Info> it =  allCourse.iterator();
+            boolean hasCourse = false;
+            // 查看这个session的用户有没有这个course： 如果没有就返回403
+            while (it.hasNext()){
+                if(it.next().getCode().equals(code)){
+                    hasCourse = true;
+                }
+            }
+            if (hasCourse){
+                Course courseInfo = course.course_info(Integer.parseInt(code_safe));
+                courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
+                Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
+                String s = "none";
+                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
+                Question currq = new Question();
+                currq.setId(-1);
+                if (isInstrutor) {
 //              这里面是：course_ins.render(courseInfo,listq,show,q, email, questionFrom,request,messageApi.preferred(request),currq))
 //                    show：0 = 不显示东西 ; 1 = 选择问题后，准备输入时间，然后发布 ; 2 = add question ; 3 = roster
-                List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
-                for (User value : roster) {
-                    int uid = value.getId();
-                    value.setGrade(course.showGrade(uid, Integer.parseInt(code)));
-                }
+                    List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
+                    for (User value : roster) {
+                        int uid = value.getId();
+                        value.setGrade(course.showGrade(uid, Integer.parseInt(code)));
+                    }
 
-                return ok(views.html.course_ins.render(courseInfo, listq, s, currq, session_email, roster, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
-            } else { //if is student
-                List<Question> listqed = question.showAllQuestion(Integer.parseInt(code_safe));
-                return ok(views.html.course_student.render(courseInfo, listqed, s, currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
+                    return ok(views.html.course_ins.render(courseInfo, listq, s, currq, session_email, roster, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
+                } else { //if is student
+                    List<Question> listqed = question.showAllQuestion(Integer.parseInt(code_safe));
+                    return ok(views.html.course_student.render(courseInfo, listqed, s, currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
+                }
+            }
+            else {
+                return Results.status(403, "Page not found");
             }
         }
         //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
+        return unauthorized("unauthorized, Please login your account");
     }
 
     public Result showCourse_with_status(String code, String status, Http.Request request) {
@@ -256,30 +274,45 @@ public class HomeController extends Controller {
         //获取session里的email，然后转换从optional<String> -> String:
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
         if (connecting.isPresent()) {
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
-            Course courseInfo = course.course_info(Integer.parseInt(code_safe));
-            courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-            List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
-            Question currq = new Question();
-            currq.setId(-1);
-            if (isInstrutor) {
-                System.out.println("1111");
+            List<Info> allCourse = course.showCourse(session_email);
+            Iterator<Info> it =  allCourse.iterator();
+            boolean hasCourse = false;
+            // 查看这个session的用户有没有这个course： 如果没有就返回403
+            while (it.hasNext()){
+                if(it.next().getCode().equals(code)){
+                    hasCourse = true;
+                }
+            }
+            if (hasCourse){
+                Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
+                Course courseInfo = course.course_info(Integer.parseInt(code_safe));
+                courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
+                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
+                Question currq = new Question();
+                currq.setId(-1);
+                if (isInstrutor) {
+                    System.out.println("1111");
 //              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request),currq))
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
 
-                List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
-                for (User value : roster) {
-                    int uid = value.getId();
-                    value.setGrade(course.showGrade(uid, Integer.parseInt(code)));
+                    List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
+                    for (User value : roster) {
+                        int uid = value.getId();
+                        value.setGrade(course.showGrade(uid, Integer.parseInt(code)));
+                    }
+                    return ok(views.html.course_ins.render(courseInfo, listq, status_safe, currq, session_email, roster, questionFrom, request, messagesApi.preferred(request)));
+                } else { //if is student
+                    List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
+                    return ok(views.html.course_student.render(courseInfo, listq, status_safe, currq, session_email, questionFrom, request, messagesApi.preferred(request)));
                 }
-                return ok(views.html.course_ins.render(courseInfo, listq, status_safe, currq, session_email, roster, questionFrom, request, messagesApi.preferred(request)));
-            } else { //if is student
-                List<Question> listqed = question.showAllQuestion(Integer.parseInt(code));
-                return ok(views.html.course_student.render(courseInfo, listq, status_safe, currq, session_email, questionFrom, request, messagesApi.preferred(request)));
+            }
+
+            else {
+                return Results.status(403, "Page not found");
             }
         }
         //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
+        return unauthorized("unauthorized, Please login your account");
     }
 
 
@@ -290,79 +323,50 @@ public class HomeController extends Controller {
         String code_safe = Constant.injection(code);
         String status_safe = Constant.injection(status);
         if (connecting.isPresent()) {
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
-            if (isInstrutor) {
-                Course courseInfo = course.course_info(Integer.parseInt(code_safe));
-                courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-//              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request)))
-//                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
-                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
-                Question currq = new Question();
-                currq.setId(-1);
-                if (status.equals("add_question")) {
-                    final Form<Question> addQuestionForm = questionFrom.bindFromRequest(request);
-
-                    String request_header = Constant.injection(addQuestionForm.get().getHeader());
-                    Integer request_from = Integer.parseInt(Constant.injection(Integer.toString(addQuestionForm.get().getFrom())));
-                    String request_details = Constant.injection(addQuestionForm.get().getDetail());
-                    String request_answer = Constant.injection(addQuestionForm.get().getAnswer());
-                    Integer request_grade = Integer.parseInt(Constant.injection(Integer.toString(addQuestionForm.get().getGrade())));
-
-                    String request_A = Constant.injection(addQuestionForm.get().getAnswerA());
-                    String request_B = Constant.injection(addQuestionForm.get().getAnswerB());
-                    String request_C = Constant.injection(addQuestionForm.get().getAnswerC());
-                    String request_D = Constant.injection(addQuestionForm.get().getAnswerD());
-
-                    question.addQuestion(request_header, request_details, request_answer, request_from, request_grade, request_A, request_B, request_C, request_D);
-                    return redirect("/course/" + code_safe).addingToSession(request, "connecting", session_email);
+            List<Info> allCourse = course.showCourse(session_email);
+            Iterator<Info> it =  allCourse.iterator();
+            boolean hasCourse = false;
+            // 查看这个session的用户有没有这个course： 如果没有就返回403
+            while (it.hasNext()){
+                if(it.next().getCode().equals(code)){
+                    hasCourse = true;
                 }
             }
+            if (hasCourse){
+                Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
+                if (isInstrutor) {
+                    Course courseInfo = course.course_info(Integer.parseInt(code_safe));
+                    courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
+//              这里面是：course_ins.render(courseInfo,listq,show,questionFrom,request,messageApi.preferred(request)))
+//                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
+                    List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
+                    Question currq = new Question();
+                    currq.setId(-1);
+                    if (status.equals("add_question")) {
+                        final Form<Question> addQuestionForm = questionFrom.bindFromRequest(request);
+
+                        String request_header = Constant.injection(addQuestionForm.get().getHeader());
+                        Integer request_from = Integer.parseInt(Constant.injection(Integer.toString(addQuestionForm.get().getFrom())));
+                        String request_details = Constant.injection(addQuestionForm.get().getDetail());
+                        String request_answer = Constant.injection(addQuestionForm.get().getAnswer());
+                        Integer request_grade = Integer.parseInt(Constant.injection(Integer.toString(addQuestionForm.get().getGrade())));
+
+                        String request_A = Constant.injection(addQuestionForm.get().getAnswerA());
+                        String request_B = Constant.injection(addQuestionForm.get().getAnswerB());
+                        String request_C = Constant.injection(addQuestionForm.get().getAnswerC());
+                        String request_D = Constant.injection(addQuestionForm.get().getAnswerD());
+
+                        question.addQuestion(request_header, request_details, request_answer, request_from, request_grade, request_A, request_B, request_C, request_D);
+                        return redirect("/course/" + code_safe).addingToSession(request, "connecting", session_email);
+                    }
+                }
+            }
+            return Results.status(403, "Page not found");
+
         }
         //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
+        return unauthorized("unauthorized, Please login your account");
     }
-//
-//    public Result show_course_gradebook(String code,String email,Http.Request request){
-//        Optional<String> connecting = request.session().get("connecting");
-//        String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
-//        String code_safe =Constant.injection(code);
-//        String email_safe= Constant.injection(email);
-//        if (connecting.isPresent()){
-//            Boolean isInstrutorPage = course.isInstrutor(Integer.parseInt(code_safe), email_safe);
-//
-//            // 确定没有ins的成绩页面
-//            if (!isInstrutorPage) {
-//                Course courseInfo = course.course_info(Integer.parseInt(code_safe));
-//                courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-//                Question currq = question.getQuestion(Integer.parseInt(email_safe));
-//                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
-//                Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
-//
-//                if (isInstrutor) { // 如果是instructor
-//                    // instructor can view all user's grade
-//                    List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
-//                    for (User value : roster) {
-//                        int uid = value.getId();
-//                        value.setGrade(course.showGrade(uid, Integer.parseInt(code)));
-//                    }
-//                    return ok(views.html.course_ins.render(courseInfo, listq, "show_question", currq, session_email, roster, questionFrom, request, messagesApi.preferred(request)));
-//
-//                }
-//
-////                if(email.equals(session_email)){ // 如果是当前用户
-////
-////                }
-//
-//                else { //其他人访问
-//                    Results.status(403, "Not allow to access");
-//                }
-//            }
-//            return Results.status(404, "Page not found");
-//        }
-//        //不在线（没登入） 返回401
-//        return unauthorized("Oops, you are not connected");
-//    }
-
 
     public Result show_question(String code, String questionId, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
@@ -370,31 +374,43 @@ public class HomeController extends Controller {
         String code_safe = Constant.injection(code);
         String questionId_safe = Constant.injection(questionId);
         if (connecting.isPresent()) {
-            Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
-            Course courseInfo = course.course_info(Integer.parseInt(code_safe));
-            courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
-            Question currq = question.getQuestion(Integer.parseInt(questionId_safe));
-
-            List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
-            if (isInstrutor) {
-                List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
-                for (User value : roster) {
-                    int uid = value.getId();
-                    value.setGrade(course.showGrade(uid, Integer.parseInt(code)));
+            List<Info> allCourse = course.showCourse(session_email);
+            Iterator<Info> it =  allCourse.iterator();
+            boolean hasCourse = false;
+            // 查看这个session的用户有没有这个course： 如果没有就返回403
+            while (it.hasNext()){
+                if(it.next().getCode().equals(code)){
+                    hasCourse = true;
                 }
-                return ok(views.html.course_ins.render(courseInfo, listq, "show_question", currq, session_email, roster, questionFrom, request, messagesApi.preferred(request)));
-            } else {
-                boolean answerd_question = question.getAllExpireCheckByQid(Integer.parseInt(questionId_safe), Integer.parseInt(code_safe));
-                if (answerd_question) {
-                    List<Question> listqed = question.showAllQuestion(Integer.parseInt(code_safe));
-                    return ok(views.html.course_student.render(courseInfo, listq, "show_question", currq, session_email, questionFrom, request, messagesApi.preferred(request)));
-                }
-
-                return ok(views.html.course_student.render(courseInfo, listq, "show_onlyQ", currq, session_email, questionFrom, request, messagesApi.preferred(request)));
             }
+            if (hasCourse){
+                Boolean isInstrutor = course.isInstrutor(Integer.parseInt(code_safe), session_email);
+                Course courseInfo = course.course_info(Integer.parseInt(code_safe));
+                courseInfo.setCourseName(courseInfo.getCourseName().toUpperCase());
+                Question currq = question.getQuestion(Integer.parseInt(questionId_safe));
+
+                List<Question> listq = question.showAllQuestionIns(Integer.parseInt(code_safe));
+                if (isInstrutor) {
+                    List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
+                    for (User value : roster) {
+                        int uid = value.getId();
+                        value.setGrade(course.showGrade(uid, Integer.parseInt(code)));
+                    }
+                    return ok(views.html.course_ins.render(courseInfo, listq, "show_question", currq, session_email, roster, questionFrom, request, messagesApi.preferred(request)));
+                } else {
+                    boolean answerd_question = question.getAllExpireCheckByQid(Integer.parseInt(questionId_safe), Integer.parseInt(code_safe));
+                    if (answerd_question) {
+                        List<Question> listqed = question.showAllQuestion(Integer.parseInt(code_safe));
+                        return ok(views.html.course_student.render(courseInfo, listq, "show_question", currq, session_email, questionFrom, request, messagesApi.preferred(request)));
+                    }
+
+                    return ok(views.html.course_student.render(courseInfo, listq, "show_onlyQ", currq, session_email, questionFrom, request, messagesApi.preferred(request)));
+                }
+            }
+            return Results.status(404, "Page not found");
         }
         //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
+        return unauthorized("unauthorized, Please login your account");
     }
 
 
@@ -417,7 +433,7 @@ public class HomeController extends Controller {
             }
         }
         //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
+        return unauthorized("unauthorized, Please login your account");
     }
 
     public Result posteditprofile(String email,Http.Request request) throws SQLException, ClassNotFoundException {
@@ -442,7 +458,7 @@ public class HomeController extends Controller {
             }
         }
         //不在线（没登入） 返回401
-        return unauthorized("Oops, you are not connected");
+        return unauthorized("unauthorized, Please login your account");
     }
 
 
