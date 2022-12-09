@@ -12,6 +12,7 @@ public class Constant {
     public static List<socketActor> ClientList = new ArrayList<>();
 
     public static String injection(String word){
+
         return word.replace("&", "&amp;")
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")

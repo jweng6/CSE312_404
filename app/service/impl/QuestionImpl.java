@@ -76,7 +76,7 @@ public class QuestionImpl implements QuestionService {
         try {
             ArrayList<User> allStudent = crud.getAllUserByCourse(question.getFrom());
             for (int i = 0; i < allStudent.size(); i++){
-                crud.updateStudentGrade(allStudent.get(i).getId(),0);
+                crud.updateCurrentGrade(question.getId(),allStudent.get(i).getId(),0);
             }
         } catch (Exception e) {
             e.printStackTrace();

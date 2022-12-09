@@ -12,19 +12,26 @@ function check(input) {
     }
 }
 
-
-function selects(id,code){
-    document.getElementById("current_select_question_id").value = id;
-    window.location.replace("/course/'+code.toString() +'/question/'+id.toString()") ;
-
-}
-
-
+var checkForm = function(form,add_submit) {
+    form.add_submit.disabled = true;
+    return true;
+};
 
 // Establish a WebSocket connection with the server
 // Allow users to send messages by pressing enter instead of clicking the Send button
 
+function addjoined(user) {
+    const chat = document.getElementById('chat_all_message');
+    let name = user.name.toLowerCase().split(" ");
+    for (let i = 0; i < name.length; i++) {
+        name[i] = name[i][0].toUpperCase() + name[i].substr(1);
+    }
+    let url = 'window.open("/profile/' +ws.email.toString()+'")';
+    name = name.join(" ");
 
+    chat.innerHTML += '<div class="chat_message" style="width:100%;text-align:center;display: inline-block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" ><b class="pointer" style="color: #4A4A4A">' +'<a onclick=' + url + '>'+ name +'</a></b> Joined the chat' +'<br>' +  '</div>';
+    chat.scrollTop = chat.scrollHeight;
+}
 function addMessage(chatMessage) {
     const chat = document.getElementById('chat_all_message');
     let name = chatMessage.user.toLowerCase().split(" ");
@@ -100,6 +107,7 @@ class websocket extends Object {
     constructor(courseId) {
         super();
         this.socket = new WebSocket('ws://' + window.location.host + '/ws'+courseId);
+        this.email = document.getElementById('current_user_email').innerHTML;
         // Called whenever data is received from the server over the WebSocket connection
 
         this.socket.onmessage = function (ws_message) {
@@ -117,6 +125,9 @@ class websocket extends Object {
                     break;
                 case 'answer':
                     break;
+                case 'join':
+                    addjoined(message);
+                    break;
 
                 default:
                     console.log("received an invalid WS messageType");
@@ -125,13 +136,13 @@ class websocket extends Object {
 
 }
 // Read the comment the user is sending to chat and send it to the server over the WebSocket as a JSON string
-    sendMessage(email) {
+    sendMessage() {
         const chatBox = document.getElementById("chat-comment");
         const comment = chatBox.value;
         chatBox.value = "";
         chatBox.focus();
         if (comment !== "") {
-            this.socket.send(JSON.stringify({'messageType':"chat",'email': email.toString(), 'comment': comment}));
+            this.socket.send(JSON.stringify({'messageType':"chat",'email': this.email.toString(), 'comment': comment}));
             //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
             //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
             //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment }));
@@ -156,14 +167,14 @@ class websocket extends Object {
         return null;
     }
 
-    sendAnswer(email) {
+    sendAnswer() {
         const timeBox = document.getElementById("answerBox");
         const comment = timeBox.value;
         timeBox.value = "";
         timeBox.focus();
 
         const id = document.getElementById("current_select_question_id").value;
-        this.socket.send(JSON.stringify({'messageType':"answer", "email" : email, "question": id,"comment":comment}));
+        this.socket.send(JSON.stringify({'messageType':"answer", "email" : this.email, "question": id,"comment":comment}));
         return null;
     }
 

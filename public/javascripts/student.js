@@ -19,16 +19,13 @@ function select(id,code){
 
 
 
+
 class websocket extends Object {
     constructor(courseId) {
         super();
         this.socket = new WebSocket('ws://' + window.location.host + '/ws'+courseId);
         // Called whenever data is received from the server over the WebSocket connection
-
-        this.socket.onopen=function (){
-            console.log(111111111);
-        }
-
+        this.email = document.getElementById('current_user_email').innerHTML;
 
         this.socket.onmessage = function (ws_message) {
             const message = JSON.parse(ws_message.data);
@@ -45,42 +42,40 @@ class websocket extends Object {
                     break;
                 case 'answer':
                     break;
-
+                case 'join':
+                    addjoined(message);
+                    break;
                 default:
                     console.log("received an invalid WS messageType");
             }
         }
 }
 // Read the comment the user is sending to chat and send it to the server over the WebSocket as a JSON string
-    sendMessage(email) {
-        console.log(this.socket.onopen);
+    sendMessage() {
         const chatBox = document.getElementById("chat-comment");
         const comment = chatBox.value;
         chatBox.value = "";
         chatBox.focus();
         if (comment !== "") {
-            this.socket.send(JSON.stringify({'messageType':"chat",'email': email.toString(), 'comment': comment}));
-            //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
-            //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
-            //socket.send(JSON.stringify({'messageType':"answer", 'email': email ,question:1, 'comment': comment }));
+            this.socket.send(JSON.stringify({'messageType':"chat",'email': this.email.toString(), 'comment': comment}));
         }
-
     }
-
     sendStatus() {
         const id = document.getElementById("current_select_question_id").value;
         this.socket.send(JSON.stringify({'messageType':"status", "live" : '0', "question": id}));
         return null;
     }
-
-    sendAnswer(email) {
+    sendAnswer() {
         const answerBox = document.getElementById("answerBox");
         const comment = answerBox.value.toUpperCase();
         answerBox.value = "";
         answerBox.focus();
         const id = document.getElementById("do_id").innerHTML;
-        this.socket.send(JSON.stringify({'messageType':"answer", "email" : email, "question": id.toString(),"comment":comment}));
+        this.socket.send(JSON.stringify({'messageType':"answer", "email" : this.email, "question": id.toString(),"comment":comment}));
         return null;
+    }
+    sendJoined(){
+        this.socket.send(JSON.stringify({'messageType':"join", "email" : this.email}));
     }
 
     sendTimeOut(id) {
@@ -94,8 +89,7 @@ const ws = new websocket(join_code);
 
 document.getElementById('chatSubmit_div').addEventListener("keypress", function (event) {
     if (event.code === "Enter") {
-        var email = document.getElementById('current_user_email').innerHTML;
-        ws.sendMessage(email);
+        ws.sendMessage();
     }
 });
 
@@ -123,6 +117,8 @@ function addTimeUp(assign) {
 
 }
 
+
+
 var showtime = function (endtime) {
     var nowtime = new Date()  //获取当前时间
     var lefttime = new Date(endtime).getTime() - nowtime.getTime(),  //距离结束时间的毫秒数
@@ -131,8 +127,6 @@ var showtime = function (endtime) {
         lefts = Math.floor(lefttime/1000%60);  //计算秒数
     return [lefth,leftm,lefts]   //返回倒计时的字符串
 }
-
-
 
 var timer = null;
 var assignShowing = true;
@@ -192,5 +186,24 @@ function show_answer(code){
     window.location.replace(url);
 }
 
-setInterval(function (){ws.sendStatus()}, 1000);
+function addjoined(user) {
+    const chat = document.getElementById('chat_all_message');
+    let name = user.name.toLowerCase().split(" ");
+    for (let i = 0; i < name.length; i++) {
+        name[i] = name[i][0].toUpperCase() + name[i].substr(1);
+    }
+    let url = 'window.open("/profile/' +ws.email.toString()+'")';
+    name = name.join(" ");
 
+    const now = new Date();
+    const current = now.getHours() + ':' + now.getMinutes();
+    chat.innerHTML += '<div class="chat_message" style="width:100%;text-align:center;display: inline-block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" ><b class="pointer" style="color: #4A4A4A">' +'<a onclick=' + url + '>'+ name +'</a></b> Joined the chat' +'<br>' +  '</div>';
+    chat.scrollTop = chat.scrollHeight;
+}
+
+
+ws.socket.addEventListener('open', (event) => {
+    ws.sendJoined();
+});
+
+setInterval(function (){ws.sendStatus()}, 1000);

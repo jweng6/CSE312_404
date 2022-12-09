@@ -15,11 +15,11 @@
         <div class="middle-rectangle">
             <div class="join-course-div">
                 <p class="text-join-course">JOIN COURSE</p>
-                <form  method="post" action="/join">
+                <form  method="post" action="/join" onsubmit="form.add_submit.disabled = true;return true;">
                     @helper.CSRF.formField
 
                     <input class="join-course-input4" placeholder="Join code" type="text" id="code" name="code" required><br><br>
-                    <input class="button_sign-up" type="submit" value="SUBMIT">
+                    <input class="button_sign-up" type="submit" name ="add_submit" value="SUBMIT">
                 </form>
             </div>
 

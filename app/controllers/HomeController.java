@@ -60,7 +60,7 @@ public class HomeController extends Controller {
         this.messagesApi = messagesApi;
     }
 
-    /**
+    /**S
      * An action that renders an HTML page with a welcome message.
      * The configuration in the <code>routes</code> file means that
      * this method will be called when the application receives a

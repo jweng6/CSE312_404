@@ -15,10 +15,10 @@
         <div class="middle-rectangle-create-course">
             <div class="create-course-div">
                 <p class="text-create-course">CREATE COURSE</p>
-                <form  method="post" action="/create" >
+                <form  method="post" action="/create" onsubmit="form.add_submit.disabled = true;return true;" >
                     @helper.CSRF.formField
                     <input class="create-course-input" placeholder="Course Name" type="text" id="courseName" name="courseName" required><br><br>
-                    <input class="button_sign-up" type="submit" value="SUBMIT">
+                    <input class="button_sign-up" type="submit"  name="add_submit" value="SUBMIT">
                 </form>
             </div>
 

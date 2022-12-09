@@ -126,8 +126,14 @@ public class MyWebSocketActor extends AbstractActor {
                         qService.grading(Integer.parseInt(qid));
                         test = "{\"messageType\":\""+messageType+"\",\"question\":\""+qid+"\"}";
                     }
-
-
+                    else if ("join".equals(messageType)){
+                        //socket.send(JSON.stringify({'messageType':"status", "live" : "1/0" "question": "0" ));   //0 = open  1= close
+//                        String live = Json.stringify(message.findPath("live")).replace("\"","");
+                        String email = Json.stringify(message.findPath("email")).replace("\"","");
+                        User user = userService.nowChat(email);
+                        String fullName = user.getFirstname() + " " + user.getLastname();
+                        test = "{\"messageType\":\""+messageType+"\",\"name\":\""+fullName+"\"}";
+                    }
 
                     for (int i = 0; i<clients.size();i++){
                         clients.get(i).tell(Json.parse(test), this.self());

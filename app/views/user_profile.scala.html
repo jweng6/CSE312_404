@@ -35,12 +35,12 @@
             <div class="p-div">
                 <p class="text-profile">Edit Profile</p>
             </div>
-            <form method="POST" action="/profile/@userInfo.getEmail">
+            <form method="POST" action="/profile/@userInfo.getEmail" onsubmit="form.add_submit.disabled = true;return true;">
                 @helper.CSRF.formField
                 <input class="input-first_name" placeholder="First name" type="header" id="header" name="header" required><br>
                 <input class="input-last_name" placeholder="Last name" type="answer" id="answer" name="answer" required><br>
                 <input class="input-des" placeholder="Description..." type="detail" id="detail" name="detail" required><br>
-                <input class="button_edit" type="submit" value="EDIT">
+                <input class="button_edit" type="submit" name="add_submit" value="EDIT">
             </form>
         </div>
     }
