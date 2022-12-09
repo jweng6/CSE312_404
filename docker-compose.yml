@@ -22,6 +22,7 @@ services:
     command: [
       '--character-set-server=utf8mb4',
       '--collation-server=utf8mb4_unicode_ci',
+      '--default-time-zone=America/New_York',
 #      '--max_connections=1000'
     ]
     environment:
