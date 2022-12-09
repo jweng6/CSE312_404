@@ -305,6 +305,10 @@ function addQuestion(message){
     cell1.setAttribute("id","question_"+message.qid);
 }
 
+function clearChatMessage(){
+    const chat = document.getElementById('chat_all_message').innerHTML = "";
+}
+
 function show_GradeBook(message){
     showHide('gradebook_div');
     var table = document.getElementById("gradebook_table");

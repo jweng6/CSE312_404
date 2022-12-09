@@ -20,7 +20,7 @@ public interface QuestionService {
     void answerQuestion(int question_id, String email, String answer);
 
     void grading(int qid);
-    void grading_minus(int qid);
+
     int getQuestionGradeByID(int qid,int uid);
 
     void expires(int qid, long time);

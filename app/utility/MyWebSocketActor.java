@@ -91,7 +91,6 @@ public class MyWebSocketActor extends AbstractActor {
                         //socket.send(JSON.stringify({'messageType':"assign",'question': 1}));
                         String question  = Json.stringify(message.findPath("question")).replace("\"","");
                         String  min = Constant.injection(Json.stringify(message.findPath("min")).replace("\"",""));
-                        qService.grading_minus(Integer.parseInt(question));
 
                         if (StringUtils.isNumeric(min)){
                             Question q = qService.getQuestion(Integer.parseInt(question));
@@ -154,7 +153,8 @@ public class MyWebSocketActor extends AbstractActor {
                         List<String> last = new ArrayList<>();
                         List<String> email = new ArrayList<>();
                         List<String> grade = new ArrayList<>();
-                        List<User> all_grade = cService.instrSeeGrade(Integer.parseInt(cid));
+                        System.out.println(cid);
+                        List<User> all_grade = cService.instrSeeGrade_ws(Integer.parseInt(cid));
                         Iterator<User> it =  all_grade.iterator();
                         while (it.hasNext()){
                             User u = it.next();

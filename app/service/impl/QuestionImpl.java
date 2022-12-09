@@ -141,34 +141,7 @@ public class QuestionImpl implements QuestionService {
             e.printStackTrace();
         }
     }
-    @Override
-    public void grading_minus(int qid){
-        try {
-            Question question = crud.getQuestion(qid);
-            ArrayList<Student_Answer> answers = crud.getAnswerByCourse(question.getFrom());
-            for (int i = 0; i < answers.size();i++){
-                Student_Answer student = answers.get(i);
-                int current = crud.returnGrade(student.getId());
-                int newGrade = current - question.getGrade();
 
-                crud.updateCurrentGrade(qid,student.getId(),question.getGrade());
-                crud.updateGrade(student.getId(), newGrade);
-
-
-                if (question.getAnswer().equalsIgnoreCase(student.getAnswer())){
-                    int newGrade = current - question.getGrade();
-
-                    crud.updateCurrentGrade(qid,student.getId(),question.getGrade());
-                    crud.updateGrade(student.getId(), newGrade);
-                }else {
-                    crud.updateCurrentGrade(qid, student.getId(),0);
-                }
-                crud.clearAnswer(student.getId(), question.getFrom());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void expires(int qid, long expire) {

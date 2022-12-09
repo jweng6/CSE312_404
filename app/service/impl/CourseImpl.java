@@ -179,6 +179,8 @@ public class CourseImpl implements CourseService {
         return 0;
     }
 
+
+
     @Override
     public List<Answer> showAllStudentAnswer(int uid, int cid) {
         try {
@@ -198,7 +200,25 @@ public class CourseImpl implements CourseService {
         }
         return null;
     }
+    @Override
+    public List<User> instrSeeGrade_ws(int code){
+        try {
+            return crud.InstrSeeGrade_ws(code);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    @Override
+    public User showStudentTotalGrade(int uid, int courseId){
+        try {
+            return crud.showStudentTotalGrade(uid,courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     @Override

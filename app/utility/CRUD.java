@@ -1,6 +1,8 @@
 package utility;
 
 import domain.*;
+import service.UserService;
+import service.impl.UserImpl;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -288,6 +290,9 @@ public class CRUD {
         return ret;
     }
 
+
+
+
     public int returnGrade(int userid) throws Exception{
         JDBC.getConnection();
         Connection conn = JDBC.CreateJoinCourse();
@@ -355,6 +360,41 @@ public class CRUD {
             ret.add(user);
         }
         return ret;
+    }
+
+    public List<User> InstrSeeGrade_ws(int code) throws Exception{
+        JDBC.getConnection();
+        Connection connection = JDBC.CreateJoinCourse();
+        String sql = "" +
+                "select userid from joinCourse where courseCode = ?";
+        PreparedStatement psmt = connection.prepareStatement(sql);
+        psmt.setInt(1,code);
+        ResultSet rs = psmt.executeQuery();
+        List<User> ret = new ArrayList<>();
+        CRUD crud = new CRUD();
+        while (rs.next()){
+            User user = crud.showStudentTotalGrade(rs.getInt("userid"),code);
+            ret.add(user);
+        }
+        return ret;
+    }
+
+
+    public User showStudentTotalGrade(int uid, int courseId) throws Exception{
+        JDBC.getConnection();
+        Connection connection = JDBC.CreateStudentAnswer();
+        User user = getUserByid(uid);
+
+        String sql = "" +
+                "select SUM(grade) AS grade_sum from studentTable where userId = ? and courseId = ?";
+        PreparedStatement psmt = connection.prepareStatement(sql);
+        psmt.setInt(1,uid);
+        psmt.setInt(2,courseId);
+        ResultSet rs = psmt.executeQuery();
+        while (rs.next()){
+            user.setGrade(rs.getInt("grade_sum"));
+        }
+        return user;
     }
 
 

@@ -49,7 +49,7 @@ public class GradeController extends Controller {
             return unauthorized("Oops, you are not connected");
         }
         String code_safe = Constant.injection(code);
-        List<User> users = course.instrSeeGrade(Integer.parseInt(code));
+        List<User> users = course.instrSeeGrade_ws(Integer.parseInt(code));
         List<Info> allCourse = course.showCourse(session_email);
         String coursename="";
         int x=0;
@@ -95,14 +95,14 @@ public class GradeController extends Controller {
             List<Answer> li = course.showAllStudentAnswer(current.getId(), Integer.parseInt(code_safe));
             List<Question> allquestions = new ArrayList<>();
             List<String> expires = new ArrayList<>();
-            int earnGrade = 0;
+            int earnGrade = course.showStudentTotalGrade(current.getId(),Integer.parseInt(code_safe)).getGrade();
+
             int totalGrade = 0;
 //            LocalDateTime now = LocalDateTime.now().toEpochSecond();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             for (int i = 0; i< li.size(); i++){
                 Question q = question.getQuestion(li.get(i).getQuestion_id());
 
-                earnGrade += li.get(i).getReturn_grade();
                 totalGrade += q.getGrade();
                 q.setGrade(li.get(i).getReturn_grade());
                 LocalDateTime triggerTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(q.getExpires()), TimeZone
@@ -152,7 +152,7 @@ public class GradeController extends Controller {
                 if (allCourse.get(zz).getCode() == code) {
                     int temp = 0;
                     List<Question> questions = question.showAllQuestion(allCourseId.get(zz));
-                    int thisGrade = course.showGrade(current.getId(), allCourseId.get(zz));
+                    int thisGrade = course.showStudentTotalGrade(current.getId(),Integer.parseInt(code)).getGrade();
                     for (int i = 0; i < questions.size(); i++){
                         temp += questions.get(i).getGrade();
                     }

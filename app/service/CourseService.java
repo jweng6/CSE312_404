@@ -16,6 +16,9 @@ public interface CourseService {
 
     List<Answer>  showAllStudentAnswer(int uid, int cid);
     List<User> instrSeeGrade(int code);
+
+    List<User> instrSeeGrade_ws(int code);
+    User showStudentTotalGrade(int uid, int courseId);
     List<Course> AllCourse();
 
 }
