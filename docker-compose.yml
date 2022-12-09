@@ -40,6 +40,7 @@ services:
     depends_on:
       - mysql
     environment:
+      TZ: "America/New_York"
       PMA_HOST: mysql
       #      IP: "192.168.1.212"
       PORT: "3306"
