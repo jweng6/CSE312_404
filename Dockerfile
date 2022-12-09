@@ -1,7 +1,7 @@
 FROM ubuntu
 RUN apt-get update
 RUN apt-get -y install mysql-server
-RUN apt-get -y install openjdk-11-jdk
+RUN apt-get -y install openjdk-8-jdk
 
 COPY svc /svc
 EXPOSE 9000 9443
