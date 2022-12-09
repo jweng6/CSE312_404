@@ -18,7 +18,7 @@ services:
     command: [
       '--character-set-server=utf8mb4',
       '--collation-server=utf8mb4_unicode_ci',
-      '--max_connections=1000'
+#      '--max_connections=1000'
     ]
     environment:
       WAIT_MYSQL_HOST: mysql:8.0.30
