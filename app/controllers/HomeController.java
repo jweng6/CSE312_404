@@ -437,7 +437,8 @@ public class HomeController extends Controller {
                     return Results.status(404, "Page not found");
                 }
                 String show="show_otheruser";
-                return ok(views.html.user_profile.render(userInfo,show,editForm,request,messagesApi.preferred(request)));
+                User cur_userInfo = user.getUserByEmail(Constant.injection(email));
+                return ok(views.html.user_profile.render(cur_userInfo,show,editForm,request,messagesApi.preferred(request)));
             }
         }
         //不在线（没登入） 返回401
@@ -461,9 +462,7 @@ public class HomeController extends Controller {
                 User a = user.updateName(session_email, first, last);
                 return redirect("/profile/"+email_safe);
             }
-            else {
-                return Results.status(404, "Page not found");
-            }
+            return Results.status(404, "Page not found");
         }
         //不在线（没登入） 返回401
         return unauthorized("unauthorized, Please login your account");
