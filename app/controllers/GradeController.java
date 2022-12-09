@@ -45,6 +45,9 @@ public class GradeController extends Controller {
     public Result showinstructorgradebook(String code, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (session_email==null) {
+            return unauthorized("Oops, you are not connected");
+        }
         String code_safe = Constant.injection(code);
         List<User> users = course.instrSeeGrade(Integer.parseInt(code));
         List<Info> allCourse = course.showCourse(session_email);
@@ -81,6 +84,9 @@ public class GradeController extends Controller {
     public Result showstudentgradebook(String code, Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (session_email==null) {
+            return unauthorized("Oops, you are not connected");
+        }
         try {
             User current  = user.getUserByEmail(session_email);
             String code_safe = Constant.injection(code);
@@ -131,6 +137,9 @@ public class GradeController extends Controller {
     public Result showGradebook(Http.Request request) {
         Optional<String> connecting = request.session().get("connecting");
         String session_email = request.session().get("connecting").map(Object::toString).orElse(null);
+        if (session_email==null) {
+            return unauthorized("Oops, you are not connected");
+        }
         List<Info> allCourse = course.showCourse(session_email);
         try {
             User current = user.getUserByEmail(session_email);
@@ -153,7 +162,7 @@ public class GradeController extends Controller {
                 zz = zz + 1;
             }
             // total 是一个list ｜｜ 是每一个course的总成绩
-            if (connecting.isPresent() == true) {
+            if (connecting.isPresent()) {
                 return ok(views.html.gradebook.render(allCourse, allgrade));
             }
         } catch (Exception e) {

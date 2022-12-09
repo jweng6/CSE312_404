@@ -68,31 +68,31 @@ public class HomeController extends Controller {
      */
 
     public Result showRegister(Http.Request request) {
-        return ok(views.html.sign_up.render(userForm, request, messagesApi.preferred(request)));
+        String alert = "";
+        return ok(views.html.sign_up.render(alert,userForm, request, messagesApi.preferred(request)));
     }
 
     public Result notExistPage(String url,Http.Request request) {
-        System.out.println(request.path());
         return Results.status(404, "Page not found");
     }
 
 
-    public Result register(Http.Request request) {
+    public Result register(Http.Request request) throws SQLException, ClassNotFoundException {
         final Form<User> boundForm = userForm.bindFromRequest(request);
         if (boundForm.hasErrors()) {
             return redirect("/").withNewSession();
         } else {
             User data = boundForm.get();
-
-            System.out.println(data.getEmail());
-            System.out.println(data.getPassword());
-            System.out.println(data.getFirstname());
-            System.out.println(data.getLastname());
-
 //            String email, String firstname, String lastname, String password
             //返回的是一个user
-            user.addUser(Constant.injection(data.getEmail()), Constant.injection(data.getFirstname()), Constant.injection(data.getLastname()), Constant.injection(data.getPassword()));
-            return redirect("/").withNewSession();
+            User isUserExist = user.getUserByEmail(Constant.injection(data.getEmail()));
+            System.out.println(isUserExist);
+            if(isUserExist== null){
+                user.addUser(Constant.injection(data.getEmail()), Constant.injection(data.getFirstname()), Constant.injection(data.getLastname()), Constant.injection(data.getPassword()));
+                return redirect("/").withNewSession();
+            }
+            String alert = "Email already Exist";
+            return ok(views.html.sign_up.render(alert,userForm, request, messagesApi.preferred(request)));
         }
     }
 
@@ -296,6 +296,7 @@ public class HomeController extends Controller {
 //                    show：'none' = 不显示东西 ; 'show_question' = 选择问题后，准备输入时间，然后发布 ; 'add_question' = add question ; "roster" = roster
 
                     List<User> roster = user.showAllStudent(Integer.parseInt(code_safe));
+
                     for (User value : roster) {
                         int uid = value.getId();
                         value.setGrade(course.showGrade(uid, Integer.parseInt(code)));

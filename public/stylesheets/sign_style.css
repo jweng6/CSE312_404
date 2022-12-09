@@ -167,11 +167,10 @@ body {
 
 /*SIGN-UP PAGE CSS-------------------------------*/
 .div-sign-up{
-    position: absolute;
+    margin: auto;
     width: 324px;
     height: 429px;
     left: 43px;
-
 
 }
 .text-sign-up_word{
