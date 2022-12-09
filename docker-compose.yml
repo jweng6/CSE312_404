@@ -1,5 +1,15 @@
 version: '8'
 services:
+
+  nginx:
+    build: nginx
+    ports:
+      - '9000:9000'
+      - '443:443'
+    depends_on:
+       - app
+
+
   mysql:
     platform: linux/x86_64
     image: mysql:8.0.30
