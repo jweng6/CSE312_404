@@ -45,6 +45,22 @@ class websocket extends Object {
                 case 'join':
                     addjoined(message);
                     break;
+                case 'add_question':
+                    addQuestion(message);
+                    break;
+                case 'show_this_question':
+                    if (message.email ===ws.email){
+                        showQuestion(message);
+                        break;
+                    }
+                    break;
+                case 'show_gradebook':
+                    show_GradeBook(message);
+                    break;
+                case 'show_roster':
+                    show_roster(message)
+                    break;
+
                 default:
                     console.log("received an invalid WS messageType");
             }
@@ -81,7 +97,34 @@ class websocket extends Object {
     sendTimeOut(id) {
         this.socket.send(JSON.stringify({'messageType':"timeOut", "question": id}));
     }
+
+    sendAddQuestion() {
+        const header = clearInput('header');
+        const details = clearInput('detail');
+        const answer = clearInput('answer');
+        const grade = clearInput('grade');
+        const a = clearInput('answerA');
+        const b = clearInput('answerB');
+        const c = clearInput('answerC');
+        const d = clearInput('answerD');
+        console.log("finishINPUT")
+        if (header !== "" && details!== "" && answer!== "" && grade!== "" ) {
+            this.socket.send(JSON.stringify({'messageType':"add_question", 'header': header,'details':details,'answer':answer,'cid':this.course,'grade':grade,'A':a,'B':b,'C':c,'D':d}));
+        }
+    }
+
+    sendShowQuestion(id) {
+        this.socket.send(JSON.stringify({'messageType':"show_this_question", 'email':this.email,'question': id}));
+    }
+
+    sendGradeBook() {
+        this.socket.send(JSON.stringify({'messageType':"show_gradebook", 'cid':this.course}));
+    }
+    sendRoster() {
+        this.socket.send(JSON.stringify({'messageType':"show_roster", 'cid':this.course}));
+    }
 }
+
 
 var join_code =document.getElementById("join_code").innerHTML.toString()
 const ws = new websocket(join_code);
@@ -138,15 +181,15 @@ function assign_question(assign){
     document.getElementById("show_answer_button").hidden = true;
     document.getElementById('left_retangle').classList.add('noClick');
     console.log(assign.title);
-    const assignDiv = document.getElementById("assign_div");
-    assignDiv.hidden = false;
-    const showDiv = document.getElementById("show_div");
-    showDiv.hidden = true;
+    showHide('assign_div');
+
     let time = document.getElementById('time_remaining');
     time.hidden = false;
 
     document.getElementById('left_retangle').classList.add('noClick');
     assignShowing = true;
+
+
 
     timer =setInterval (function (){
         let t =  showtime(assign.expire);
@@ -207,3 +250,59 @@ ws.socket.addEventListener('open', (event) => {
 });
 
 setInterval(function (){ws.sendStatus()}, 1000);
+
+function showHide(id){
+    const div= ['assign_div','show_div'];
+    for (let i = 0; i < div.length; i++) {
+        if(id === div[i]){ //hide all others
+            console.log(id)
+            document.getElementById(div[i]).hidden =false;
+        }
+        else {
+            document.getElementById(div[i]).hidden = true;
+        }
+    }
+}
+function showQuestion(message){
+    showHide('show_div');
+    document.getElementById("current_select_question_id").value = message.qid;
+    if(message.check==='1'){
+        document.getElementById('show_q_header').innerHTML = message.header;
+        document.getElementById('show_q_details').value = message.details;
+        document.getElementById('show_q_a').innerHTML = message.a;
+        document.getElementById('show_q_b').innerHTML = message.b;
+        document.getElementById('show_q_c').innerHTML = message.c;
+        document.getElementById('show_q_d').innerHTML = message.d;
+        document.getElementById('show_answer').innerHTML = "Correct Answer: "+ message.answer;
+        document.getElementById('show_grade').innerHTML = "Your grade: " + message.grade.toString().toUpperCase();;
+    }
+    if(message.check==='0'){
+        document.getElementById('show_q_header').innerHTML = message.header;
+        document.getElementById('show_q_details').value = message.details;
+        document.getElementById('show_q_a').innerHTML = message.a;
+        document.getElementById('show_q_b').innerHTML = message.b;
+        document.getElementById('show_q_c').innerHTML = message.c;
+        document.getElementById('show_q_d').innerHTML = message.d;
+    }
+}
+
+function clearInput(id){
+    const e = document.getElementById(id);
+    const comment = e.value;
+    e.value="";
+    e.focus();
+    return comment;
+}
+
+
+function addQuestion(message){
+
+    var table = document.getElementById("show_question_table");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+
+    cell1.innerHTML = message.header;
+    cell1.setAttribute("onclick","ws.sendShowQuestion("+message.qid+")")
+    cell1.setAttribute("id","question_"+message.qid);
+}
+

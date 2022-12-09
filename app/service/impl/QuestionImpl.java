@@ -14,7 +14,7 @@ public class QuestionImpl implements QuestionService {
     CRUD crud = new CRUD();
 
     @Override
-    public void addQuestion(String header, String detail, String answer, int from, int grade,
+    public Integer addQuestion(String header, String detail, String answer, int from, int grade,
                             String answerA, String answerB, String answerC, String answerD) {
         if(!StringUtils.isAnyBlank(header,detail,answer)){
             try {
@@ -29,10 +29,13 @@ public class QuestionImpl implements QuestionService {
                 for (int i = 0; i < allStudent.size(); i++){
                     crud.insertStudentAnswer(qid,allStudent.get(i).getId(),from,0);
                 }
+                return qid;
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return -1;
         }
+        return -1;
     }
 
     @Override
@@ -83,6 +86,16 @@ public class QuestionImpl implements QuestionService {
         }
     }
 
+    @Override
+    public int getQuestionGradeByID(int qid,int uid){
+        try {
+            return crud.getStudentGradebyId(qid, uid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
     @Override
     public Question getQuestion(int question_id) {
@@ -105,7 +118,7 @@ public class QuestionImpl implements QuestionService {
             e.printStackTrace();
         }
     }
-
+    @Override
     public void grading(int qid){
         try {
             Question question = crud.getQuestion(qid);
@@ -113,8 +126,37 @@ public class QuestionImpl implements QuestionService {
             for (int i = 0; i < answers.size();i++){
                 Student_Answer student = answers.get(i);
                 int current = crud.returnGrade(student.getId());
-                if (question.getAnswer().equals(student.getAnswer())){
+                //
+                if (question.getAnswer().equalsIgnoreCase(student.getAnswer())){
                     int newGrade = current + question.getGrade();
+
+                    crud.updateCurrentGrade(qid,student.getId(),question.getGrade());
+                    crud.updateGrade(student.getId(), newGrade);
+                }else {
+                    crud.updateCurrentGrade(qid, student.getId(),0);
+                }
+                crud.clearAnswer(student.getId(), question.getFrom());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void grading_minus(int qid){
+        try {
+            Question question = crud.getQuestion(qid);
+            ArrayList<Student_Answer> answers = crud.getAnswerByCourse(question.getFrom());
+            for (int i = 0; i < answers.size();i++){
+                Student_Answer student = answers.get(i);
+                int current = crud.returnGrade(student.getId());
+                int newGrade = current - question.getGrade();
+
+                crud.updateCurrentGrade(qid,student.getId(),question.getGrade());
+                crud.updateGrade(student.getId(), newGrade);
+
+
+                if (question.getAnswer().equalsIgnoreCase(student.getAnswer())){
+                    int newGrade = current - question.getGrade();
 
                     crud.updateCurrentGrade(qid,student.getId(),question.getGrade());
                     crud.updateGrade(student.getId(), newGrade);

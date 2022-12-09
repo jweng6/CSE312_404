@@ -250,7 +250,7 @@ public class HomeController extends Controller {
                     return ok(views.html.course_ins.render(courseInfo, listq, s, currq, session_email, roster, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
                 } else { //if is student
                     List<Question> listqed = question.showAllQuestion(Integer.parseInt(code_safe));
-                    return ok(views.html.course_student.render(courseInfo, listqed, s, currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
+                    return ok(views.html.course_student.render(courseInfo, listq, s, currq, session_email, questionFrom, request, messagesApi.preferred(request))).addingToSession(request, "code", code);
                 }
             }
             else {

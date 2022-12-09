@@ -350,12 +350,13 @@ public class CRUD {
         CRUD crud = new CRUD();
         while (rs.next()){
             User user = crud.getUserByid(rs.getInt("userid"));
-            System.out.println(user.getEmail());
+            //System.out.println(user.getEmail());
             user.setGrade(rs.getInt("grade"));
             ret.add(user);
         }
         return ret;
     }
+
 
     public void clearAnswer(int uid, int code) throws Exception{
         JDBC.getConnection();
@@ -451,11 +452,10 @@ public class CRUD {
         long nowTime = dateTime.toEpochSecond(zoneOffset);
 
         String sql = "" +
-                "SELECT * FROM questionTable WHERE courseId = ? AND expires > 0 AND expires < ? AND id = ?";
+                "SELECT * FROM questionTable WHERE expires > 0 AND expires < ? AND id = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setInt(1, courseId);
-        psmt.setLong(2,nowTime);
-        psmt.setInt(3, qid);
+        psmt.setLong(1,nowTime);
+        psmt.setInt(2, qid);
         ResultSet rs = psmt.executeQuery();
         while(rs.next()) {
             ret = true;
@@ -608,6 +608,24 @@ public class CRUD {
         psmt.executeUpdate();
         psmt.close();
         conn.close();
+    }
+    public int getStudentGradebyId(int qid, int uid) throws Exception{
+        JDBC.getConnection();
+        Connection conn = JDBC.CreateStudentAnswer();
+        String sql = ""+
+                "select questionId, userId, courseId, grade from studentTable where userId = ? and questionId = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,uid);
+        psmt.setInt(2,qid);
+        ResultSet rs = psmt.executeQuery();
+        while (rs.next()){
+            return rs.getInt("grade");
+        }
+        rs.close();
+        psmt.close();
+        conn.close();
+        return 0;
+
     }
 
     public void updateCurrentGrade(int qid, int uid, int grade) throws Exception{

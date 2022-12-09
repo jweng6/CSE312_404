@@ -19,7 +19,7 @@
 </head>
 <body >
 
-<div class="row" style="min-width: 1000px;" >
+<div class="row" >
 
     <div class="header">
         <p onclick=window.location.replace("/main") class="direct" style="float: Left;white-space: nowrap;padding-left: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
@@ -39,12 +39,12 @@
 
         </div>
         <div class="left_retangle" id ='left_retangle'>
-            <input id="current_select_question_id" value="@currq.getId()" hidden>
+            <input id="current_select_question_id" value="" hidden>
 
-            <table>
+            <table id ='show_question_table'>
                 @for( i <- listq){
                     <tr  >
-                        <td class="" id="question_@i.getId()" onclick=window.location.replace('@routes.HomeController.show_question(courseInfo.getCode().toString(),i.getId().toString())')>@i.getHeader()</td>
+                        <td class="" id="questiontable_@i.getId()" onclick=ws.sendShowQuestion('@i.getId()')>@i.getHeader()</td>
                     </tr>
                 }
             </table>
@@ -54,7 +54,7 @@
 
     <div  class="column middle" style="width: 55%;float: left">
         <div class="div_middle_button">
-            <button class="gradebook_button" onclick=window.location.replace('@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"gradebook")') value="Javascript">
+            <button class="gradebook_button" id="gradebook_button" onclick=ws.sendGradeBook()>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -62,7 +62,7 @@
                 GradeBook
             </button>
 
-            <button class="roster_button" onclick=window.location.replace('@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"roster")') value="Javascript">
+            <button class="roster_button" id ='roster_button' onclick=ws.sendRoster() value="Javascript">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
                     <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
                     <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
@@ -70,7 +70,7 @@
                 Roster
             </button>
 
-            <button class="add_question_button" onclick=window.location.replace('@routes.HomeController.showCourse_with_status(courseInfo.getCode().toString(),"add_question")') value="Javascript">
+            <button class="add_question_button" id="add_question_button" onclick=showHide('add_question_div') value="Javascript">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                     <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -81,17 +81,13 @@
 
 
         <div class="middle_retangle">
-            @if(show.equals("none")){ }
-
-            <div id="middle_no_ws">
-                @if(show.equals("add_question")){
+            <div id="add_question_div" hidden>
                     <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                         <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                     </svg> Add question</p>
-                    <form style="padding-left: 8%; overflow: auto" method="POST" onsubmit="checkForm(this,this.add_submit);" action=@routes.HomeController.post_course_with_status(courseInfo.getCode().toString(),"add_question")>
+                    <form id='add_question_form' style="padding-left: 8%; overflow: auto" method="POST" action="javascript:void(0)" >
                         @helper.CSRF.formField
-                        <input type="number"  name="from" value="@courseInfo.getCode()" hidden>
                         <label class="label_text" for="header">Question Title: </label><br><br>
                         <input class="input_box" type="text" id="header" name="header" value="" required><br><br>
                         <label class="label_text"for="detail">Details:</label><br>
@@ -108,44 +104,36 @@
 
                         <label class="label_text" for="grade">Grade:</label><br>
                         <input   class="input_box" type="number" id="grade" name="grade" value="" required><br><br>
-                        <input id="add_submit" class="submit_button" type="submit" name = "add_submit" value="Submit">
+                        <input  id="add_submit" class="submit_button" type="submit" name = "add_submit" value="Submit">
                     </form>
-                }
 
-                @if(show.equals("show_question")){
+            </div>
 
+            <div id="show_question_div" hidden>
                     <div style="width: 100%;height: Calc(97%- 62px) ;min-height: 65vh;position: relative;overflow: auto">
-                        <p class="h2text" style="padding-left: 3%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
+                        <p id="show_q_header" class="h2text" style="padding-left: 3%;" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
                             <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
-                        </svg> @currq.getHeader()</p>
-
+                        </svg></p>
 
                         <div style="margin: auto ; width:80%; height:60%; overflow: auto;"  >
                             <label class="label_text" for="Detail2">Question Details: </label><br><br>
-                            <input class="input_box"  style="border-color: #6e6e6e" id="Detail2" value="@currq.getDetail()" disabled>
+                            <input id='show_q_details' class="input_box"  style="border-color: #6e6e6e" id="Detail2" value="" disabled>
 
                             </Textarea><br><br>
-                            <strong>A:</strong><p style="display:inline;">@currq.getAnswerA()</p>
-                            <p><strong>B: </strong>@currq.getAnswerB()</p>
-                            <p><strong>C: </strong>@currq.getAnswerC()</p>
-                            <p><strong>D: </strong>@currq.getAnswerD()</p>
+                            <strong>A: </strong><p id='show_q_a' style="display:inline;" ></p><br>
+                            <strong>B: </strong><p id='show_q_b' style="display:inline;" ></p><br>
+                            <strong>C: </strong><p id='show_q_c' style="display:inline;" ></p><br>
+                            <strong>D: </strong><p id='show_q_d'style="display:inline;" ></p><br>
 
-                            <a class="label_text" style="color:dodgerblue;cursor: pointer">Correct Answer:
 
-                                <p  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text" id="show_answer" >
-                                    @if(currq.getAnswer().toUpperCase().equals("A")){
-                                        A: @currq.getAnswerA()
-                                    }
-                                    @if(currq.getAnswer().toUpperCase().equals("B")){
-                                        B: @currq.getAnswerB()
-                                    }
-                                    @if(currq.getAnswer().toUpperCase().equals("C")){
-                                        C: @currq.getAnswerC()
-                                    }
-                                    @if(currq.getAnswer().toUpperCase().equals("D")){
-                                        D: @currq.getAnswerD()
-                                    }
+                            <a class="label_text" style="color:dodgerblue;cursor: pointer">
+
+                                <p  id="show_answer"  style="text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text"  >
+
                                 </p>
+                                <p  id="show_grade"  style="text-overflow: ellipsis;-webkit-line-clamp: 5;line-clamp: 5;-webkit-box-orient: vertical;" class="label_text"  >
+                                </p>
+
                             </a><br>
                         </div>
 
@@ -159,29 +147,33 @@
                         </div>
                     </div>
 
-                }
-                @if(show.equals("roster")){
-                    <table>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                        </tr>
 
-                        @for( r <- roster){
-                            @if(!r.getEmail().equals(curre)){
-                                <tr>
-                                    <td>@r.getFirstname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
-                                    <td>@r.getLastname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
-                                    <td>@r.getEmail().toLowerCase.capitalize</td>
-                                </tr>
-                            }
+            </div>
+
+            <div id="roster_div" hidden>
+                <table id="roster_table">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
+
+                    @for( r <- roster){
+                        @if(!r.getEmail().equals(curre)){
+                            <tr>
+                                <td>@r.getFirstname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
+                                <td>@r.getLastname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
+                                <td>@r.getEmail().toLowerCase.capitalize</td>
+                            </tr>
                         }
-                    </table>
-                }
+                    }
+                </table>
 
-                @if(show.equals("gradebook")){
-                    <table>
+            </div>
+
+            <div id="gradebook_div" hidden>
+
+                    <table id="gradebook_table">
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
@@ -189,22 +181,18 @@
                             <th>Grade</th>
                         </tr>
 
-                        @for( r <- roster){
-                            @if(!r.getEmail().equals(curre)){
+                        @for(r <- roster) {
+                            @if(!r.getEmail().equals(curre)) {
                                 <tr>
                                     <td>@r.getFirstname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
                                     <td>@r.getLastname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
                                     <td>@r.getEmail().toLowerCase.capitalize</td>
-                                    <td>@r.getGrade()</td>
+                                    <td id="gradebook_@r.getEmail().toLowerCase">@r.getGrade()</td>
                                 </tr>
                             }
                         }
                     </table>
-                }
             </div>
-
-
-
         </div>
     </div>
 
