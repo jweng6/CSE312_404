@@ -1,5 +1,7 @@
 package utility;
 
+import domain.Student_Answer;
+
 import java.sql.*;
 
 public class JDBC {
@@ -9,15 +11,15 @@ public class JDBC {
 //    static String Url = "jdbc:mysql://localhost:3306/?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true";
     static final String Url = "jdbc:mysql://mysql:3306/cse312";
     static final String User = "root" ;
-//        static final String PassWord = "jia893607219";
-//    static final String PassWord = "0257";
-    static final String PassWord = "JayX2029";
+ //       static final String PassWord = "jia893607219";
+ //   static final String PassWord = "0257";
+   static final String PassWord = "JayX2029";
 
 
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {;
         Class.forName(JdbcDriver);
-        Connection connection = DriverManager.getConnection("jdbc:mysql://mysql:3306", User, PassWord);
+        Connection connection = DriverManager.getConnection("jdbc:mysql://mysql:3306/", User, PassWord);
         Statement statement = connection.createStatement();
 //        statement.executeUpdate("create database if not exists db;");
         statement.executeUpdate("create database if not exists cse312;");
@@ -87,6 +89,21 @@ public class JDBC {
                 "choiceD TEXT, " +
                 "grade INT, " +
                 "expires BIGINT DEFAULT 0," +
+                "PRIMARY KEY (id))";
+        statement.executeUpdate(sql);
+        statement.close();
+        return connection;
+    }
+
+    public static Connection CreateStudentAnswer() throws Exception{
+        Connection connection = JDBC.getConnection();
+        Statement statement = connection.createStatement();
+        String sql = "create table if not exists studentTable" +
+                "(id INT AUTO_INCREMENT, " +
+                "questionId INT," +
+                "userId INT, " +
+                "courseId INT, " +
+                "grade INT DEFAULT 0," +
                 "PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
