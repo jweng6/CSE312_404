@@ -40,7 +40,7 @@
 
         <div class="left_retangle" id ='left_retangle'>
                 <input id="current_select_question_id" value="" hidden>
-                <table>
+                <table id="show_question_table">
                     @for( i <- listq){
                         <tr  >
                             <td class="" id="question_@i.getId()" onclick=ws.sendShowQuestion('@i.getId()') >@i.getHeader()</td>
