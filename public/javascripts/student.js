@@ -88,8 +88,8 @@ class websocket extends Object {
         answerBox.value = "";
         answerBox.focus();
         const id = document.getElementById("do_id").innerHTML;
-        this.socket.send(JSON.stringify({'messageType':"answer", "email" : this.email, "question": id.toString(),"comment":comment}));
-        return null;
+        this.socket.send(JSON.stringify({'messageType':"answer", "email" : ws.email, "question": id.toString(),"comment":comment}));
+        this.socket.send(JSON.stringify({'messageType':"answer", "email" : ws.email, "question": id.toString(),"comment":comment}));
     }
     sendJoined(){
         this.socket.send(JSON.stringify({'messageType':"join", "email" : this.email}));
