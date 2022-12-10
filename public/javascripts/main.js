@@ -109,7 +109,7 @@ function assign_question(assign){
 class websocket extends Object {
     constructor(courseId) {
         super();
-        this.socket = new WebSocket('wss://' + window.location.host + '/wss'+courseId);
+        this.socket = new WebSocket('ws://' + window.location.host + '/ws'+courseId);
         this.email = document.getElementById('current_user_email').innerHTML;
         this.course = document.location.pathname.split('course/')[1];
         // Called whenever data is received from the server over the WebSocket connection

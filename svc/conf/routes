@@ -25,7 +25,7 @@ GET     /main                        controllers.HomeController.showMain(request
 
 GET     /course/:code                       controllers.HomeController.showCourse(code,request : Request)
 
-GET      /wss:code                                 controllers.WebsocketController.socket(code)
+GET      /ws:code                                 controllers.WebsocketController.socket(code)
 
 GET     /gradebook                  controllers.GradeController.showGradebook(request : Request)
 

@@ -23,7 +23,7 @@ function select(id,code){
 class websocket extends Object {
     constructor(courseId) {
         super();
-        this.socket = new WebSocket('wss://' + window.location.host + '/wss'+courseId);
+        this.socket = new WebSocket('ws://' + window.location.host + '/ws'+courseId);
         // Called whenever data is received from the server over the WebSocket connection
         this.email = document.getElementById('current_user_email').innerHTML;
 
