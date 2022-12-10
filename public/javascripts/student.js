@@ -89,7 +89,7 @@ class websocket extends Object {
         answerBox.focus();
         const id = document.getElementById("do_id").innerHTML;
         this.socket.send(JSON.stringify({'messageType':"answer", "email" : ws.email, "question": id.toString(),"comment":comment}));
-        this.socket.send(JSON.stringify({'messageType':"answer", "email" : ws.email, "question": id.toString(),"comment":comment}));
+        
     }
     sendJoined(){
         this.socket.send(JSON.stringify({'messageType':"join", "email" : this.email}));
@@ -203,7 +203,12 @@ function assign_question(assign){
 
 }
 
+var assign_form = document.getElementById("assign_form");
+function handleForm(event) { event.preventDefault();  ws.sendAnswer();}
 
+if (assign_form!=null){
+    assign_form.addEventListener('submit', handleForm);
+}
 
 function addjoined(user) {
     const chat = document.getElementById('chat_all_message');

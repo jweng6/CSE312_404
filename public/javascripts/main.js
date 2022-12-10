@@ -200,7 +200,6 @@ class websocket extends Object {
     }
 
     sendTimeOut(id) {
-
         this.socket.send(JSON.stringify({'messageType':"timeOut", "question": id.toString(),"email":this.email}));
     }
 
