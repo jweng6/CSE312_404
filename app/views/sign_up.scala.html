@@ -22,6 +22,17 @@
         <div class="rectangle-div" style="height: 550px; top:">
             <div class="div-sign-up" >
                 <p class="text-sign-up_word">SIGN-UP</p>
+
+                <script>
+                        function check(input) {
+                            if (input.value !== document.getElementById('password').value) {
+                                input.setCustomValidity('Password Must be Matching.');
+                            } else {
+                                // input is valid -- reset the error message
+                                input.setCustomValidity('');
+                            }
+                        }
+                </script>
                 <form method="POST" action="/register" >
                     @helper.CSRF.formField
                     <label for="email" class="text-email" style="color: red">@alert</label>
@@ -30,7 +41,6 @@
                     <input class="input-last_name" placeholder="Last name" type="text" name="lastname" required><br>
                     <input class="input-sign-up-password" placeholder="Password"type="password" id="password" name="password" minlength="6" required><br>
                     <input class="input-sign-up-password2" placeholder="Confirm Password"type="password" id="confirm_password" name="confirm_password" oninput="check(this)" required><br><br>
-
                     <input class="button_sign-up" type="submit" value="REGISTER">
                 </form>
 
