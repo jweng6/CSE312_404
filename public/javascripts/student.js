@@ -259,6 +259,8 @@ function showQuestion(message){
         document.getElementById('show_q_b').innerHTML = message.b;
         document.getElementById('show_q_c').innerHTML = message.c;
         document.getElementById('show_q_d').innerHTML = message.d;
+        document.getElementById('show_answer').innerHTML = "";
+        document.getElementById('show_grade').innerHTML = "";
     }
 }
 

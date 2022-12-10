@@ -102,8 +102,8 @@
                         <label class="label_text" for="answer">Correct Answer: (Please Enter A,B,C,or D Only)</label><br>
                         <input class="input_box" type="text" id="answer" name="answer"  pattern="[A-Da-d]{1}" value="" required><br><br>
 
-                        <label class="label_text" for="grade">Grade:</label><br>
-                        <input   class="input_box" type="number" id="grade" name="grade" value="" pattern="[0-9]" required><br><br>
+                        <label class="label_text" for="grade">Grade: (Maxim is 100)</label><br>
+                        <input   class="input_box" type="number" id="grade" name="grade" value="" max="100" step="1" required><br><br>
                         <input  id="add_submit" class="submit_button" type="submit" name = "add_submit" value="Submit">
                     </form>
 

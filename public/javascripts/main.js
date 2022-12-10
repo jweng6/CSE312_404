@@ -247,7 +247,12 @@ var assign_form = document.getElementById("assign_form");
 var add_question_form = document.getElementById("add_question_form");
 
 function handleForm(event) { event.preventDefault();  ws.sendAssign();}
-function handleAnsForm(event) {event.preventDefault();  ws.sendAddQuestion();}
+function handleAnsForm(event) {
+    event.preventDefault();
+
+    ws.sendAddQuestion();
+
+}
 
 if (assign_form!=null){
     assign_form.addEventListener('submit', handleForm);
