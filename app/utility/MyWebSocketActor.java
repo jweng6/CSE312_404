@@ -155,6 +155,10 @@ public class MyWebSocketActor extends AbstractActor {
                         List<String> grade = new ArrayList<>();
                         System.out.println(cid);
                         List<User> all_grade = cService.instrSeeGrade_ws(Integer.parseInt(cid));
+                        System.out.println(all_grade);
+                        if (all_grade.size()>=1){
+                            all_grade.remove(0);
+                        }
                         System.out.println(all_grade.size());
 
                         for (User u : all_grade) {
@@ -182,10 +186,12 @@ public class MyWebSocketActor extends AbstractActor {
                         List<String> last = new ArrayList<>();
                         List<String> email = new ArrayList<>();
                         List<User> all_grade = cService.instrSeeGrade(Integer.parseInt(cid));
-                        Iterator<User> it =  all_grade.iterator();
-                        while (it.hasNext()){
-                            User u = it.next();
-                            if(u.getEmail()==null){
+                        if (all_grade.size()>=1){
+                            all_grade.remove(0);
+                        }
+
+                        for (User u : all_grade) {
+                            if (u.getEmail() == null) {
                                 break;
                             }
                             first.add(u.getFirstname());

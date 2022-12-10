@@ -332,6 +332,7 @@ function show_GradeBook(message){
         last.innerHTML = listl[i];
         email.innerHTML = liste[i];
         grade.innerHTML = listg[i];
+
     }
 }
 

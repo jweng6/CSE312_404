@@ -103,7 +103,7 @@
                         <input class="input_box" type="text" id="answer" name="answer"  pattern="[A-Da-d]{1}" value="" required><br><br>
 
                         <label class="label_text" for="grade">Grade:</label><br>
-                        <input   class="input_box" type="number" id="grade" name="grade" value="" required><br><br>
+                        <input   class="input_box" type="number" id="grade" name="grade" value="" pattern="[0-9]" required><br><br>
                         <input  id="add_submit" class="submit_button" type="submit" name = "add_submit" value="Submit">
                     </form>
 
@@ -158,15 +158,7 @@
                         <th>Email</th>
                     </tr>
 
-                    @for( r <- roster){
-                        @if(!r.getEmail().equals(curre)){
-                            <tr>
-                                <td>@r.getFirstname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
-                                <td>@r.getLastname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
-                                <td>@r.getEmail().toLowerCase.capitalize</td>
-                            </tr>
-                        }
-                    }
+
                 </table>
 
             </div>
@@ -181,16 +173,7 @@
                             <th>Grade</th>
                         </tr>
 
-                        @for(r <- roster) {
-                            @if(!r.getEmail().equals(curre)) {
-                                <tr>
-                                    <td>@r.getFirstname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
-                                    <td>@r.getLastname().toLowerCase.split(' ').map(_.capitalize).mkString(" ")</td>
-                                    <td>@r.getEmail().toLowerCase.capitalize</td>
-                                    <td id="gradebook_@r.getEmail().toLowerCase">@r.getGrade()</td>
-                                </tr>
-                            }
-                        }
+
                     </table>
             </div>
         </div>

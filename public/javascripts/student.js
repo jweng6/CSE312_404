@@ -48,6 +48,7 @@ class websocket extends Object {
                 case 'add_question':
                     addQuestion(message);
                     break;
+
                 case 'show_this_question':
                     if (message.email ===ws.email){
                         showQuestion(message);
@@ -62,7 +63,7 @@ class websocket extends Object {
                     break;
 
                 default:
-                    console.log("received an invalid WS messageType");
+                    //console.log("received an invalid WS messageType");
             }
         }
 }
